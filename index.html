@@ -268,7 +268,7 @@
       position: fixed;
       left: 50%;
       bottom: calc(98px + env(safe-area-inset-bottom));
-      transform: translateX(-50%);
+      transform: translate(-50%, var(--keyboard-offset, 0px));
       width: min(402px, calc(100vw - 28px));
       display: none;
       justify-content: center;
@@ -297,7 +297,7 @@
       position: fixed;
       left: 50%;
       bottom: max(10px, env(safe-area-inset-bottom));
-      transform: translateX(-50%);
+      transform: translate(-50%, var(--keyboard-offset, 0px));
       width: min(402px, calc(100vw - 28px));
       height: 82px;
       border-radius: 28px;
@@ -430,6 +430,7 @@
       var dreams = [{ title: 'Tree from childhood', mood: 'Calm', story: 'I saw a tree from my childhood and felt like I had always lived there.', symbols: 'Tree, childhood, home, calm feeling.' }];
       var editing = { wishes: null, thoughts: null, dreams: null };
       var currentDiaryTab = 'all';
+      var baseViewportHeight = window.innerHeight;
 
       var profileData = {
         career: { role: 'Startup manager', skills: 'Strategy, marketing, sales, product launches', experience: 'Brought more than 10 projects to the market.', goal: 'Build my own product and help people find their vocation.' },
@@ -458,6 +459,17 @@
         hobby: { list: document.getElementById('hobbyList'), frequency: document.getElementById('hobbyFrequency'), energy: document.getElementById('hobbyEnergy') },
         extra: { values: document.getElementById('extraValues'), lifestyle: document.getElementById('extraLifestyle'), links: document.getElementById('extraLinks') }
       };
+
+      function syncKeyboardOffset() {
+        var offset = 0;
+        if (window.visualViewport) {
+          offset = window.innerHeight - window.visualViewport.height - window.visualViewport.offsetTop;
+        } else {
+          offset = baseViewportHeight - window.innerHeight;
+        }
+        if (offset < 0) offset = 0;
+        document.documentElement.style.setProperty('--keyboard-offset', Math.round(offset) + 'px');
+      }
 
       function makeElement(tagName, className, text) {
         var node = document.createElement(tagName);
@@ -728,6 +740,11 @@
       }
 
       navItems.forEach(function (btn) { btn.addEventListener('click', function () { openScreen(btn.getAttribute('data-screen')); }); });
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', syncKeyboardOffset);
+        window.visualViewport.addEventListener('scroll', syncKeyboardOffset);
+      }
+      window.addEventListener('resize', syncKeyboardOffset);
       document.querySelectorAll('[data-tabs]').forEach(function (group) { group.querySelectorAll('.tab').forEach(function (tab) { tab.addEventListener('click', function () { switchTab(group, tab); }); }); });
 
       wishFields.dueType.addEventListener('change', function () { wishCustomDateField.classList.toggle('hidden', wishFields.dueType.value !== 'custom'); });
@@ -755,9 +772,11 @@
       renderProfileSummary();
       renderProfileCards();
       syncDiaryActionButton(currentDiaryTab);
+      syncKeyboardOffset();
 
       function runSmokeTests() {
         console.assert(document.querySelector('.topbar') === null, 'top headers removed');
+        console.assert(getComputedStyle(document.documentElement).getPropertyValue('--keyboard-offset') !== '', 'keyboard offset variable exists');
         console.assert(mainDiaryAction.parentElement.classList.contains('active') === false, 'All tab has no add button');
         switchDiaryTo('thoughts');
         console.assert(mainDiaryActionText.textContent === 'Add Thought', 'Thoughts action is Add Thought');
