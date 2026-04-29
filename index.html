@@ -2,118 +2,358 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Mini App Mockup</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=overlays-content" />
+  <title>WishOS Mini App</title>
   <style>
     :root {
-      --ink: #172339;
-      --muted: #5d6b7e;
-      --line: #d9e4f2;
-      --card: rgba(255,255,255,.94);
-      --shadow: 0 10px 24px rgba(38, 77, 120, .15);
-      --radius: 18px;
+      --bg-1: #f6f9ff;
+      --bg-2: #edf5ff;
+      --ink: #142033;
+      --muted: #66758c;
+      --glass: rgba(255,255,255,.78);
+      --navy: #1d314f;
+      --shadow-lg: 0 24px 60px rgba(49,85,130,.20);
+      --shadow-md: 0 14px 34px rgba(49,85,130,.15);
+      --shadow-sm: 0 6px 16px rgba(49,85,130,.11);
+      --radius-xl: 28px;
+      --radius-lg: 22px;
     }
 
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    html, body { margin: 0; min-height: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; color: var(--ink); }
+    html, body {
+      margin: 0;
+      width: 100%;
+      min-height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--ink);
+      overflow-x: hidden;
+    }
     body {
       background:
-        linear-gradient(rgba(84,132,189,.045) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(84,132,189,.045) 1px, transparent 1px),
-        #f7fbff;
-      background-size: 22px 22px;
+        radial-gradient(circle at 20% 0%, rgba(91,148,210,.28), transparent 32%),
+        radial-gradient(circle at 90% 16%, rgba(233,120,170,.16), transparent 30%),
+        linear-gradient(180deg, var(--bg-1), var(--bg-2));
+    }
+    body:before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(62,106,158,.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(62,106,158,.045) 1px, transparent 1px);
+      background-size: 28px 28px;
     }
 
-    .app { max-width: 430px; min-height: 100vh; margin: 0 auto; padding: max(18px, env(safe-area-inset-top)) 14px calc(154px + env(safe-area-inset-bottom)); position: relative; }
-    .topbar { height: 48px; display: grid; grid-template-columns: 48px 1fr 48px; align-items: center; margin-bottom: 10px; }
-    .title { text-align: center; font-weight: 800; font-size: 29px; letter-spacing: -.03em; }
-    .icon-btn { width: 40px; height: 40px; border-radius: 10px; border: 1px solid #b8c9dc; background: linear-gradient(#fff, #e8f1fb); color: #24405f; display: grid; place-items: center; box-shadow: 0 2px 6px rgba(45,80,120,.15); font-size: 24px; font-weight: 800; }
+    button, input, textarea, select { font: inherit; }
+    button { cursor: pointer; }
 
-    .tabs { display: flex; overflow: hidden; border: 1px solid #a9bfd8; border-radius: 10px; background: #dceafa; margin: 6px 2px 12px; }
-    .tab { flex: 1; padding: 10px 8px; text-align: center; font-size: 18px; color: #26384d; border: 0; border-right: 1px solid #b7cae0; white-space: nowrap; user-select: none; background: transparent; font: inherit; cursor: pointer; }
-    .tab:last-child { border-right: 0; }
-    .tab.active { background: linear-gradient(#fff, #edf5ff); font-weight: 800; }
+    .app {
+      width: min(430px, 100vw);
+      min-height: 100vh;
+      min-height: 100dvh;
+      margin: 0 auto;
+      padding: max(18px, env(safe-area-inset-top)) 14px calc(166px + env(safe-area-inset-bottom));
+      position: relative;
+    }
 
-    .screen { display: none; animation: fade .18s ease; }
+    .screen { display: none; animation: screenIn .24s ease both; }
     .screen.active { display: block; }
+    @keyframes screenIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      min-height: 154px;
+      border-radius: var(--radius-xl);
+      padding: 18px;
+      color: #fff;
+      background:
+        radial-gradient(circle at 84% 18%, rgba(255,255,255,.34), transparent 18%),
+        linear-gradient(135deg, #74afe9 0%, #427fc3 48%, #203b65 100%);
+      box-shadow: var(--shadow-lg);
+      margin-bottom: 14px;
+    }
+    .hero.compact { min-height: 118px; }
+    .hero:after {
+      content: "";
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      right: -48px;
+      bottom: -72px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.18);
+    }
+    .hero-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; position: relative; z-index: 1; }
+    .hero h1 { margin: 0; font-size: 26px; line-height: 1.03; letter-spacing: -.035em; max-width: 260px; }
+    .hero p { margin: 10px 0 0; color: rgba(255,255,255,.82); font-size: 14px; line-height: 1.35; max-width: 285px; }
+    .hero-orb {
+      width: 58px;
+      height: 58px;
+      border-radius: 20px;
+      display: grid;
+      place-items: center;
+      background: rgba(255,255,255,.18);
+      border: 1px solid rgba(255,255,255,.25);
+      backdrop-filter: blur(10px);
+      font-size: 30px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.35);
+    }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 17px; position: relative; z-index: 1; }
+    .stat { padding: 10px; border-radius: 18px; background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.18); backdrop-filter: blur(12px); }
+    .stat b { display: block; font-size: 19px; line-height: 1; }
+    .stat span { display: block; margin-top: 4px; font-size: 11px; color: rgba(255,255,255,.76); font-weight: 650; }
+
+    .tabs-wrap { position: sticky; top: 0; z-index: 3; padding: 0 0 10px; backdrop-filter: blur(16px); }
+    .tabs {
+      display: flex;
+      gap: 5px;
+      overflow-x: visible;
+      padding: 5px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.58);
+      border: 1px solid rgba(111,139,173,.18);
+      box-shadow: var(--shadow-sm);
+    }
+    .tab {
+      flex: 1 1 0;
+      min-width: 0;
+      border: 0;
+      border-radius: 15px;
+      background: transparent;
+      color: var(--muted);
+      padding: 10px 8px;
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+      transition: transform .16s ease, background .16s ease, color .16s ease;
+    }
+    .tab.active { color: var(--navy); background: #fff; box-shadow: 0 6px 16px rgba(54,91,132,.13); }
+    .tab:active { transform: scale(.96); }
+
     .tab-panel { display: none; }
-    .tab-panel.active { display: block; }
-    .hidden { display: none !important; }
-    @keyframes fade { from { opacity: .4; transform: translateY(3px); } to { opacity: 1; transform: none; } }
+    .tab-panel.active { display: block; animation: panelIn .2s ease both; }
+    @keyframes panelIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-    .diary-card, .profile-card, .form-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
-    .entry { display: grid; grid-template-columns: 42px 1fr; gap: 8px; padding: 14px 16px; border-bottom: 1px dashed #d7e1ed; }
-    .entry:last-child { border-bottom: 0; }
-    .badge { width: 31px; height: 31px; border-radius: 50%; background: linear-gradient(145deg, #75a9dc, #4d83bc); display: grid; place-items: center; color: #fff; font-size: 16px; box-shadow: inset 0 1px 2px rgba(255,255,255,.5); margin-top: 2px; }
-    .meta { color: #2a394c; font-size: 17px; margin-bottom: 4px; }
-    .meta b { font-weight: 800; margin-right: 5px; }
-    .entry h3 { margin: 0 0 8px; font-size: 18px; line-height: 1.12; }
-    .entry p { margin: 0; color: #263244; font-size: 16px; line-height: 1.35; }
+    .stack { display: grid; gap: 12px; }
+    .card, .form-card, .profile-card, .empty-state {
+      background: var(--glass);
+      border: 1px solid rgba(111,139,173,.20);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      backdrop-filter: blur(18px);
+    }
+    .entry {
+      position: relative;
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      gap: 10px;
+      padding: 15px;
+      overflow: hidden;
+    }
+    .entry + .entry { border-top: 1px solid rgba(111,139,173,.14); }
+    .badge {
+      width: 38px;
+      height: 38px;
+      border-radius: 15px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: 18px;
+      background: linear-gradient(145deg, #7bb7ef, #3876b8);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.42), 0 8px 16px rgba(47,106,170,.20);
+    }
+    .badge.gold { background: linear-gradient(145deg, #ffd36f, #e49d29); }
+    .badge.pink { background: linear-gradient(145deg, #f59ac4, #d85d95); }
+    .badge.green { background: linear-gradient(145deg, #79d8ae, #31a376); }
+    .meta { color: var(--muted); font-size: 13px; font-weight: 750; margin-bottom: 5px; }
+    .entry h3 { margin: 0 0 7px; font-size: 17px; line-height: 1.12; letter-spacing: -.018em; }
+    .entry p { margin: 0; color: #35445b; font-size: 14px; line-height: 1.42; }
 
-    .floating-actions { position: fixed; left: 50%; bottom: calc(94px + env(safe-area-inset-bottom)); transform: translateX(-50%); width: min(402px, calc(100vw - 28px)); display: none; justify-content: center; pointer-events: none; z-index: 8; }
-    .floating-actions.active { display: flex; }
-    .add-btn, .edit-btn { pointer-events: auto; border: 1px solid #2f669d; color: #fff; font-weight: 800; background: linear-gradient(#70a9e3, #4d84c1 55%, #3f73ad); border-radius: 18px; box-shadow: inset 0 1px 0 rgba(255,255,255,.45), 0 4px 8px rgba(38,77,120,.22); height: 38px; font-size: 18px; cursor: pointer; }
-    .add-btn { width: 230px; }
-    .edit-btn { width: 188px; }
-    .plus { display:inline-grid; place-items:center; width:23px; height:23px; background:white; color:#4d84c1; border-radius:50%; margin-right:8px; font-size:22px; line-height:18px; }
+    .item-head { display: grid; grid-template-columns: 1fr 34px; gap: 8px; align-items: start; }
+    .edit-icon {
+      width: 32px;
+      height: 32px;
+      border: 1px solid rgba(91,126,170,.23);
+      border-radius: 13px;
+      background: rgba(255,255,255,.78);
+      color: var(--navy);
+      font-size: 17px;
+      font-weight: 900;
+      box-shadow: var(--shadow-sm);
+    }
+    .progress-wrap { margin-top: 11px; }
+    .progress-label { display: flex; justify-content: space-between; color: var(--muted); font-size: 12px; font-weight: 750; margin-bottom: 7px; }
+    .progress { height: 8px; background: rgba(111,139,173,.17); border-radius: 999px; overflow: hidden; }
+    .progress span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #62b1f2, #59cf9e); }
 
-    .profile-head { text-align: center; padding: 12px 0 20px; }
-    .avatar { width: 142px; height: 142px; border-radius: 50%; padding: 5px; margin: 4px auto 14px; background: #fff; box-shadow: 0 6px 18px rgba(54,92,130,.22); border: 1px solid #d6e1ee; }
-    .avatar-inner { width: 100%; height: 100%; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(135deg, #9dc9f2, #f8fbff 45%, #426d9d 46%, #16304c); color: white; font-size: 54px; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,.25); }
-    .name { font-size: 26px; font-weight: 850; letter-spacing: -.03em; }
-    .section-title { background: linear-gradient(#6aa7e4, #4b83c0); color: white; font-size: 21px; font-weight: 800; padding: 11px 17px; border-bottom: 1px solid #3972ad; }
-    .profile-text { padding: 15px 17px 58px; font-size: 21px; line-height: 1.32; color: #1c293b; }
-    .profile-text p { margin: 0 0 14px; }
+    .empty-state { padding: 22px; text-align: center; }
+    .empty-emoji { width: 62px; height: 62px; display: grid; place-items: center; margin: 0 auto 10px; border-radius: 22px; background: #fff; box-shadow: var(--shadow-sm); font-size: 30px; }
+    .empty-state h3 { margin: 0 0 6px; font-size: 19px; letter-spacing: -.02em; }
+    .empty-state p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.42; }
 
-    .form-card { padding: 16px; }
-    .wish-head { display: grid; grid-template-columns: 1fr 34px; gap: 8px; align-items: start; }
-    .edit-icon { width: 31px; height: 31px; border-radius: 9px; border: 1px solid #b8c9dc; background: linear-gradient(#fff, #e8f1fb); color: #23405f; font-size: 18px; font-weight: 850; box-shadow: 0 2px 5px rgba(45,80,120,.12); cursor: pointer; }
-    .form-actions { display: grid; grid-template-columns: .75fr 1fr; gap: 10px; margin-top: 4px; }
-    .ghost-btn { height: 40px; border-radius: 15px; border: 1px solid #b8c9dc; background: linear-gradient(#fff, #edf5ff); color: #2a405a; font-weight: 850; font-size: 17px; }
-    .form-title { font-size: 22px; font-weight: 850; margin: 0 0 12px; }
+    .form-card { padding: 16px; animation: formIn .2s ease both; }
+    @keyframes formIn { from { opacity: 0; transform: translateY(14px) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    .form-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .form-title { margin: 0; font-size: 24px; line-height: 1; letter-spacing: -.035em; font-weight: 950; }
+    .pill { padding: 7px 10px; border-radius: 999px; background: #eef6ff; color: #2d6fb7; font-size: 12px; font-weight: 850; }
     .field { margin-bottom: 13px; }
-    .field label { display:block; margin-bottom: 6px; font-weight: 750; color: #26384d; }
-    .field input, .field textarea, .field select { width: 100%; border: 1px solid #bed0e4; border-radius: 12px; padding: 11px 12px; font: inherit; font-size: 16px; background: #fff; color: var(--ink); outline: none; box-shadow: inset 0 1px 3px rgba(30,70,110,.06); }
-    .field textarea { min-height: 92px; resize: vertical; }
-    .mini-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .save-btn { width: 100%; height: 40px; border-radius: 15px; border: 1px solid #2f669d; background: linear-gradient(#70a9e3, #4d84c1 55%, #3f73ad); color: white; font-weight: 850; font-size: 17px; cursor: pointer; }
+    .field label { display: block; margin-bottom: 7px; font-size: 13px; font-weight: 850; color: #344962; }
+    .field input, .field textarea, .field select {
+      width: 100%;
+      border: 1px solid rgba(111,139,173,.26);
+      border-radius: 17px;
+      padding: 12px 13px;
+      background: rgba(255,255,255,.86);
+      color: var(--ink);
+      outline: none;
+      font-size: 16px;
+      box-shadow: inset 0 1px 3px rgba(30,70,110,.05);
+      transition: border .16s ease, box-shadow .16s ease;
+    }
+    .field input:focus, .field textarea:focus, .field select:focus { border-color: rgba(77,142,216,.65); box-shadow: 0 0 0 4px rgba(77,142,216,.13); }
+    .field textarea { min-height: 96px; resize: vertical; }
+    .hint { color: var(--muted); font-size: 12px; margin-top: 5px; }
+    .form-actions { display: grid; grid-template-columns: .78fr 1.15fr; gap: 10px; margin-top: 4px; }
+    .ghost-btn, .save-btn { height: 44px; border-radius: 17px; font-weight: 900; font-size: 16px; }
+    .ghost-btn { border: 1px solid rgba(111,139,173,.24); background: rgba(255,255,255,.74); color: #2d405a; }
+    .save-btn { border: 0; background: linear-gradient(135deg, #66aceb, #2e74bb); color: #fff; box-shadow: 0 12px 20px rgba(50,113,184,.24); }
+    .hidden { display: none !important; }
 
-    .placeholder { min-height: 58vh; display: grid; place-items: center; text-align: center; color: var(--muted); background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 26px; font-size: 20px; }
-    .bottom-nav { position: fixed; left: 50%; bottom: max(10px, env(safe-area-inset-bottom)); transform: translateX(-50%); width: min(402px, calc(100vw - 28px)); height: 78px; background: rgba(255,255,255,.95); border: 1px solid #d8e3ef; border-radius: 22px; box-shadow: 0 -6px 22px rgba(48,80,118,.15); display: grid; grid-template-columns: repeat(5, 1fr); padding: 8px 7px 5px; z-index: 10; }
-    .nav-item { border: 0; background: transparent; color: #202b3b; font-size: 13px; display: grid; gap: 3px; place-items: center; cursor: pointer; }
-    .nav-ico { width: 42px; height: 42px; border-radius: 10px; display: grid; place-items: center; font-size: 25px; background: #26384f; color: white; box-shadow: inset 0 1px 0 rgba(255,255,255,.15); }
-    .nav-item.active { color: #2c69a5; font-weight: 800; }
-    .nav-item.active .nav-ico { background: linear-gradient(#73aee7, #3d77b4); }
-    .compass { border-radius: 50%; font-size: 30px; background: radial-gradient(circle at 50% 50%, #f9fbff 0 45%, #96b7d8 46%); color: #21486f; border: 2px solid #7d99b5; }
+    .profile-head {
+      display: grid;
+      grid-template-columns: 82px 1fr;
+      gap: 14px;
+      align-items: center;
+      padding: 16px;
+      margin-bottom: 14px;
+      border-radius: var(--radius-xl);
+      background: rgba(255,255,255,.68);
+      border: 1px solid rgba(111,139,173,.18);
+      box-shadow: var(--shadow-md);
+      backdrop-filter: blur(18px);
+    }
+    .avatar { width: 82px; height: 82px; border-radius: 28px; padding: 4px; background: #fff; box-shadow: var(--shadow-sm); }
+    .avatar-inner {
+      width: 100%; height: 100%; border-radius: 24px; display: grid; place-items: center;
+      background: linear-gradient(135deg, #9dc9f2, #f8fbff 45%, #426d9d 46%, #16304c);
+      color: white; font-size: 28px; font-weight: 950; text-shadow: 0 2px 4px rgba(0,0,0,.25);
+    }
+    .name { font-size: 24px; font-weight: 950; letter-spacing: -.035em; }
+    .role { margin-top: 4px; color: var(--muted); font-weight: 700; font-size: 14px; }
+    .profile-card { overflow: hidden; }
+    .section-title { background: linear-gradient(135deg, #6aa7e4, #407dbd); color: white; font-size: 18px; font-weight: 900; padding: 13px 16px; }
+    .profile-text { padding: 16px; font-size: 16px; line-height: 1.48; color: #25364d; }
+    .profile-text p { margin: 0 0 13px; }
+    .summary-block { padding: 14px 0; border-bottom: 1px solid rgba(111,139,173,.16); }
+    .summary-block:first-child { padding-top: 0; }
+    .summary-block:last-child { border-bottom: 0; padding-bottom: 0; }
+    .summary-block h3 { margin: 0 0 8px; font-size: 18px; letter-spacing: -.02em; }
+    .summary-block p { margin: 0 0 8px; color: #34465f; }
+    .summary-block strong { color: var(--navy); }
+    .profile-section-card { padding: 15px; }
+    .profile-section-card .item-head { margin-bottom: 8px; }
+    .profile-section-card h3 { margin: 0 0 5px; font-size: 18px; letter-spacing: -.02em; }
+    .profile-section-card p { margin: 0 0 8px; color: #35445b; font-size: 14px; line-height: 1.42; }
+    .profile-section-card .meta { margin-bottom: 0; }
 
-    @media (max-width: 370px) { .tab { font-size: 16px; padding-inline: 4px; } .entry p { font-size: 15px; } .profile-text { font-size: 19px; } .add-btn { width: 210px; } }
+    .placeholder { min-height: 66vh; display: grid; place-items: center; text-align: center; color: var(--muted); padding: 26px; }
+    .placeholder-card { width: 100%; padding: 26px; border-radius: var(--radius-xl); background: var(--glass); border: 1px solid rgba(111,139,173,.18); box-shadow: var(--shadow-md); backdrop-filter: blur(18px); }
+    .placeholder-card div { font-size: 38px; margin-bottom: 10px; }
+    .placeholder-card b { color: var(--ink); font-size: 20px; display: block; margin-bottom: 6px; }
+
+    .floating-actions {
+      position: fixed;
+      left: 50%;
+      bottom: calc(98px + env(safe-area-inset-bottom));
+      transform: translateX(-50%);
+      width: min(402px, calc(100vw - 28px));
+      display: none;
+      justify-content: center;
+      pointer-events: none;
+      z-index: 8;
+    }
+    .floating-actions.active { display: flex; }
+    .add-btn {
+      pointer-events: auto;
+      height: 46px;
+      border: 0;
+      border-radius: 999px;
+      color: #fff;
+      background: linear-gradient(135deg, #67b2f3, #2d70b8);
+      font-size: 16px;
+      font-weight: 950;
+      box-shadow: 0 18px 28px rgba(44,102,170,.28), inset 0 1px 0 rgba(255,255,255,.3);
+      padding: 0 22px;
+      min-width: 176px;
+      transition: transform .16s ease;
+    }
+    .add-btn:active { transform: scale(.97); }
+    .plus { display:inline-grid; place-items:center; width:24px; height:24px; background:rgba(255,255,255,.95); color:#3b7ec3; border-radius:50%; margin-right:8px; font-size:22px; line-height:18px; }
+
+    .bottom-nav {
+      position: fixed;
+      left: 50%;
+      bottom: max(10px, env(safe-area-inset-bottom));
+      transform: translateX(-50%);
+      width: min(402px, calc(100vw - 28px));
+      height: 82px;
+      border-radius: 28px;
+      background: rgba(255,255,255,.78);
+      border: 1px solid rgba(111,139,173,.20);
+      box-shadow: 0 -16px 38px rgba(48,80,118,.16);
+      backdrop-filter: blur(24px);
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      padding: 9px 8px 6px;
+      z-index: 10;
+    }
+    .nav-item { border: 0; background: transparent; color: #6b788c; font-size: 11px; font-weight: 850; display: grid; gap: 4px; place-items: center; }
+    .nav-ico { width: 40px; height: 40px; border-radius: 16px; display: grid; place-items: center; font-size: 21px; background: transparent; color: #6b788c; transition: .16s ease; }
+    .nav-item.active { color: #2d6fb7; }
+    .nav-item.active .nav-ico { background: linear-gradient(135deg, #72b7f1, #2d70b8); color: #fff; box-shadow: 0 10px 18px rgba(45,112,184,.25); transform: translateY(-2px); }
+
+    @media (max-width: 370px) {
+      .hero h1 { font-size: 23px; }
+      .tab { font-size: 12px; padding-inline: 6px; }
+      .entry p { font-size: 13px; }
+    }
   </style>
 </head>
 <body>
   <main class="app">
     <section id="diary" class="screen active">
-      <div class="topbar"><div></div><div class="title">Diary</div><button class="icon-btn" aria-label="menu">≡</button></div>
-      <div class="tabs" data-tabs="diary">
-        <button class="tab active" data-tab="all">* All</button>
-        <button class="tab" data-tab="wishes">* Wish List</button>
-        <button class="tab" data-tab="thoughts">* Thoughts</button>
-        <button class="tab" data-tab="dreams">* Dreams</button>
-      </div>
-
-      <div class="tab-panel active" data-panel="diary:all">
-        <div class="diary-card">
-          <article class="entry"><div class="badge">◔</div><div><div class="meta"><b>D</b>Today at 15:35</div><h3>I had a wonderful dream</h3><p>I had a dream in which I saw a tree and it seemed to me that when I was little, I played under this tree. It feels like I live there all the time.</p></div></article>
-          <article class="entry"><div class="badge">💡</div><div><div class="meta"><b>T</b>Yesterday at 15:01</div><h3>I came up with the idea to open a business</h3><p>I came up with the idea to open a business. I saw myself walking around the enterprise. An employee comes up to me with a question, and I tell him what to do and how to do it.</p></div></article>
-          <article class="entry"><div class="badge">⭐</div><div><div class="meta"><b>W</b>Should come true in one year</div><h3>Buy a house near the sea</h3><p>I want to have a peaceful place where I can rest, think, and spend time with people I love.</p></div></article>
+      <div class="hero">
+        <div class="hero-row">
+          <div><h1>Your future starts as a small note.</h1><p>Collect wishes, thoughts and dreams. Later Worker + D1 will turn them into your personal roadmap.</p></div>
+          <div class="hero-orb">✨</div>
+        </div>
+        <div class="stats">
+          <div class="stat"><b id="wishCountStat">1</b><span>wishes</span></div>
+          <div class="stat"><b id="thoughtCountStat">1</b><span>thoughts</span></div>
+          <div class="stat"><b id="dreamCountStat">1</b><span>dreams</span></div>
         </div>
       </div>
 
-      <div class="tab-panel" data-panel="diary:wishes">
-        <div id="wishesListView"><div class="diary-card" id="wishesList"></div></div>
+      <div class="tabs-wrap"><div class="tabs" data-tabs="diary">
+        <button class="tab active" data-tab="all" type="button">All</button>
+        <button class="tab" data-tab="wishes" type="button">Wish List</button>
+        <button class="tab" data-tab="thoughts" type="button">Thoughts</button>
+        <button class="tab" data-tab="dreams" type="button">Dreams</button>
+      </div></div>
+
+      <div class="tab-panel active" data-scope="diary" data-panel="all">
+        <div class="card" id="allEntriesList"></div>
+      </div>
+
+      <div class="tab-panel" data-scope="diary" data-panel="wishes">
+        <div id="wishesListView" class="stack"><div class="card" id="wishesList"></div><div class="empty-state hidden" id="wishesEmpty"><div class="empty-emoji">🌟</div><h3>No wishes yet</h3><p>Tap Add Wish and write the first thing you want to bring into your life.</p></div></div>
         <div class="form-card hidden" id="wishFormView">
-          <h2 class="form-title" id="wishFormTitle">New Wish</h2>
+          <div class="form-top"><h2 class="form-title" id="wishFormTitle">New Wish</h2><span class="pill">Private</span></div>
           <div class="field"><label>Wish title</label><input id="wishTitle" placeholder="Например: Buy a house near the sea"></div>
-          <div class="field"><label>When should it come true?</label><select id="wishDueType"><option value="week">In one week</option><option value="month">In one month</option><option value="year">In one year</option><option value="custom">Custom date</option></select></div>
+          <div class="field"><label>When should it come true?</label><select id="wishDueType"><option value="week">In one week</option><option value="month">In one month</option><option value="year">In one year</option><option value="custom">Custom date</option></select><div class="hint">Это не дедлайн, а мягкий горизонт желания.</div></div>
           <div class="field hidden" id="wishCustomDateField"><label>Custom date</label><input id="wishCustomDate" type="date"></div>
           <div class="field"><label>Why do I want this?</label><textarea id="wishReason" placeholder="Почему это желание важно..."></textarea></div>
           <div class="field"><label>First step</label><textarea id="wishStep" placeholder="Что я могу сделать первым шагом..."></textarea></div>
@@ -121,72 +361,118 @@
         </div>
       </div>
 
-      <div class="tab-panel" data-panel="diary:thoughts"><div class="form-card"><h2 class="form-title">New Thought</h2><div class="field"><label>Thought title</label><input placeholder="Например: Idea for a new product"></div><div class="field"><label>Category</label><select><option>Business idea</option><option>Personal growth</option><option>Career</option><option>Relationship</option></select></div><div class="field"><label>Thought</label><textarea placeholder="Запиши мысль как есть..."></textarea></div><div class="field"><label>Why is it important?</label><textarea placeholder="Почему это зацепило, что можно сделать..."></textarea></div><button class="save-btn">Save Thought</button></div></div>
-      <div class="tab-panel" data-panel="diary:dreams"><div class="form-card"><h2 class="form-title">New Dream</h2><div class="field"><label>Dream title</label><input placeholder="Например: A house near the sea"></div><div class="field"><label>Mood</label><select><option>Calm</option><option>Happy</option><option>Strange</option><option>Scary</option></select></div><div class="field"><label>Dream story</label><textarea placeholder="Что происходило во сне..."></textarea></div><div class="field"><label>Symbols / details</label><textarea placeholder="Люди, места, предметы, ощущения..."></textarea></div><button class="save-btn">Save Dream</button></div></div>
+      <div class="tab-panel" data-scope="diary" data-panel="thoughts">
+        <div id="thoughtsListView" class="stack"><div class="card" id="thoughtsList"></div><div class="empty-state hidden" id="thoughtsEmpty"><div class="empty-emoji">💡</div><h3>No thoughts yet</h3><p>Tap Add Thought and capture the idea before it disappears.</p></div></div>
+        <div class="form-card hidden" id="thoughtFormView">
+          <div class="form-top"><h2 class="form-title" id="thoughtFormTitle">New Thought</h2><span class="pill">Idea</span></div>
+          <div class="field"><label>Thought title</label><input id="thoughtTitle" placeholder="Например: Idea for a new product"></div>
+          <div class="field"><label>Category</label><select id="thoughtCategory"><option>Business idea</option><option>Personal growth</option><option>Career</option><option>Relationship</option></select></div>
+          <div class="field"><label>Thought</label><textarea id="thoughtText" placeholder="Запиши мысль как есть..."></textarea></div>
+          <div class="field"><label>Why is it important?</label><textarea id="thoughtImportance" placeholder="Почему это зацепило, что можно сделать..."></textarea></div>
+          <div class="form-actions"><button class="ghost-btn" id="cancelThoughtBtn" type="button">Cancel</button><button class="save-btn" id="saveThoughtBtn" type="button">Save Thought</button></div>
+        </div>
+      </div>
+
+      <div class="tab-panel" data-scope="diary" data-panel="dreams">
+        <div id="dreamsListView" class="stack"><div class="card" id="dreamsList"></div><div class="empty-state hidden" id="dreamsEmpty"><div class="empty-emoji">🌙</div><h3>No dreams yet</h3><p>Tap Add Dream and save the details while they are fresh.</p></div></div>
+        <div class="form-card hidden" id="dreamFormView">
+          <div class="form-top"><h2 class="form-title" id="dreamFormTitle">New Dream</h2><span class="pill">Subconscious</span></div>
+          <div class="field"><label>Dream title</label><input id="dreamTitle" placeholder="Например: A house near the sea"></div>
+          <div class="field"><label>Mood</label><select id="dreamMood"><option>Calm</option><option>Happy</option><option>Strange</option><option>Scary</option></select></div>
+          <div class="field"><label>Dream story</label><textarea id="dreamStory" placeholder="Что происходило во сне..."></textarea></div>
+          <div class="field"><label>Symbols / details</label><textarea id="dreamSymbols" placeholder="Люди, места, предметы, ощущения..."></textarea></div>
+          <div class="form-actions"><button class="ghost-btn" id="cancelDreamBtn" type="button">Cancel</button><button class="save-btn" id="saveDreamBtn" type="button">Save Dream</button></div>
+        </div>
+      </div>
     </section>
 
     <section id="profile" class="screen">
-      <div class="topbar"><div></div><div class="title">Profile</div><div></div></div>
-      <div class="profile-head"><div class="avatar"><div class="avatar-inner">AF</div></div><div class="name">Anatolio Fabbri</div></div>
-      <div class="tabs" data-tabs="profile"><button class="tab active" data-tab="main">* Main</button><button class="tab" data-tab="career">* Career</button><button class="tab" data-tab="interests">* Interests</button><button class="tab" data-tab="hobby">* Hobby</button><button class="tab" data-tab="extra">...</button></div>
-      <div class="tab-panel active" data-panel="profile:main"><div class="profile-card"><div class="section-title">About Me</div><div class="profile-text"><p>My name is Anatolio Fabbri. I am a startup manager and help to attract resources and bring new projects to the market.</p><p>I'm currently working with a team on my own project.</p><p>This is an application that helps people find their vocation, their role in projects, or the path to their own business. Before starting this project, I brought more than 10 projects to the market, developed a unique methodology, and wrote a book.</p></div></div></div>
-      <div class="tab-panel" data-panel="profile:career"><div class="form-card"><h2 class="form-title">Career Profile</h2><div class="field"><label>Current role</label><input placeholder="Startup manager"></div><div class="field"><label>Skills</label><textarea placeholder="Strategy, marketing, sales, product..."></textarea></div><div class="field"><label>Projects / experience</label><textarea placeholder="Опыт, проекты, достижения..."></textarea></div><div class="field"><label>Career goal</label><textarea placeholder="Куда хочу прийти дальше..."></textarea></div><button class="save-btn">Save Career</button></div></div>
-      <div class="tab-panel" data-panel="profile:interests"><div class="form-card"><h2 class="form-title">Interests</h2><div class="field"><label>Main interests</label><textarea placeholder="Стартапы, путешествия, психология..."></textarea></div><div class="field"><label>Topics I want to explore</label><textarea placeholder="Что интересно изучить глубже..."></textarea></div><div class="field"><label>Favorite formats</label><select><option>Books</option><option>Courses</option><option>Podcasts</option><option>Practice</option></select></div><button class="save-btn">Save Interests</button></div></div>
-      <div class="tab-panel" data-panel="profile:hobby"><div class="form-card"><h2 class="form-title">Hobby</h2><div class="field"><label>Hobbies</label><textarea placeholder="Sport, music, walking, cooking..."></textarea></div><div class="field"><label>How often?</label><select><option>Every day</option><option>Few times a week</option><option>Sometimes</option></select></div><div class="field"><label>What gives me energy?</label><textarea placeholder="Что заряжает и почему..."></textarea></div><button class="save-btn">Save Hobby</button></div></div>
-      <div class="tab-panel" data-panel="profile:extra"><div class="form-card"><h2 class="form-title">Extra Info</h2><div class="field"><label>Values</label><textarea placeholder="Что для меня важно..."></textarea></div><div class="field"><label>Dream lifestyle</label><textarea placeholder="Как хочу жить, работать, отдыхать..."></textarea></div><div class="field"><label>Links</label><input placeholder="Website, Telegram, LinkedIn"></div><button class="save-btn">Save Extra</button></div></div>
+      <div class="profile-head"><div class="avatar"><div class="avatar-inner">AF</div></div><div><div class="name">Anatolio Fabbri</div><div class="role">Startup manager · Product builder</div></div></div>
+      <div class="tabs-wrap"><div class="tabs" data-tabs="profile"><button class="tab active" data-tab="main" type="button">Main</button><button class="tab" data-tab="career" type="button">Career</button><button class="tab" data-tab="interests" type="button">Interests</button><button class="tab" data-tab="hobby" type="button">Hobby</button><button class="tab" data-tab="extra" type="button">More</button></div></div>
+      <div class="tab-panel active" data-scope="profile" data-panel="main"><div class="profile-card"><div class="section-title">Profile Summary</div><div class="profile-text" id="profileSummary"></div></div></div>
+      <div class="tab-panel" data-scope="profile" data-panel="career"><div class="card" id="careerView"></div><div class="form-card hidden" id="careerForm"><div class="form-top"><h2 class="form-title">Career</h2><span class="pill">Growth</span></div><div class="field"><label>Current role</label><input id="careerRole" placeholder="Startup manager"></div><div class="field"><label>Skills</label><textarea id="careerSkills" placeholder="Strategy, marketing, sales, product..."></textarea></div><div class="field"><label>Projects / experience</label><textarea id="careerExperience" placeholder="Опыт, проекты, достижения..."></textarea></div><div class="field"><label>Career goal</label><textarea id="careerGoal" placeholder="Куда хочу прийти дальше..."></textarea></div><div class="form-actions"><button class="ghost-btn" id="cancelCareerBtn" type="button">Cancel</button><button class="save-btn" id="saveCareerBtn" type="button">Save Career</button></div></div></div>
+      <div class="tab-panel" data-scope="profile" data-panel="interests"><div class="card" id="interestsView"></div><div class="form-card hidden" id="interestsForm"><div class="form-top"><h2 class="form-title">Interests</h2><span class="pill">Taste</span></div><div class="field"><label>Main interests</label><textarea id="interestsMain" placeholder="Стартапы, путешествия, психология..."></textarea></div><div class="field"><label>Topics I want to explore</label><textarea id="interestsExplore" placeholder="Что интересно изучить глубже..."></textarea></div><div class="field"><label>Favorite format</label><select id="interestsFormat"><option>Books</option><option>Courses</option><option>Podcasts</option><option>Practice</option></select></div><div class="form-actions"><button class="ghost-btn" id="cancelInterestsBtn" type="button">Cancel</button><button class="save-btn" id="saveInterestsBtn" type="button">Save Interests</button></div></div></div>
+      <div class="tab-panel" data-scope="profile" data-panel="hobby"><div class="card" id="hobbyView"></div><div class="form-card hidden" id="hobbyForm"><div class="form-top"><h2 class="form-title">Hobby</h2><span class="pill">Energy</span></div><div class="field"><label>Hobbies</label><textarea id="hobbyList" placeholder="Sport, music, walking, cooking..."></textarea></div><div class="field"><label>How often?</label><select id="hobbyFrequency"><option>Every day</option><option>Few times a week</option><option>Sometimes</option></select></div><div class="field"><label>What gives me energy?</label><textarea id="hobbyEnergy" placeholder="Что заряжает и почему..."></textarea></div><div class="form-actions"><button class="ghost-btn" id="cancelHobbyBtn" type="button">Cancel</button><button class="save-btn" id="saveHobbyBtn" type="button">Save Hobby</button></div></div></div>
+      <div class="tab-panel" data-scope="profile" data-panel="extra"><div class="card" id="extraView"></div><div class="form-card hidden" id="extraForm"><div class="form-top"><h2 class="form-title">Extra</h2><span class="pill">Deep</span></div><div class="field"><label>Values</label><textarea id="extraValues" placeholder="Что для меня важно..."></textarea></div><div class="field"><label>Dream lifestyle</label><textarea id="extraLifestyle" placeholder="Как хочу жить, работать, отдыхать..."></textarea></div><div class="field"><label>Links</label><input id="extraLinks" placeholder="Website, Telegram, LinkedIn"></div><div class="form-actions"><button class="ghost-btn" id="cancelExtraBtn" type="button">Cancel</button><button class="save-btn" id="saveExtraBtn" type="button">Save Extra</button></div></div></div>
     </section>
 
-    <section id="dashboard" class="screen"><div class="topbar"><div></div><div class="title">Dashboard</div><div></div></div><div class="placeholder">Dashboard screen<br>подключим позже к Cloudflare Worker и D1</div></section>
-    <section id="activity" class="screen"><div class="topbar"><div></div><div class="title">Activity</div><div></div></div><div class="placeholder">Activity screen</div></section>
-    <section id="chat" class="screen"><div class="topbar"><div></div><div class="title">Chat</div><div></div></div><div class="placeholder">Chat screen</div></section>
+    <section id="dashboard" class="screen"><div class="placeholder"><div class="placeholder-card"><div>🧭</div><b>Roadmap coming soon</b><span>Здесь Worker будет собирать инсайты из D1.</span></div></div></section>
+    <section id="activity" class="screen"><div class="placeholder"><div class="placeholder-card"><div>👣</div><b>Track actions</b><span>Позже добавим шаги, привычки и прогресс.</span></div></div></section>
+    <section id="chat" class="screen"><div class="placeholder"><div class="placeholder-card"><div>💬</div><b>AI reflection</b><span>Позже подключим запросы к Cloudflare Worker.</span></div></div></section>
   </main>
 
   <div class="floating-actions active" data-actionbar="diary"><button class="add-btn" id="mainDiaryAction" type="button"><span class="plus">+</span><span id="mainDiaryActionText">Add Entry</span></button></div>
-  <div class="floating-actions" data-actionbar="profile"><button class="edit-btn" type="button">Edit</button></div>
 
   <nav class="bottom-nav">
     <button class="nav-item" data-screen="profile" type="button"><span class="nav-ico">👤</span><span>Profile</span></button>
     <button class="nav-item active" data-screen="diary" type="button"><span class="nav-ico">📓</span><span>Diary</span></button>
-    <button class="nav-item" data-screen="dashboard" type="button"><span class="nav-ico compass">🧭</span><span>Dashboard</span></button>
+    <button class="nav-item" data-screen="dashboard" type="button"><span class="nav-ico">🧭</span><span>Dash</span></button>
     <button class="nav-item" data-screen="activity" type="button"><span class="nav-ico">👣</span><span>Activity</span></button>
-    <button class="nav-item" data-screen="chat" type="button"><span class="nav-ico">🗂</span><span>Chat</span></button>
+    <button class="nav-item" data-screen="chat" type="button"><span class="nav-ico">💬</span><span>Chat</span></button>
   </nav>
 
   <script>
     (function () {
       'use strict';
 
-      var nav = document.querySelectorAll('.nav-item');
+      var navItems = document.querySelectorAll('.nav-item');
       var screens = document.querySelectorAll('.screen');
       var actionBars = document.querySelectorAll('.floating-actions');
       var mainDiaryAction = document.getElementById('mainDiaryAction');
       var mainDiaryActionText = document.getElementById('mainDiaryActionText');
+      var allEntriesList = document.getElementById('allEntriesList');
+      var wishCountStat = document.getElementById('wishCountStat');
+      var thoughtCountStat = document.getElementById('thoughtCountStat');
+      var dreamCountStat = document.getElementById('dreamCountStat');
 
-      var wishes = [
-        {
-          title: 'Buy a house near the sea',
-          dueType: 'year',
-          customDate: '',
-          reason: 'I want to have a peaceful place where I can rest, think, and spend time with people I love.',
-          step: 'Research locations and estimate the budget.'
-        }
-      ];
-      var editingWishIndex = null;
+      var wishes = [{ title: 'Buy a house near the sea', dueType: 'year', customDate: '', reason: 'I want a peaceful place to rest, think and spend time with people I love.', step: 'Research locations and estimate the budget.', progress: 32 }];
+      var thoughts = [{ title: 'Open a business', category: 'Business idea', text: 'I saw myself leading a team and calmly explaining what to do next.', importance: 'This could become a real direction for my next project.' }];
+      var dreams = [{ title: 'Tree from childhood', mood: 'Calm', story: 'I saw a tree from my childhood and felt like I had always lived there.', symbols: 'Tree, childhood, home, calm feeling.' }];
+      var editing = { wishes: null, thoughts: null, dreams: null };
+      var currentDiaryTab = 'all';
 
-      var wishesListView = document.getElementById('wishesListView');
-      var wishFormView = document.getElementById('wishFormView');
-      var wishesList = document.getElementById('wishesList');
-      var wishFormTitle = document.getElementById('wishFormTitle');
-      var wishTitle = document.getElementById('wishTitle');
-      var wishDueType = document.getElementById('wishDueType');
+      var profileData = {
+        career: { role: 'Startup manager', skills: 'Strategy, marketing, sales, product launches', experience: 'Brought more than 10 projects to the market.', goal: 'Build my own product and help people find their vocation.' },
+        interests: { main: 'Startups, psychology, travel, personal systems', explore: 'AI assistants, personal roadmaps, product growth', format: 'Practice' },
+        hobby: { list: 'Walking, reading, discovering new places', frequency: 'Few times a week', energy: 'Long walks and deep conversations give me energy.' },
+        extra: { values: 'Freedom, creativity, honesty, growth', lifestyle: 'Build meaningful products, travel often, stay close to family and friends.', links: '@anatolio' }
+      };
+
+      var lists = {
+        wishes: { view: document.getElementById('wishesListView'), form: document.getElementById('wishFormView'), list: document.getElementById('wishesList'), empty: document.getElementById('wishesEmpty'), title: document.getElementById('wishFormTitle') },
+        thoughts: { view: document.getElementById('thoughtsListView'), form: document.getElementById('thoughtFormView'), list: document.getElementById('thoughtsList'), empty: document.getElementById('thoughtsEmpty'), title: document.getElementById('thoughtFormTitle') },
+        dreams: { view: document.getElementById('dreamsListView'), form: document.getElementById('dreamFormView'), list: document.getElementById('dreamsList'), empty: document.getElementById('dreamsEmpty'), title: document.getElementById('dreamFormTitle') }
+      };
+
+      var wishFields = { title: document.getElementById('wishTitle'), dueType: document.getElementById('wishDueType'), customDate: document.getElementById('wishCustomDate'), reason: document.getElementById('wishReason'), step: document.getElementById('wishStep') };
+      var thoughtFields = { title: document.getElementById('thoughtTitle'), category: document.getElementById('thoughtCategory'), text: document.getElementById('thoughtText'), importance: document.getElementById('thoughtImportance') };
+      var dreamFields = { title: document.getElementById('dreamTitle'), mood: document.getElementById('dreamMood'), story: document.getElementById('dreamStory'), symbols: document.getElementById('dreamSymbols') };
       var wishCustomDateField = document.getElementById('wishCustomDateField');
-      var wishCustomDate = document.getElementById('wishCustomDate');
-      var wishReason = document.getElementById('wishReason');
-      var wishStep = document.getElementById('wishStep');
+
+      var profileSummary = document.getElementById('profileSummary');
+      var profileViews = { career: document.getElementById('careerView'), interests: document.getElementById('interestsView'), hobby: document.getElementById('hobbyView'), extra: document.getElementById('extraView') };
+      var profileForms = { career: document.getElementById('careerForm'), interests: document.getElementById('interestsForm'), hobby: document.getElementById('hobbyForm'), extra: document.getElementById('extraForm') };
+      var profileFields = {
+        career: { role: document.getElementById('careerRole'), skills: document.getElementById('careerSkills'), experience: document.getElementById('careerExperience'), goal: document.getElementById('careerGoal') },
+        interests: { main: document.getElementById('interestsMain'), explore: document.getElementById('interestsExplore'), format: document.getElementById('interestsFormat') },
+        hobby: { list: document.getElementById('hobbyList'), frequency: document.getElementById('hobbyFrequency'), energy: document.getElementById('hobbyEnergy') },
+        extra: { values: document.getElementById('extraValues'), lifestyle: document.getElementById('extraLifestyle'), links: document.getElementById('extraLinks') }
+      };
+
+      function makeElement(tagName, className, text) {
+        var node = document.createElement(tagName);
+        if (className) node.className = className;
+        if (typeof text === 'string') node.textContent = text;
+        return node;
+      }
+      function setChildren(parent, children) {
+        while (parent.firstChild) parent.removeChild(parent.firstChild);
+        children.forEach(function (child) { parent.appendChild(child); });
+      }
 
       function openScreen(id) {
         screens.forEach(function (screen) { screen.classList.toggle('active', screen.id === id); });
-        nav.forEach(function (item) { item.classList.toggle('active', item.getAttribute('data-screen') === id); });
+        navItems.forEach(function (item) { item.classList.toggle('active', item.getAttribute('data-screen') === id); });
         actionBars.forEach(function (bar) { bar.classList.toggle('active', bar.getAttribute('data-actionbar') === id); });
       }
 
@@ -195,10 +481,16 @@
         var tabName = tab.getAttribute('data-tab');
         group.querySelectorAll('.tab').forEach(function (item) { item.classList.remove('active'); });
         tab.classList.add('active');
-        document.querySelectorAll('[data-panel^="' + scope + ':"]').forEach(function (panel) {
-          panel.classList.toggle('active', panel.getAttribute('data-panel') === scope + ':' + tabName);
+        document.querySelectorAll('.tab-panel').forEach(function (panel) {
+          if (panel.getAttribute('data-scope') === scope) panel.classList.toggle('active', panel.getAttribute('data-panel') === tabName);
         });
-        if (scope === 'diary') syncDiaryActionButton(tabName);
+        if (scope === 'diary') {
+          currentDiaryTab = tabName;
+          closeDiaryForm('wishes', false);
+          closeDiaryForm('thoughts', false);
+          closeDiaryForm('dreams', false);
+          syncDiaryActionButton(tabName);
+        }
       }
 
       function formatWishDue(wish) {
@@ -212,117 +504,268 @@
         return 'Custom date not set';
       }
 
-      function createText(tagName, className, text) {
-        var node = document.createElement(tagName);
-        if (className) node.className = className;
-        node.textContent = text;
-        return node;
+      function createEditableEntry(options) {
+        var article = makeElement('article', 'entry');
+        var badge = makeElement('div', 'badge ' + options.badgeClass, options.icon);
+        var content = makeElement('div');
+        var head = makeElement('div', 'item-head');
+        var textWrap = makeElement('div');
+        var edit = makeElement('button', 'edit-icon', '✎');
+        edit.type = 'button';
+        edit.setAttribute('aria-label', 'Edit');
+        edit.addEventListener('click', options.onEdit);
+        textWrap.appendChild(makeElement('div', 'meta', options.meta));
+        textWrap.appendChild(makeElement('h3', '', options.title));
+        head.appendChild(textWrap);
+        head.appendChild(edit);
+        content.appendChild(head);
+        content.appendChild(makeElement('p', '', options.text));
+        if (options.progress) {
+          var progressWrap = makeElement('div', 'progress-wrap');
+          var progressLabel = makeElement('div', 'progress-label');
+          var progress = makeElement('div', 'progress');
+          var progressBar = makeElement('span');
+          progressBar.style.width = String(options.progress) + '%';
+          progressLabel.appendChild(makeElement('span', '', 'Clarity'));
+          progressLabel.appendChild(makeElement('span', '', String(options.progress) + '%'));
+          progress.appendChild(progressBar);
+          progressWrap.appendChild(progressLabel);
+          progressWrap.appendChild(progress);
+          content.appendChild(progressWrap);
+        }
+        article.appendChild(badge);
+        article.appendChild(content);
+        return article;
       }
 
-      function renderWishes() {
-        wishesList.replaceChildren();
-        wishes.forEach(function (wish, index) {
-          var article = document.createElement('article');
-          article.className = 'entry wish-item';
+      function renderAllEntries() {
+        var nodes = [];
+        wishes.forEach(function (wish) { nodes.push(createEditableEntry({ icon: '⭐', badgeClass: 'gold', meta: 'Wish · ' + formatWishDue(wish), title: wish.title || 'Untitled wish', text: wish.reason || 'No reason yet.', progress: wish.progress || 18, onEdit: function () { switchDiaryTo('wishes'); openDiaryForm('wishes', wishes.indexOf(wish)); } })); });
+        thoughts.forEach(function (thought) { nodes.push(createEditableEntry({ icon: '💡', badgeClass: 'green', meta: 'Thought · ' + thought.category, title: thought.title || 'Untitled thought', text: thought.text || 'No thought yet.', onEdit: function () { switchDiaryTo('thoughts'); openDiaryForm('thoughts', thoughts.indexOf(thought)); } })); });
+        dreams.forEach(function (dream) { nodes.push(createEditableEntry({ icon: '◔', badgeClass: 'pink', meta: 'Dream · ' + dream.mood, title: dream.title || 'Untitled dream', text: dream.story || 'No story yet.', onEdit: function () { switchDiaryTo('dreams'); openDiaryForm('dreams', dreams.indexOf(dream)); } })); });
+        setChildren(allEntriesList, nodes);
+      }
 
-          article.appendChild(createText('div', 'badge', '⭐'));
-
-          var content = document.createElement('div');
-          var head = document.createElement('div');
-          head.className = 'wish-head';
-
-          var textWrap = document.createElement('div');
-          var meta = document.createElement('div');
-          meta.className = 'meta';
-          var b = createText('b', '', 'W');
-          meta.appendChild(b);
-          meta.appendChild(document.createTextNode(formatWishDue(wish)));
-          textWrap.appendChild(meta);
-          textWrap.appendChild(createText('h3', '', wish.title || 'Untitled wish'));
-
-          var edit = createText('button', 'edit-icon', '✎');
-          edit.type = 'button';
-          edit.setAttribute('aria-label', 'Edit wish');
-          edit.addEventListener('click', function () { openWishForm(index); });
-
-          head.appendChild(textWrap);
-          head.appendChild(edit);
-          content.appendChild(head);
-          content.appendChild(createText('p', '', wish.reason || 'No reason yet.'));
-          article.appendChild(content);
-          wishesList.appendChild(article);
+      function renderDiaryList(type) {
+        var data = type === 'wishes' ? wishes : type === 'thoughts' ? thoughts : dreams;
+        var nodes = [];
+        data.forEach(function (item, index) {
+          if (type === 'wishes') nodes.push(createEditableEntry({ icon: '⭐', badgeClass: 'gold', meta: 'Wish · ' + formatWishDue(item), title: item.title || 'Untitled wish', text: item.reason || 'No reason yet.', progress: item.progress || 18, onEdit: function () { openDiaryForm(type, index); } }));
+          if (type === 'thoughts') nodes.push(createEditableEntry({ icon: '💡', badgeClass: 'green', meta: 'Thought · ' + item.category, title: item.title || 'Untitled thought', text: item.text || 'No thought yet.', onEdit: function () { openDiaryForm(type, index); } }));
+          if (type === 'dreams') nodes.push(createEditableEntry({ icon: '◔', badgeClass: 'pink', meta: 'Dream · ' + item.mood, title: item.title || 'Untitled dream', text: item.story || 'No story yet.', onEdit: function () { openDiaryForm(type, index); } }));
         });
+        setChildren(lists[type].list, nodes);
+        lists[type].empty.classList.toggle('hidden', data.length > 0);
+        lists[type].list.classList.toggle('hidden', data.length === 0);
+        wishCountStat.textContent = String(wishes.length);
+        thoughtCountStat.textContent = String(thoughts.length);
+        dreamCountStat.textContent = String(dreams.length);
       }
 
-      function openWishForm(index) {
+      function renderDiary() {
+        renderDiaryList('wishes');
+        renderDiaryList('thoughts');
+        renderDiaryList('dreams');
+        renderAllEntries();
+      }
+
+      function openDiaryForm(type, index) {
         var isEditing = typeof index === 'number';
-        var wish = isEditing ? wishes[index] : { title: '', dueType: 'week', customDate: '', reason: '', step: '' };
-        editingWishIndex = isEditing ? index : null;
-        wishFormTitle.textContent = isEditing ? 'Edit Wish' : 'New Wish';
-        wishTitle.value = wish.title;
-        wishDueType.value = wish.dueType;
-        wishCustomDate.value = wish.customDate;
-        wishReason.value = wish.reason;
-        wishStep.value = wish.step;
-        wishCustomDateField.classList.toggle('hidden', wishDueType.value !== 'custom');
-        wishesListView.classList.add('hidden');
-        wishFormView.classList.remove('hidden');
+        editing[type] = isEditing ? index : null;
+        lists[type].view.classList.add('hidden');
+        lists[type].form.classList.remove('hidden');
+        if (type === 'wishes') {
+          var wish = isEditing ? wishes[index] : { title: '', dueType: 'week', customDate: '', reason: '', step: '', progress: 18 };
+          lists[type].title.textContent = isEditing ? 'Edit Wish' : 'New Wish';
+          wishFields.title.value = wish.title;
+          wishFields.dueType.value = wish.dueType;
+          wishFields.customDate.value = wish.customDate;
+          wishFields.reason.value = wish.reason;
+          wishFields.step.value = wish.step;
+          wishCustomDateField.classList.toggle('hidden', wishFields.dueType.value !== 'custom');
+        }
+        if (type === 'thoughts') {
+          var thought = isEditing ? thoughts[index] : { title: '', category: 'Business idea', text: '', importance: '' };
+          lists[type].title.textContent = isEditing ? 'Edit Thought' : 'New Thought';
+          thoughtFields.title.value = thought.title;
+          thoughtFields.category.value = thought.category;
+          thoughtFields.text.value = thought.text;
+          thoughtFields.importance.value = thought.importance;
+        }
+        if (type === 'dreams') {
+          var dream = isEditing ? dreams[index] : { title: '', mood: 'Calm', story: '', symbols: '' };
+          lists[type].title.textContent = isEditing ? 'Edit Dream' : 'New Dream';
+          dreamFields.title.value = dream.title;
+          dreamFields.mood.value = dream.mood;
+          dreamFields.story.value = dream.story;
+          dreamFields.symbols.value = dream.symbols;
+        }
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
 
-      function closeWishForm() {
-        wishFormView.classList.add('hidden');
-        wishesListView.classList.remove('hidden');
-        editingWishIndex = null;
+      function closeDiaryForm(type, reset) {
+        if (!lists[type]) return;
+        if (typeof reset === 'undefined') reset = true;
+        lists[type].form.classList.add('hidden');
+        lists[type].view.classList.remove('hidden');
+        if (reset) editing[type] = null;
       }
 
-      function saveWish() {
-        var data = {
-          title: wishTitle.value.trim() || 'Untitled wish',
-          dueType: wishDueType.value,
-          customDate: wishCustomDate.value,
-          reason: wishReason.value.trim(),
-          step: wishStep.value.trim()
-        };
-        if (editingWishIndex === null) wishes.unshift(data);
-        else wishes[editingWishIndex] = data;
-        renderWishes();
-        closeWishForm();
+      function saveDiaryItem(type) {
+        if (type === 'wishes') {
+          var hasDetails = Boolean(wishFields.reason.value.trim()) && Boolean(wishFields.step.value.trim());
+          var wishData = { title: wishFields.title.value.trim() || 'Untitled wish', dueType: wishFields.dueType.value, customDate: wishFields.customDate.value, reason: wishFields.reason.value.trim(), step: wishFields.step.value.trim(), progress: hasDetails ? 68 : 36 };
+          if (editing.wishes === null) wishes.unshift(wishData); else wishes[editing.wishes] = wishData;
+        }
+        if (type === 'thoughts') {
+          var thoughtData = { title: thoughtFields.title.value.trim() || 'Untitled thought', category: thoughtFields.category.value, text: thoughtFields.text.value.trim(), importance: thoughtFields.importance.value.trim() };
+          if (editing.thoughts === null) thoughts.unshift(thoughtData); else thoughts[editing.thoughts] = thoughtData;
+        }
+        if (type === 'dreams') {
+          var dreamData = { title: dreamFields.title.value.trim() || 'Untitled dream', mood: dreamFields.mood.value, story: dreamFields.story.value.trim(), symbols: dreamFields.symbols.value.trim() };
+          if (editing.dreams === null) dreams.unshift(dreamData); else dreams[editing.dreams] = dreamData;
+        }
+        renderDiary();
+        closeDiaryForm(type);
+      }
+
+      function switchDiaryTo(tabName) {
+        var group = document.querySelector('[data-tabs="diary"]');
+        var tab = group.querySelector('[data-tab="' + tabName + '"]');
+        switchTab(group, tab);
       }
 
       function syncDiaryActionButton(activeTab) {
-        var isWishList = activeTab === 'wishes';
-        mainDiaryActionText.textContent = isWishList ? 'Add Wish' : 'Add Entry';
-        mainDiaryAction.onclick = isWishList ? function () { openWishForm(); } : null;
+        if (activeTab === 'wishes') {
+          mainDiaryAction.parentElement.classList.add('active');
+          mainDiaryActionText.textContent = 'Add Wish';
+          mainDiaryAction.onclick = function () { openDiaryForm('wishes'); };
+          return;
+        }
+        if (activeTab === 'thoughts') {
+          mainDiaryAction.parentElement.classList.add('active');
+          mainDiaryActionText.textContent = 'Add Thought';
+          mainDiaryAction.onclick = function () { openDiaryForm('thoughts'); };
+          return;
+        }
+        if (activeTab === 'dreams') {
+          mainDiaryAction.parentElement.classList.add('active');
+          mainDiaryActionText.textContent = 'Add Dream';
+          mainDiaryAction.onclick = function () { openDiaryForm('dreams'); };
+          return;
+        }
+        mainDiaryAction.parentElement.classList.remove('active');
+        mainDiaryAction.onclick = null;
       }
 
-      nav.forEach(function (btn) {
-        btn.addEventListener('click', function () { openScreen(btn.getAttribute('data-screen')); });
-      });
-
-      document.querySelectorAll('[data-tabs]').forEach(function (group) {
-        group.querySelectorAll('.tab').forEach(function (tab) {
-          tab.addEventListener('click', function () { switchTab(group, tab); });
+      function fillProfileForm(section) {
+        Object.keys(profileFields[section]).forEach(function (key) { profileFields[section][key].value = profileData[section][key] || ''; });
+      }
+      function saveProfileSection(section) {
+        Object.keys(profileFields[section]).forEach(function (key) {
+          var value = profileFields[section][key].value;
+          profileData[section][key] = typeof value === 'string' ? value.trim() : value;
         });
-      });
+        renderProfileSummary();
+        renderProfileCards();
+        closeProfileForm(section);
+      }
+      function openProfileForm(section) {
+        fillProfileForm(section);
+        profileViews[section].classList.add('hidden');
+        profileForms[section].classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      function closeProfileForm(section) {
+        fillProfileForm(section);
+        profileForms[section].classList.add('hidden');
+        profileViews[section].classList.remove('hidden');
+      }
+      function profileCardData(section) {
+        if (section === 'career') return { title: 'Career', meta: profileData.career.role || 'Role not set', lines: [profileData.career.skills, profileData.career.experience, profileData.career.goal] };
+        if (section === 'interests') return { title: 'Interests', meta: profileData.interests.format || 'Format not set', lines: [profileData.interests.main, profileData.interests.explore] };
+        if (section === 'hobby') return { title: 'Hobby', meta: profileData.hobby.frequency || 'Frequency not set', lines: [profileData.hobby.list, profileData.hobby.energy] };
+        return { title: 'Extra', meta: profileData.extra.links || 'Links not set', lines: [profileData.extra.values, profileData.extra.lifestyle] };
+      }
+      function renderProfileCards() {
+        Object.keys(profileViews).forEach(function (section) {
+          var data = profileCardData(section);
+          var card = makeElement('div', 'profile-section-card');
+          var head = makeElement('div', 'item-head');
+          var text = makeElement('div');
+          var edit = makeElement('button', 'edit-icon', '✎');
+          edit.type = 'button';
+          edit.setAttribute('aria-label', 'Edit ' + section);
+          edit.addEventListener('click', function () { openProfileForm(section); });
+          text.appendChild(makeElement('div', 'meta', data.meta));
+          text.appendChild(makeElement('h3', '', data.title));
+          head.appendChild(text);
+          head.appendChild(edit);
+          card.appendChild(head);
+          data.lines.forEach(function (line) { if (line) card.appendChild(makeElement('p', '', line)); });
+          setChildren(profileViews[section], [card]);
+        });
+      }
+      function renderSummaryBlock(title, rows) {
+        var block = makeElement('div', 'summary-block');
+        block.appendChild(makeElement('h3', '', title));
+        rows.forEach(function (row) {
+          if (!row.value) return;
+          var item = makeElement('p');
+          item.appendChild(makeElement('strong', '', row.label + ': '));
+          item.appendChild(document.createTextNode(row.value));
+          block.appendChild(item);
+        });
+        return block;
+      }
+      function renderProfileSummary() {
+        setChildren(profileSummary, [
+          renderSummaryBlock('Career', [{ label: 'Role', value: profileData.career.role }, { label: 'Skills', value: profileData.career.skills }, { label: 'Experience', value: profileData.career.experience }, { label: 'Goal', value: profileData.career.goal }]),
+          renderSummaryBlock('Interests', [{ label: 'Main', value: profileData.interests.main }, { label: 'Explore', value: profileData.interests.explore }, { label: 'Format', value: profileData.interests.format }]),
+          renderSummaryBlock('Hobby', [{ label: 'Hobbies', value: profileData.hobby.list }, { label: 'Frequency', value: profileData.hobby.frequency }, { label: 'Energy', value: profileData.hobby.energy }]),
+          renderSummaryBlock('Extra', [{ label: 'Values', value: profileData.extra.values }, { label: 'Lifestyle', value: profileData.extra.lifestyle }, { label: 'Links', value: profileData.extra.links }])
+        ]);
+      }
 
-      wishDueType.addEventListener('change', function () {
-        wishCustomDateField.classList.toggle('hidden', wishDueType.value !== 'custom');
-      });
-      document.getElementById('cancelWishBtn').addEventListener('click', closeWishForm);
-      document.getElementById('saveWishBtn').addEventListener('click', saveWish);
+      navItems.forEach(function (btn) { btn.addEventListener('click', function () { openScreen(btn.getAttribute('data-screen')); }); });
+      document.querySelectorAll('[data-tabs]').forEach(function (group) { group.querySelectorAll('.tab').forEach(function (tab) { tab.addEventListener('click', function () { switchTab(group, tab); }); }); });
 
-      renderWishes();
-      syncDiaryActionButton('all');
+      wishFields.dueType.addEventListener('change', function () { wishCustomDateField.classList.toggle('hidden', wishFields.dueType.value !== 'custom'); });
+      document.getElementById('cancelWishBtn').addEventListener('click', function () { closeDiaryForm('wishes'); });
+      document.getElementById('saveWishBtn').addEventListener('click', function () { saveDiaryItem('wishes'); });
+      document.getElementById('cancelThoughtBtn').addEventListener('click', function () { closeDiaryForm('thoughts'); });
+      document.getElementById('saveThoughtBtn').addEventListener('click', function () { saveDiaryItem('thoughts'); });
+      document.getElementById('cancelDreamBtn').addEventListener('click', function () { closeDiaryForm('dreams'); });
+      document.getElementById('saveDreamBtn').addEventListener('click', function () { saveDiaryItem('dreams'); });
+
+      document.getElementById('saveCareerBtn').addEventListener('click', function () { saveProfileSection('career'); });
+      document.getElementById('cancelCareerBtn').addEventListener('click', function () { closeProfileForm('career'); });
+      document.getElementById('saveInterestsBtn').addEventListener('click', function () { saveProfileSection('interests'); });
+      document.getElementById('cancelInterestsBtn').addEventListener('click', function () { closeProfileForm('interests'); });
+      document.getElementById('saveHobbyBtn').addEventListener('click', function () { saveProfileSection('hobby'); });
+      document.getElementById('cancelHobbyBtn').addEventListener('click', function () { closeProfileForm('hobby'); });
+      document.getElementById('saveExtraBtn').addEventListener('click', function () { saveProfileSection('extra'); });
+      document.getElementById('cancelExtraBtn').addEventListener('click', function () { closeProfileForm('extra'); });
+
+      fillProfileForm('career');
+      fillProfileForm('interests');
+      fillProfileForm('hobby');
+      fillProfileForm('extra');
+      renderDiary();
+      renderProfileSummary();
+      renderProfileCards();
+      syncDiaryActionButton(currentDiaryTab);
 
       function runSmokeTests() {
-        console.assert(typeof formatWishDue({ dueType: 'week' }) === 'string', 'formatWishDue returns text for week');
-        console.assert(formatWishDue({ dueType: 'custom', customDate: '2026-04-28' }) === 'Should come true by 28.04.2026', 'custom date formats correctly');
-        console.assert(document.querySelector('[data-tab="wishes"]') !== null, 'Wish List tab exists');
-        console.assert(mainDiaryActionText.textContent === 'Add Entry', 'default action is Add Entry');
-        switchTab(document.querySelector('[data-tabs="diary"]'), document.querySelector('[data-tab="wishes"]'));
+        console.assert(document.querySelector('.topbar') === null, 'top headers removed');
+        console.assert(mainDiaryAction.parentElement.classList.contains('active') === false, 'All tab has no add button');
+        switchDiaryTo('thoughts');
+        console.assert(mainDiaryActionText.textContent === 'Add Thought', 'Thoughts action is Add Thought');
+        switchDiaryTo('dreams');
+        console.assert(mainDiaryActionText.textContent === 'Add Dream', 'Dreams action is Add Dream');
+        switchDiaryTo('wishes');
         console.assert(mainDiaryActionText.textContent === 'Add Wish', 'Wish List action is Add Wish');
-        switchTab(document.querySelector('[data-tabs="diary"]'), document.querySelector('[data-tab="all"]'));
+        switchDiaryTo('all');
       }
       runSmokeTests();
     })();
