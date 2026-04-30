@@ -801,12 +801,6 @@ function installDevPanel(){
       syncProfileActionButton(currentProfileTab);
 syncKeyboardOffset();
 
-(function forceReload(){
-  if(!sessionStorage.getItem('reloaded')){
-    sessionStorage.setItem('reloaded','1');
-    location.reload();
-  }
-})();
 
 }());
 
