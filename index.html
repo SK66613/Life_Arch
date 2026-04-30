@@ -365,12 +365,13 @@ async function loadTelegramUser(){
 
   var user=tg&&tg.initDataUnsafe&&tg.initDataUnsafe.user;
 
-  if(user){
-    telegramUser.id=user.id||'';
-    telegramUser.firstName=user.first_name||'';
-    telegramUser.lastName=user.last_name||'';
-    telegramUser.username=user.username||'';
-  }
+if(user){
+  telegramUser.id=user.id||'';
+  telegramUser.firstName=user.first_name||'';
+  telegramUser.lastName=user.last_name||'';
+  telegramUser.username=user.username||'';
+  telegramUser.photoUrl=user.photo_url||'';
+}
 
   var fullName=[telegramUser.firstName,telegramUser.lastName].filter(Boolean).join(' ')||telegramUser.username||'Telegram User';
   var initials=((telegramUser.firstName||'').charAt(0)+(telegramUser.lastName||'').charAt(0)).toUpperCase()||'U';
@@ -393,14 +394,15 @@ async function loadTelegramUser(){
     fall.textContent=initials;
     img.alt=fullName;
 
-    img.onload=function(){
-      box.classList.add('has-photo');
-    };
+img.onload=function(){
+  console.log('avatar loaded:', url);
+  box.classList.add('has-photo');
+};
 
-    img.onerror=function(e){
-      console.log('avatar img error', e);
-      setFallback(box,img,fall);
-    };
+img.onerror=function(e){
+  console.log('avatar img error:', url, e);
+  setFallback(box,img,fall);
+};
 
     img.src=url;
   }
@@ -421,10 +423,12 @@ async function loadTelegramUser(){
     return;
   }
 
-  var avatarUrl=
-    'https://life-arch.cyberian13.workers.dev/avatar?user_id='+
-    encodeURIComponent(telegramUser.id)+
-    '&v='+Date.now();
+var workerAvatarUrl=
+  'https://life-arch.cyberian13.workers.dev/avatar?user_id='+
+  encodeURIComponent(telegramUser.id)+
+  '&v='+Date.now();
+
+var avatarUrl=telegramUser.photoUrl||workerAvatarUrl;
 
   console.log('avatar url', avatarUrl);
 
