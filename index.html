@@ -121,14 +121,14 @@
   transform:translate(-50%,-50%);
 }
 
-.avatar-inner,.map-avatar{
-  background-size:cover;
-  background-position:center;
-  background-repeat:no-repeat;
-}
-
 .avatar-inner img,.map-avatar img{
-  display:none!important;
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:none;
+  z-index:2;
 }
 
 .avatar-inner span,.map-avatar span{
@@ -140,6 +140,10 @@
   color:#2d70b8;
   font-weight:950;
   z-index:1;
+}
+
+.avatar-inner.has-photo img,.map-avatar.has-photo img{
+  display:block;
 }
 
 .avatar-inner.has-photo span,.map-avatar.has-photo span{
@@ -373,14 +377,44 @@ async function loadTelegramUser(){
   var fullName=[telegramUser.firstName,telegramUser.lastName].filter(Boolean).join(' ')||telegramUser.username||'Telegram User';
   var initials=((telegramUser.firstName||'').charAt(0)+(telegramUser.lastName||'').charAt(0)).toUpperCase()||'U';
 
-  telegramUser.initials=initials;
-
   var nameNode=document.querySelector('.name');
   var roleNode=document.querySelector('.role');
 
   if(nameNode)nameNode.textContent=fullName;
   if(roleNode)roleNode.textContent=telegramUser.username?'@'+telegramUser.username:'Telegram user';
 
+  function setAvatar(box,img,fall,url){
+    if(!box||!img||!fall)return;
+
+    fall.textContent=initials;
+    img.alt=fullName;
+
+    img.onload=function(){
+      box.classList.add('has-photo');
+    };
+
+    img.onerror=function(){
+      box.classList.remove('has-photo');
+      img.removeAttribute('src');
+    };
+
+    if(url){
+      img.src=url;
+    }else{
+      box.classList.remove('has-photo');
+      img.removeAttribute('src');
+    }
+  }
+
+  if(!telegramUser.id)return;
+
+  var avatarUrl='https://life-arch.cyberian13.workers.dev/avatar?user_id='+
+    encodeURIComponent(telegramUser.id)+
+    '&v='+Date.now();
+
+  setAvatar(byId('profileAvatarBox'),byId('profileAvatarImg'),byId('profileAvatarFallback'),avatarUrl);
+  setAvatar(byId('lifeMapAvatar'),byId('mapAvatarImg'),byId('mapAvatarFallback'),avatarUrl);
+}
   function setAvatarBox(box,fall,photoUrl){
     if(!box||!fall)return;
 
