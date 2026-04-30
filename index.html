@@ -90,7 +90,7 @@
     body.keyboard-open .bottom-nav,body.keyboard-open .floating-actions{transform:translate(-50%,140vh)!important;opacity:0;pointer-events:none}
     .profile-head{display:grid;grid-template-columns:82px 1fr;gap:14px;align-items:center;padding:16px;margin-bottom:14px;border-radius:var(--radius-xl);background:rgba(255,255,255,.68);border:1px solid rgba(111,139,173,.18);box-shadow:var(--shadow-md);backdrop-filter:blur(18px)}
     .avatar{width:82px;height:82px;padding:4px;border-radius:28px;background:#fff;box-shadow:var(--shadow-sm)}
-    .avatar-inner{width:100%;height:100%;display:grid;place-items:center;border-radius:24px;background:linear-gradient(135deg,#9dc9f2,#f8fbff 45%,#426d9d 46%,#16304c);color:#fff;font-size:28px;font-weight:950;overflow:hidden}
+    .avatar-inner{width:100%;height:100%;display:grid;place-items:center;border-radius:24px;background:linear-gradient(135deg,#9dc9f2,#f8fbff 45%,#426d9d 46%,#16304c);color:#fff;font-size:28px;font-weight:950;overflow:hidden;background-size:cover;background-position:center;background-repeat:no-repeat}
     .avatar-inner img,.map-avatar img{width:100%;height:100%;object-fit:cover;display:block}
     .name{font-size:24px;font-weight:950}
     .role{margin-top:4px;color:var(--muted);font-size:14px;font-weight:700}
@@ -129,13 +129,13 @@
     .map-node-meta{margin-top:3px;color:var(--muted);font-size:10px;font-weight:800}
     .map-mini-progress{height:4px;margin-top:8px;border-radius:99px;background:rgba(111,139,173,.16);overflow:hidden}
     .map-mini-progress i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#62b1f2,#59cf9e)}
-    .map-avatar{position:absolute;z-index:3;width:42px;height:42px;display:grid;place-items:center;overflow:hidden;border-radius:17px;background:#fff;color:#1f6fb8;font-weight:950;box-shadow:0 16px 26px rgba(45,112,184,.24),0 0 0 8px rgba(98,177,242,.14);transform:translate(-50%,-50%)}
+    .map-avatar{position:absolute;z-index:3;width:42px;height:42px;display:grid;place-items:center;overflow:hidden;border-radius:17px;background:#fff;color:#1f6fb8;font-weight:950;box-shadow:0 16px 26px rgba(45,112,184,.24),0 0 0 8px rgba(98,177,242,.14);transform:translate(-50%,-50%);background-size:cover;background-position:center;background-repeat:no-repeat}
     .map-open-btn{display:none}
     .map-sheet{position:fixed;inset:0;z-index:50;pointer-events:none}
     .map-sheet.open{pointer-events:auto}
     .map-sheet-backdrop{position:absolute;inset:0;background:rgba(20,32,51,.24);opacity:0;transition:.22s ease;backdrop-filter:blur(2px)}
     .map-sheet.open .map-sheet-backdrop{opacity:1}
-    .map-sheet-panel{position:absolute;left:50%;right:auto;bottom:0;width:min(390px,calc(100vw - 28px));max-height:66vh;overflow:auto;padding:8px 14px calc(74px + env(safe-area-inset-bottom));border-radius:28px 28px 0 0;background:rgba(255,255,255,.94);border:1px solid rgba(111,139,173,.20);box-shadow:0 -20px 50px rgba(49,85,130,.20);backdrop-filter:blur(24px);transform:translate3d(-50%,105%,0);transition:transform .28s cubic-bezier(.2,.8,.2,1)}
+    .map-sheet-panel{position:absolute;left:50%;right:auto;bottom:0;width:calc(100vw - 28px);max-width:390px;max-height:66vh;overflow:auto;padding:8px 14px calc(74px + env(safe-area-inset-bottom));border-radius:28px 28px 0 0;background:rgba(255,255,255,.94);border:1px solid rgba(111,139,173,.20);box-shadow:0 -20px 50px rgba(49,85,130,.20);backdrop-filter:blur(24px);transform:translate3d(-50%,105%,0);transition:transform .28s cubic-bezier(.2,.8,.2,1)}
     .map-sheet.open .map-sheet-panel{transform:translate3d(-50%,0,0)}
     .map-sheet-handle{width:52px;height:5px;margin:8px auto 14px;border-radius:999px;background:rgba(102,117,140,.28)}
     .map-sheet-close{display:none}
@@ -296,35 +296,70 @@
 
       var telegramUser={firstName:'Anatolio',lastName:'Fabbri',username:'',photoUrl:'',initials:'AF'};
 
+      function avatarSvgData(initials){
+        var safe=(initials||'U').replace(/[<>&"']/g,'').slice(0,2).toUpperCase();
+        var svg='<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="%239dc9f2"/><stop offset="0.45" stop-color="%23f8fbff"/><stop offset="0.46" stop-color="%23426d9d"/><stop offset="1" stop-color="%2316304c"/></linearGradient><filter id="s" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="%230b2540" flood-opacity=".22"/></filter></defs><rect width="256" height="256" rx="76" fill="url(%23g)"/><circle cx="204" cy="46" r="38" fill="%23ffffff" opacity=".22"/><circle cx="55" cy="210" r="58" fill="%23ffffff" opacity=".14"/><text x="128" y="148" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="76" font-weight="900" fill="%23ffffff" filter="url(%23s)">'+safe+'</text></svg>';
+        return 'data:image/svg+xml;charset=UTF-8,'+svg;
+      }
+
       function loadTelegramUser(){
         var tg=window.Telegram&&window.Telegram.WebApp;
         var user=tg&&tg.initDataUnsafe&&tg.initDataUnsafe.user;
+
+        console.log('TG USER:',user);
+
         if(user){
           telegramUser.firstName=user.first_name||'';
           telegramUser.lastName=user.last_name||'';
           telegramUser.username=user.username||'';
           telegramUser.photoUrl=user.photo_url||'';
         }
-        var a=(telegramUser.firstName||'').charAt(0);
-        var b=(telegramUser.lastName||'').charAt(0);
-        telegramUser.initials=(a+b||'U').toUpperCase();
+
         var fullName=[telegramUser.firstName,telegramUser.lastName].filter(Boolean).join(' ')||telegramUser.username||'Telegram User';
+        var initials=((telegramUser.firstName||'').charAt(0)+(telegramUser.lastName||'').charAt(0)).toUpperCase()||'U';
+        telegramUser.initials=initials;
+
         var nameNode=document.querySelector('.name');
+        var roleNode=document.querySelector('.role');
         var avatarNode=document.querySelector('.avatar-inner');
         var mapAvatar=byId('lifeMapAvatar');
+
         if(nameNode)nameNode.textContent=fullName;
+        if(roleNode&&telegramUser.username)roleNode.textContent='@'+telegramUser.username;
+
+        function setPlaceholder(node){
+          if(!node)return;
+          node.innerHTML='';
+          node.textContent='';
+          node.style.backgroundImage='url("'+avatarSvgData(initials)+'")';
+        }
+
         function fillAvatar(node){
           if(!node)return;
+          node.innerHTML='';
           node.textContent='';
+          node.style.backgroundImage='';
+
           if(telegramUser.photoUrl){
             var img=document.createElement('img');
             img.src=telegramUser.photoUrl;
             img.alt=fullName;
+            img.referrerPolicy='no-referrer';
+
+            img.onload=function(){
+              node.style.backgroundImage='';
+            };
+
+            img.onerror=function(){
+              setPlaceholder(node);
+            };
+
             node.appendChild(img);
           }else{
-            node.textContent=telegramUser.initials;
+            setPlaceholder(node);
           }
         }
+
         fillAvatar(avatarNode);
         fillAvatar(mapAvatar);
       }
@@ -569,12 +604,16 @@
       initTelegramWebApp();
       lockIOSPullToClose();
       hydrateStaticIcons();
-      loadTelegramUser();
       attachMapSheetSwipeClose();
+
       renderDiary();
       renderProfileLists();
       renderLifeMap();
+
       loadTelegramUser();
+      setTimeout(loadTelegramUser,300);
+      setTimeout(loadTelegramUser,1000);
+
       syncDiaryActionButton(currentDiaryTab);
       syncProfileActionButton(currentProfileTab);
       syncKeyboardOffset();
