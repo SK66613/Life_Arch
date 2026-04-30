@@ -355,7 +355,7 @@
 
 
 
-function loadTelegramUser(){
+async function loadTelegramUser(){
   var tg=window.Telegram&&window.Telegram.WebApp;
 
   try{
@@ -367,13 +367,12 @@ function loadTelegramUser(){
 
   var user=tg&&tg.initDataUnsafe&&tg.initDataUnsafe.user;
 
-  console.log('TG USER AVATAR CHECK:',user);
-
   if(user){
+    telegramUser.id=user.id||'';
     telegramUser.firstName=user.first_name||'';
     telegramUser.lastName=user.last_name||'';
     telegramUser.username=user.username||'';
-    telegramUser.photoUrl=user.photo_url||user.photoUrl||user.photo||'';
+    telegramUser.photoUrl='';
   }
 
   var fullName=[telegramUser.firstName,telegramUser.lastName].filter(Boolean).join(' ')||telegramUser.username||'Telegram User';
@@ -386,6 +385,46 @@ function loadTelegramUser(){
 
   if(nameNode)nameNode.textContent=fullName;
   if(roleNode)roleNode.textContent=telegramUser.username?'@'+telegramUser.username:'Telegram user';
+
+  function setAvatar(box,img,fall,photoUrl){
+    if(!box||!img||!fall)return;
+
+    fall.textContent=initials;
+    box.classList.remove('has-photo');
+    img.removeAttribute('src');
+    img.alt=fullName;
+
+    if(photoUrl){
+      img.onload=function(){box.classList.add('has-photo')};
+      img.onerror=function(){
+        box.classList.remove('has-photo');
+        img.removeAttribute('src');
+      };
+      img.src=photoUrl;
+    }
+  }
+
+  function apply(photoUrl){
+    setAvatar(byId('profileAvatarBox'),byId('profileAvatarImg'),byId('profileAvatarFallback'),photoUrl);
+    setAvatar(byId('lifeMapAvatar'),byId('mapAvatarImg'),byId('mapAvatarFallback'),photoUrl);
+  }
+
+  apply('');
+
+  if(!telegramUser.id)return;
+
+  try{
+    var res=await fetch('https://life-arch.cyberian13.workers.dev/?user_id='+encodeURIComponent(telegramUser.id));
+    var data=await res.json();
+
+    if(data&&data.ok&&data.photo_url){
+      telegramUser.photoUrl=data.photo_url;
+      apply(data.photo_url);
+    }
+  }catch(e){
+    console.log('avatar worker error',e);
+  }
+}
 
 function setAvatar(box,img,fall){
   if(!box||!img||!fall)return;
