@@ -90,8 +90,11 @@
     body.keyboard-open .bottom-nav,body.keyboard-open .floating-actions{transform:translate(-50%,140vh)!important;opacity:0;pointer-events:none}
     .profile-head{display:grid;grid-template-columns:82px 1fr;gap:14px;align-items:center;padding:16px;margin-bottom:14px;border-radius:var(--radius-xl);background:rgba(255,255,255,.68);border:1px solid rgba(111,139,173,.18);box-shadow:var(--shadow-md);backdrop-filter:blur(18px)}
     .avatar{width:82px;height:82px;padding:4px;border-radius:28px;background:#fff;box-shadow:var(--shadow-sm)}
-    .avatar-inner{width:100%;height:100%;display:grid;place-items:center;border-radius:24px;background:linear-gradient(135deg,#9dc9f2,#f8fbff 45%,#426d9d 46%,#16304c);color:#fff;font-size:28px;font-weight:950;overflow:hidden;background-size:cover;background-position:center;background-repeat:no-repeat}
-    .avatar-inner img,.map-avatar img{width:100%;height:100%;object-fit:cover;display:block}
+    .avatar-inner{position:relative;width:100%;height:100%;display:grid;place-items:center;border-radius:24px;background:linear-gradient(135deg,#9dc9f2,#f8fbff 45%,#426d9d 46%,#16304c);color:#fff;font-size:28px;font-weight:950;overflow:hidden}
+.avatar-inner img,.map-avatar img{width:100%;height:100%;object-fit:cover;display:none}
+.avatar-inner span,.map-avatar span{position:absolute;inset:0;display:grid;place-items:center;background:linear-gradient(135deg,#9dc9f2,#f8fbff 45%,#426d9d 46%,#16304c);color:#fff;font-weight:950}
+.avatar-inner.has-photo img,.map-avatar.has-photo img{display:block}
+.avatar-inner.has-photo span,.map-avatar.has-photo span{display:none}
     .name{font-size:24px;font-weight:950}
     .role{margin-top:4px;color:var(--muted);font-size:14px;font-weight:700}
     .profile-card{overflow:hidden}
@@ -186,7 +189,7 @@
     </section>
 
     <section id="profile" class="screen">
-      <div class="profile-head"><div class="avatar"><div class="avatar-inner">AF</div></div><div><div class="name">Anatolio Fabbri</div><div class="role">Startup manager - Product builder</div></div></div>
+      <div class="profile-head">   <div class="avatar">     <div class="avatar-inner" id="profileAvatarBox">       <img id="profileAvatarImg" alt="">       <span id="profileAvatarFallback">AF</span>     </div>   </div>   <div>     <div class="name">Anatolio Fabbri</div>     <div class="role">Startup manager - Product builder</div>   </div> </div>
       <div class="tabs-wrap"><div class="tabs" data-tabs="profile"><button class="tab active" data-tab="main" type="button">Main</button><button class="tab" data-tab="career" type="button">Career</button><button class="tab" data-tab="interests" type="button">Interests</button><button class="tab" data-tab="hobby" type="button">Hobby</button><button class="tab" data-tab="achievements" type="button">Wins</button></div></div>
       <div class="tab-panel active" data-scope="profile" data-panel="main"><div class="profile-card"><div class="section-title">Profile Summary</div><div class="profile-text" id="profileSummary"></div></div></div>
       <div class="tab-panel" data-scope="profile" data-panel="career"><div id="careerListView" class="stack"><div class="card" id="careerList"></div><div class="empty-state hidden" id="careerEmpty"><div class="empty-emoji" data-icon="briefcase"></div><h3>No career cards yet</h3><p>Add roles, skills, projects or goals.</p></div></div><div class="form-card hidden" id="careerForm"><div class="form-top"><h2 class="form-title" id="careerFormTitle">New Career Card</h2><span class="pill">Growth</span></div><div class="field"><label>Title</label><input id="careerTitle" placeholder="Example: Startup manager"></div><div class="field"><label>Type</label><select id="careerType"><option>Role</option><option>Skill</option><option>Project</option><option>Goal</option></select></div><div class="field"><label>Description</label><textarea id="careerDescription"></textarea></div><div class="field"><label>Next step</label><textarea id="careerNext"></textarea></div><div class="form-actions"><button class="ghost-btn" id="cancelCareerBtn" type="button">Cancel</button><button class="save-btn" id="saveCareerBtn" type="button">Save Career</button></div></div></div>
@@ -197,7 +200,7 @@
 
     <section id="dashboard" class="screen">
       <div class="map-hero"><h1>Life Map</h1><p>Your goals become a visible path. Complete steps and move your marker forward.</p></div>
-      <div class="map-shell" id="lifeMapShell"><svg class="map-path-svg" viewBox="0 0 402 560" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="mapGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#62b1f2"></stop><stop offset="1" stop-color="#59cf9e"></stop></linearGradient></defs><path class="map-path-base" d="M205 42 C92 116 315 174 210 254 C92 344 306 390 198 515"></path><path class="map-path-progress" d="M205 42 C92 116 315 174 210 254 C92 344 306 390 198 515"></path></svg><div id="lifeMapNodes"></div><div class="map-avatar" id="lifeMapAvatar">AF</div></div>
+      <div class="map-shell" id="lifeMapShell"><svg class="map-path-svg" viewBox="0 0 402 560" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="mapGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#62b1f2"></stop><stop offset="1" stop-color="#59cf9e"></stop></linearGradient></defs><path class="map-path-base" d="M205 42 C92 116 315 174 210 254 C92 344 306 390 198 515"></path><path class="map-path-progress" d="M205 42 C92 116 315 174 210 254 C92 344 306 390 198 515"></path></svg><div id="lifeMapNodes"></div><div class="map-avatar" id="lifeMapAvatar">   <img id="mapAvatarImg" alt="">   <span id="mapAvatarFallback">AF</span> </div></div>
     </section>
 
     <section id="activity" class="screen"><div class="placeholder"><div class="placeholder-card"><div class="big-icon" data-icon="progress"></div><b>Track actions</b><span>Later we will add steps, habits and progress.</span></div></div></section>
@@ -302,67 +305,75 @@
         return 'data:image/svg+xml;charset=UTF-8,'+svg;
       }
 
-      function loadTelegramUser(){
-        var tg=window.Telegram&&window.Telegram.WebApp;
-        var user=tg&&tg.initDataUnsafe&&tg.initDataUnsafe.user;
+function loadTelegramUser(){
+  var tg=window.Telegram&&window.Telegram.WebApp;
 
-        console.log('TG USER:',user);
+  try{
+    if(tg){
+      tg.ready();
+      tg.expand();
+    }
+  }catch(e){}
 
-        if(user){
-          telegramUser.firstName=user.first_name||'';
-          telegramUser.lastName=user.last_name||'';
-          telegramUser.username=user.username||'';
-          telegramUser.photoUrl=user.photo_url||'';
-        }
+  var user=tg&&tg.initDataUnsafe&&tg.initDataUnsafe.user;
 
-        var fullName=[telegramUser.firstName,telegramUser.lastName].filter(Boolean).join(' ')||telegramUser.username||'Telegram User';
-        var initials=((telegramUser.firstName||'').charAt(0)+(telegramUser.lastName||'').charAt(0)).toUpperCase()||'U';
-        telegramUser.initials=initials;
+  console.log('TG USER AVATAR CHECK:',user);
 
-        var nameNode=document.querySelector('.name');
-        var roleNode=document.querySelector('.role');
-        var avatarNode=document.querySelector('.avatar-inner');
-        var mapAvatar=byId('lifeMapAvatar');
+  if(user){
+    telegramUser.firstName=user.first_name||'';
+    telegramUser.lastName=user.last_name||'';
+    telegramUser.username=user.username||'';
+    telegramUser.photoUrl=user.photo_url||'';
+  }
 
-        if(nameNode)nameNode.textContent=fullName;
-        if(roleNode&&telegramUser.username)roleNode.textContent='@'+telegramUser.username;
+  var fullName=[telegramUser.firstName,telegramUser.lastName].filter(Boolean).join(' ')||telegramUser.username||'Telegram User';
+  var initials=((telegramUser.firstName||'').charAt(0)+(telegramUser.lastName||'').charAt(0)).toUpperCase()||'U';
 
-        function setPlaceholder(node){
-          if(!node)return;
-          node.innerHTML='';
-          node.textContent='';
-          node.style.backgroundImage='url("'+avatarSvgData(initials)+'")';
-        }
+  telegramUser.initials=initials;
 
-        function fillAvatar(node){
-          if(!node)return;
-          node.innerHTML='';
-          node.textContent='';
-          node.style.backgroundImage='';
+  var nameNode=document.querySelector('.name');
+  var roleNode=document.querySelector('.role');
 
-          if(telegramUser.photoUrl){
-            var img=document.createElement('img');
-            img.src=telegramUser.photoUrl;
-            img.alt=fullName;
-            img.referrerPolicy='no-referrer';
+  if(nameNode)nameNode.textContent=fullName;
+  if(roleNode)roleNode.textContent=telegramUser.username?'@'+telegramUser.username:'Telegram user';
 
-            img.onload=function(){
-              node.style.backgroundImage='';
-            };
+  function setAvatar(box,img,fall){
+    if(!box||!img||!fall)return;
 
-            img.onerror=function(){
-              setPlaceholder(node);
-            };
+    fall.textContent=initials;
+    box.classList.remove('has-photo');
+    img.removeAttribute('src');
+    img.alt=fullName;
 
-            node.appendChild(img);
-          }else{
-            setPlaceholder(node);
-          }
-        }
+    if(telegramUser.photoUrl){
+      img.onload=function(){
+        box.classList.add('has-photo');
+      };
 
-        fillAvatar(avatarNode);
-        fillAvatar(mapAvatar);
-      }
+      img.onerror=function(){
+        box.classList.remove('has-photo');
+        img.removeAttribute('src');
+      };
+
+      img.referrerPolicy='no-referrer';
+      img.src=telegramUser.photoUrl;
+    }
+  }
+
+  setAvatar(
+    byId('profileAvatarBox'),
+    byId('profileAvatarImg'),
+    byId('profileAvatarFallback')
+  );
+
+  setAvatar(
+    byId('lifeMapAvatar'),
+    byId('mapAvatarImg'),
+    byId('mapAvatarFallback')
+  );
+}
+
+
 
       var wishes=[{title:'Buy a house near the sea',dueType:'year',customDate:'',reason:'I want a peaceful place to rest, think and spend time with people I love.',step:'Research locations and estimate the budget.',progress:42}];
       var thoughts=[{title:'Open a business',category:'Business idea',text:'I saw myself leading a team and calmly explaining what to do next.',importance:'This could become a real direction for my next project.'}];
