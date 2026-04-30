@@ -426,41 +426,7 @@ async function loadTelegramUser(){
   }
 }
 
-function setAvatar(box,img,fall){
-  if(!box||!img||!fall)return;
 
-  fall.textContent=initials;
-  box.classList.remove('has-photo');
-
-  img.alt=fullName;
-  img.onload=function(){
-    box.classList.add('has-photo');
-  };
-  img.onerror=function(){
-    box.classList.remove('has-photo');
-    img.removeAttribute('src');
-  };
-
-if(telegramUser.photoUrl){
-  img.src=telegramUser.photoUrl;
-}else{
-  img.removeAttribute('src');
-  box.classList.remove('has-photo');
-}
-}
-
-  setAvatar(
-    byId('profileAvatarBox'),
-    byId('profileAvatarImg'),
-    byId('profileAvatarFallback')
-  );
-
-  setAvatar(
-    byId('lifeMapAvatar'),
-    byId('mapAvatarImg'),
-    byId('mapAvatarFallback')
-  );
-}
 
 
 
