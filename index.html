@@ -346,7 +346,7 @@ function loadTelegramUser(){
     telegramUser.firstName=user.first_name||'';
     telegramUser.lastName=user.last_name||'';
     telegramUser.username=user.username||'';
-    telegramUser.photoUrl=user.photo_url||'';
+    telegramUser.photoUrl=user.photo_url||user.photoUrl||user.photo||'';
   }
 
   var fullName=[telegramUser.firstName,telegramUser.lastName].filter(Boolean).join(' ')||telegramUser.username||'Telegram User';
