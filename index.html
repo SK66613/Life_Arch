@@ -91,10 +91,33 @@
     .profile-head{display:grid;grid-template-columns:82px 1fr;gap:14px;align-items:center;padding:16px;margin-bottom:14px;border-radius:var(--radius-xl);background:rgba(255,255,255,.68);border:1px solid rgba(111,139,173,.18);box-shadow:var(--shadow-md);backdrop-filter:blur(18px)}
     .avatar{width:82px;height:82px;padding:0;border-radius:28px;background:transparent;box-shadow:none}
     .avatar-inner{position:relative;width:100%;height:100%;display:grid;place-items:center;border-radius:24px;background:#eef6ff;color:#2d70b8;font-size:28px;font-weight:950;overflow:hidden}
-.avatar-inner img,.map-avatar img{width:100%;height:100%;object-fit:cover;display:none}
-.avatar-inner span,.map-avatar span{position:absolute;inset:0;display:grid;place-items:center;background:#eef6ff;color:#2d70b8;font-weight:950}
-.avatar-inner.has-photo img,.map-avatar.has-photo img{display:block}
-.avatar-inner.has-photo span,.map-avatar.has-photo span{display:none}
+.avatar-inner img,.map-avatar img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  opacity:0;
+}
+
+.avatar-inner span,.map-avatar span{
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  background:#eef6ff;
+  color:#2d70b8;
+  font-weight:950;
+}
+
+.avatar-inner.has-photo img,.map-avatar.has-photo img{
+  opacity:1;
+}
+
+.avatar-inner.has-photo span,.map-avatar.has-photo span{
+  display:none;
+}
     .name{font-size:24px;font-weight:950}
     .role{margin-top:4px;color:var(--muted);font-size:14px;font-weight:700}
     .profile-card{overflow:hidden}
@@ -337,28 +360,28 @@ function loadTelegramUser(){
   if(nameNode)nameNode.textContent=fullName;
   if(roleNode)roleNode.textContent=telegramUser.username?'@'+telegramUser.username:'Telegram user';
 
-  function setAvatar(box,img,fall){
-    if(!box||!img||!fall)return;
+function setAvatar(box,img,fall){
+  if(!box||!img||!fall)return;
 
-    fall.textContent=initials;
+  fall.textContent=initials;
+  box.classList.remove('has-photo');
+
+  img.alt=fullName;
+  img.onload=function(){
+    box.classList.add('has-photo');
+  };
+  img.onerror=function(){
     box.classList.remove('has-photo');
     img.removeAttribute('src');
-    img.alt=fullName;
+  };
 
-    if(telegramUser.photoUrl){
-      img.onload=function(){
-        box.classList.add('has-photo');
-      };
-
-      img.onerror=function(){
-        box.classList.remove('has-photo');
-        img.removeAttribute('src');
-      };
-
-      img.referrerPolicy='no-referrer';
-      img.src=telegramUser.photoUrl;
-    }
+  if(telegramUser.photoUrl){
+    img.src=telegramUser.photoUrl;
+    box.classList.add('has-photo');
+  }else{
+    img.removeAttribute('src');
   }
+}
 
   setAvatar(
     byId('profileAvatarBox'),
