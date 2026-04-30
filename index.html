@@ -417,10 +417,11 @@ async function loadTelegramUser(){
     var res=await fetch('https://life-arch.cyberian13.workers.dev/?user_id='+encodeURIComponent(telegramUser.id));
     var data=await res.json();
 
-    if(data&&data.ok&&data.photo_url){
-      telegramUser.photoUrl=data.photo_url;
-      apply(data.photo_url);
-    }
+if(data&&data.ok&&data.photo_url){
+  var avatarUrl='https://life-arch.cyberian13.workers.dev/avatar?user_id='+encodeURIComponent(telegramUser.id)+'&v='+Date.now();
+  telegramUser.photoUrl=avatarUrl;
+  apply(avatarUrl);
+}
   }catch(e){
     console.log('avatar worker error',e);
   }
