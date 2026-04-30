@@ -143,7 +143,7 @@
 }
 
 .avatar-inner.has-photo span,.map-avatar.has-photo span{
-  display:none;
+  display:none!important;
 }
     .name{font-size:24px;font-weight:950}
     .role{margin-top:4px;color:var(--muted);font-size:14px;font-weight:700}
@@ -387,9 +387,9 @@ async function loadTelegramUser(){
     fall.textContent=initials;
 
     if(photoUrl){
-      box.style.backgroundImage='url("'+photoUrl+'")';
+      box.style.backgroundImage='url('+photoUrl+')';
       box.classList.add('has-photo');
-    }else{
+    }else if(!box.classList.contains('has-photo')){
       box.style.backgroundImage='';
       box.classList.remove('has-photo');
     }
@@ -400,9 +400,15 @@ async function loadTelegramUser(){
     setAvatarBox(byId('lifeMapAvatar'),byId('mapAvatarFallback'),photoUrl);
   }
 
-  apply('');
+  if(!telegramUser.id){
+    apply('');
+    return;
+  }
 
-  if(!telegramUser.id)return;
+  if(telegramUser.photoUrl){
+    apply(telegramUser.photoUrl);
+    return;
+  }
 
   var avatarUrl='https://life-arch.cyberian13.workers.dev/avatar?user_id='+
     encodeURIComponent(telegramUser.id)+
