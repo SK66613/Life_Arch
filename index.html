@@ -680,6 +680,25 @@ function installDevPanel(){
   panel.style.cssText=
     'position:fixed;right:12px;bottom:92px;z-index:99999;width:320px;max-width:calc(100vw - 24px);max-height:55vh;display:none;overflow:auto;padding:12px;border-radius:18px;background:rgba(10,18,30,.94);color:#dbeafe;font:12px/1.4 monospace;box-shadow:0 18px 44px rgba(0,0,0,.35);white-space:pre-wrap;';
 
+  // верхняя панель с кнопкой copy
+  var header=document.createElement('div');
+  header.style.cssText='display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;';
+
+  var title=document.createElement('div');
+  title.textContent='DEV LOG';
+
+  var copyBtn=document.createElement('button');
+  copyBtn.textContent='COPY';
+  copyBtn.style.cssText='border:0;padding:6px 10px;border-radius:8px;background:#2563eb;color:#fff;font-size:11px;font-weight:700;';
+
+  header.appendChild(title);
+  header.appendChild(copyBtn);
+
+  var content=document.createElement('div');
+
+  panel.appendChild(header);
+  panel.appendChild(content);
+
   var btn=document.createElement('button');
   btn.id='devPanelBtn';
   btn.type='button';
@@ -694,7 +713,8 @@ function installDevPanel(){
 
   function addLog(type,args){
     var time=new Date().toLocaleTimeString();
-    var text=Array.prototype.slice.call(args).map(function(x){
+
+    var text=Array.from(args).map(function(x){
       try{
         if(typeof x==='string')return x;
         return JSON.stringify(x,null,2);
@@ -704,30 +724,20 @@ function installDevPanel(){
     }).join(' ');
 
     logs.push('['+time+'] '+type.toUpperCase()+': '+text);
-    if(logs.length>120)logs.shift();
+    if(logs.length>200)logs.shift();
 
-    panel.textContent=logs.join('\n\n');
+    content.textContent=logs.join('\n\n');
     panel.scrollTop=panel.scrollHeight;
   }
 
+  // override console
   var oldLog=console.log;
   var oldWarn=console.warn;
   var oldError=console.error;
 
-  console.log=function(){
-    oldLog.apply(console,arguments);
-    addLog('log',arguments);
-  };
-
-  console.warn=function(){
-    oldWarn.apply(console,arguments);
-    addLog('warn',arguments);
-  };
-
-  console.error=function(){
-    oldError.apply(console,arguments);
-    addLog('error',arguments);
-  };
+  console.log=function(){ oldLog.apply(console,arguments); addLog('log',arguments); };
+  console.warn=function(){ oldWarn.apply(console,arguments); addLog('warn',arguments); };
+  console.error=function(){ oldError.apply(console,arguments); addLog('error',arguments); };
 
   window.addEventListener('error',function(e){
     addLog('error',[e.message+' at '+e.filename+':'+e.lineno]);
@@ -737,12 +747,26 @@ function installDevPanel(){
     addLog('promise',[e.reason]);
   });
 
+  // кнопка открыть/закрыть
   btn.onclick=function(){
     panel.style.display=panel.style.display==='none'?'block':'none';
   };
 
+  // копирование
+  copyBtn.onclick=async function(){
+    var text=logs.join('\n\n');
+
+    try{
+      await navigator.clipboard.writeText(text);
+      copyBtn.textContent='COPIED';
+      setTimeout(function(){copyBtn.textContent='COPY'},1200);
+    }catch(e){
+      copyBtn.textContent='ERR';
+      console.error('copy failed',e);
+    }
+  };
+
   console.log('DEV panel installed');
-  console.log('Telegram WebApp:', !!(window.Telegram&&window.Telegram.WebApp));
   console.log('Telegram user:', window.Telegram?.WebApp?.initDataUnsafe?.user || null);
 }
 
