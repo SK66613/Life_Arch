@@ -351,9 +351,7 @@
       var currentDiaryTab='all';
       var currentProfileTab='main';
 
-      var telegramUser={firstName:'Anatolio',lastName:'Fabbri',username:'',photoUrl:'',initials:'AF'};
-
-
+var telegramUser={firstName:'Anatolio',lastName:'Fabbri',username:'',photoUrl:'',initials:'AF'};
 
 async function loadTelegramUser(){
   var tg=window.Telegram&&window.Telegram.WebApp;
@@ -376,6 +374,8 @@ async function loadTelegramUser(){
 
   var fullName=[telegramUser.firstName,telegramUser.lastName].filter(Boolean).join(' ')||telegramUser.username||'Telegram User';
   var initials=((telegramUser.firstName||'').charAt(0)+(telegramUser.lastName||'').charAt(0)).toUpperCase()||'U';
+
+  telegramUser.initials=initials;
 
   var nameNode=document.querySelector('.name');
   var roleNode=document.querySelector('.role');
@@ -412,44 +412,10 @@ async function loadTelegramUser(){
     encodeURIComponent(telegramUser.id)+
     '&v='+Date.now();
 
+  telegramUser.photoUrl=avatarUrl;
+
   setAvatar(byId('profileAvatarBox'),byId('profileAvatarImg'),byId('profileAvatarFallback'),avatarUrl);
   setAvatar(byId('lifeMapAvatar'),byId('mapAvatarImg'),byId('mapAvatarFallback'),avatarUrl);
-}
-  function setAvatarBox(box,fall,photoUrl){
-    if(!box||!fall)return;
-
-    fall.textContent=initials;
-
-    if(photoUrl){
-      box.style.backgroundImage='url('+photoUrl+')';
-      box.classList.add('has-photo');
-    }else if(!box.classList.contains('has-photo')){
-      box.style.backgroundImage='';
-      box.classList.remove('has-photo');
-    }
-  }
-
-  function apply(photoUrl){
-    setAvatarBox(byId('profileAvatarBox'),byId('profileAvatarFallback'),photoUrl);
-    setAvatarBox(byId('lifeMapAvatar'),byId('mapAvatarFallback'),photoUrl);
-  }
-
-  if(!telegramUser.id){
-    apply('');
-    return;
-  }
-
-  if(telegramUser.photoUrl){
-    apply(telegramUser.photoUrl);
-    return;
-  }
-
-  var avatarUrl='https://life-arch.cyberian13.workers.dev/avatar?user_id='+
-    encodeURIComponent(telegramUser.id)+
-    '&v='+Date.now();
-
-  telegramUser.photoUrl=avatarUrl;
-  apply(avatarUrl);
 }
 
 
