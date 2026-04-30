@@ -370,7 +370,6 @@ async function loadTelegramUser(){
     telegramUser.firstName=user.first_name||'';
     telegramUser.lastName=user.last_name||'';
     telegramUser.username=user.username||'';
-    telegramUser.photoUrl=user.photo_url||'';
   }
 
   var fullName=[telegramUser.firstName,telegramUser.lastName].filter(Boolean).join(' ')||telegramUser.username||'Telegram User';
@@ -382,7 +381,13 @@ async function loadTelegramUser(){
   if(nameNode)nameNode.textContent=fullName;
   if(roleNode)roleNode.textContent=telegramUser.username?'@'+telegramUser.username:'Telegram user';
 
-  function setAvatar(box,img,fall,url){
+  function setFallback(box,img,fall){
+    if(fall)fall.textContent=initials;
+    if(box)box.classList.remove('has-photo');
+    if(img)img.removeAttribute('src');
+  }
+
+  function setPhoto(box,img,fall,url){
     if(!box||!img||!fall)return;
 
     fall.textContent=initials;
@@ -392,34 +397,40 @@ async function loadTelegramUser(){
       box.classList.add('has-photo');
     };
 
-    img.onerror=function(){
-      box.classList.remove('has-photo');
-      img.removeAttribute('src');
+    img.onerror=function(e){
+      console.log('avatar img error', e);
+      setFallback(box,img,fall);
     };
 
-    if(url){
-      img.src=url;
-    }else{
-      box.classList.remove('has-photo');
-      img.removeAttribute('src');
-    }
+    img.src=url;
   }
 
-  setAvatar(
-    byId('profileAvatarBox'),
-    byId('profileAvatarImg'),
-    byId('profileAvatarFallback'),
-    telegramUser.photoUrl
-  );
+  var profileBox=byId('profileAvatarBox');
+  var profileImg=byId('profileAvatarImg');
+  var profileFall=byId('profileAvatarFallback');
 
-  setAvatar(
-    byId('lifeMapAvatar'),
-    byId('mapAvatarImg'),
-    byId('mapAvatarFallback'),
-    telegramUser.photoUrl
-  );
+  var mapBox=byId('lifeMapAvatar');
+  var mapImg=byId('mapAvatarImg');
+  var mapFall=byId('mapAvatarFallback');
+
+  setFallback(profileBox,profileImg,profileFall);
+  setFallback(mapBox,mapImg,mapFall);
+
+  if(!telegramUser.id){
+    console.log('no telegram user id', user);
+    return;
+  }
+
+  var avatarUrl=
+    'https://life-arch.cyberian13.workers.dev/avatar?user_id='+
+    encodeURIComponent(telegramUser.id)+
+    '&v='+Date.now();
+
+  console.log('avatar url', avatarUrl);
+
+  setPhoto(profileBox,profileImg,profileFall,avatarUrl);
+  setPhoto(mapBox,mapImg,mapFall,avatarUrl);
 }
-
 
 
 
