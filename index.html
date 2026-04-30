@@ -671,6 +671,85 @@ async function loadTelegramUser(){
       byId('cancelHobbyBtn').addEventListener('click',function(){closeProfileForm('hobby')});byId('saveHobbyBtn').addEventListener('click',function(){saveProfileItem('hobby')});
       byId('cancelAchievementsBtn').addEventListener('click',function(){closeProfileForm('achievements')});byId('saveAchievementsBtn').addEventListener('click',function(){saveProfileItem('achievements')});
 
+
+
+
+function installDevPanel(){
+  var panel=document.createElement('div');
+  panel.id='devPanel';
+  panel.style.cssText=
+    'position:fixed;right:12px;bottom:92px;z-index:99999;width:320px;max-width:calc(100vw - 24px);max-height:55vh;display:none;overflow:auto;padding:12px;border-radius:18px;background:rgba(10,18,30,.94);color:#dbeafe;font:12px/1.4 monospace;box-shadow:0 18px 44px rgba(0,0,0,.35);white-space:pre-wrap;';
+
+  var btn=document.createElement('button');
+  btn.id='devPanelBtn';
+  btn.type='button';
+  btn.textContent='DEV';
+  btn.style.cssText=
+    'position:fixed;right:14px;bottom:22px;z-index:100000;width:58px;height:58px;border:0;border-radius:20px;background:#111827;color:white;font:900 13px system-ui;box-shadow:0 14px 30px rgba(0,0,0,.28);';
+
+  document.body.appendChild(panel);
+  document.body.appendChild(btn);
+
+  var logs=[];
+
+  function addLog(type,args){
+    var time=new Date().toLocaleTimeString();
+    var text=Array.prototype.slice.call(args).map(function(x){
+      try{
+        if(typeof x==='string')return x;
+        return JSON.stringify(x,null,2);
+      }catch(e){
+        return String(x);
+      }
+    }).join(' ');
+
+    logs.push('['+time+'] '+type.toUpperCase()+': '+text);
+    if(logs.length>120)logs.shift();
+
+    panel.textContent=logs.join('\n\n');
+    panel.scrollTop=panel.scrollHeight;
+  }
+
+  var oldLog=console.log;
+  var oldWarn=console.warn;
+  var oldError=console.error;
+
+  console.log=function(){
+    oldLog.apply(console,arguments);
+    addLog('log',arguments);
+  };
+
+  console.warn=function(){
+    oldWarn.apply(console,arguments);
+    addLog('warn',arguments);
+  };
+
+  console.error=function(){
+    oldError.apply(console,arguments);
+    addLog('error',arguments);
+  };
+
+  window.addEventListener('error',function(e){
+    addLog('error',[e.message+' at '+e.filename+':'+e.lineno]);
+  });
+
+  window.addEventListener('unhandledrejection',function(e){
+    addLog('promise',[e.reason]);
+  });
+
+  btn.onclick=function(){
+    panel.style.display=panel.style.display==='none'?'block':'none';
+  };
+
+  console.log('DEV panel installed');
+  console.log('Telegram WebApp:', !!(window.Telegram&&window.Telegram.WebApp));
+  console.log('Telegram user:', window.Telegram?.WebApp?.initDataUnsafe?.user || null);
+}
+
+      installDevPanel();
+
+
+      
       initTelegramWebApp();
       lockIOSPullToClose();
       hydrateStaticIcons();
@@ -688,6 +767,11 @@ async function loadTelegramUser(){
       syncProfileActionButton(currentProfileTab);
       syncKeyboardOffset();
     }());
+
+
+
+
+    
   </script>
 </body>
 </html>
