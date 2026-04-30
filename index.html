@@ -370,12 +370,11 @@ async function loadTelegramUser(){
     telegramUser.firstName=user.first_name||'';
     telegramUser.lastName=user.last_name||'';
     telegramUser.username=user.username||'';
+    telegramUser.photoUrl=user.photo_url||'';
   }
 
   var fullName=[telegramUser.firstName,telegramUser.lastName].filter(Boolean).join(' ')||telegramUser.username||'Telegram User';
   var initials=((telegramUser.firstName||'').charAt(0)+(telegramUser.lastName||'').charAt(0)).toUpperCase()||'U';
-
-  telegramUser.initials=initials;
 
   var nameNode=document.querySelector('.name');
   var roleNode=document.querySelector('.role');
@@ -383,13 +382,7 @@ async function loadTelegramUser(){
   if(nameNode)nameNode.textContent=fullName;
   if(roleNode)roleNode.textContent=telegramUser.username?'@'+telegramUser.username:'Telegram user';
 
-  function showFallback(box,img,fall){
-    if(fall)fall.textContent=initials;
-    if(box)box.classList.remove('has-photo');
-    if(img)img.removeAttribute('src');
-  }
-
-  function showPhoto(box,img,fall,url){
+  function setAvatar(box,img,fall,url){
     if(!box||!img||!fall)return;
 
     fall.textContent=initials;
@@ -400,47 +393,31 @@ async function loadTelegramUser(){
     };
 
     img.onerror=function(){
-      showFallback(box,img,fall);
+      box.classList.remove('has-photo');
+      img.removeAttribute('src');
     };
 
-    img.src=url;
+    if(url){
+      img.src=url;
+    }else{
+      box.classList.remove('has-photo');
+      img.removeAttribute('src');
+    }
   }
 
-  var profileBox=byId('profileAvatarBox');
-  var profileImg=byId('profileAvatarImg');
-  var profileFall=byId('profileAvatarFallback');
+  setAvatar(
+    byId('profileAvatarBox'),
+    byId('profileAvatarImg'),
+    byId('profileAvatarFallback'),
+    telegramUser.photoUrl
+  );
 
-  var mapBox=byId('lifeMapAvatar');
-  var mapImg=byId('mapAvatarImg');
-  var mapFall=byId('mapAvatarFallback');
-
-  showFallback(profileBox,profileImg,profileFall);
-  showFallback(mapBox,mapImg,mapFall);
-
-  if(!telegramUser.id)return;
-
-  try{
-    var avatarUrl='https://life-arch.cyberian13.workers.dev/avatar?user_id='+
-      encodeURIComponent(telegramUser.id)+
-      '&v='+Date.now();
-
-    var res=await fetch(avatarUrl,{cache:'no-store'});
-
-    if(!res.ok)return;
-
-    var blob=await res.blob();
-
-    if(!blob||!blob.type||blob.type.indexOf('image/')!==0)return;
-
-    var objectUrl=URL.createObjectURL(blob);
-
-    telegramUser.photoUrl=objectUrl;
-
-    showPhoto(profileBox,profileImg,profileFall,objectUrl);
-    showPhoto(mapBox,mapImg,mapFall,objectUrl);
-  }catch(e){
-    console.log('avatar load failed',e);
-  }
+  setAvatar(
+    byId('lifeMapAvatar'),
+    byId('mapAvatarImg'),
+    byId('mapAvatarFallback'),
+    telegramUser.photoUrl
+  );
 }
 
 
