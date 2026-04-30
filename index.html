@@ -8,16 +8,161 @@
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     :root{--bg1:#f6f9ff;--bg2:#edf5ff;--ink:#142033;--muted:#66758c;--glass:rgba(255,255,255,.78);--navy:#1d314f;--blue:#2e74bb;--shadow-lg:0 24px 60px rgba(49,85,130,.20);--shadow-md:0 14px 34px rgba(49,85,130,.15);--shadow-sm:0 6px 16px rgba(49,85,130,.11);--radius-xl:28px;--radius-lg:22px;--keyboard-offset:0px}
-    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}input,textarea,select{user-select:text;-webkit-user-select:text}html,body{width:100%;min-height:100%;height:100%;margin:0;overflow-x:hidden;overscroll-behavior:none;touch-action:pan-x pan-y;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}body{background:radial-gradient(circle at 20% 0%,rgba(91,148,210,.28),transparent 32%),radial-gradient(circle at 90% 16%,rgba(233,120,170,.16),transparent 30%),linear-gradient(180deg,var(--bg1),var(--bg2))}body:before{content:"";position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(62,106,158,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(62,106,158,.045) 1px,transparent 1px);background-size:28px 28px}button,input,textarea,select{font:inherit}button{cursor:pointer}.app{position:relative;width:min(430px,100vw);min-height:100vh;min-height:100dvh;margin:0 auto;padding:max(18px,env(safe-area-inset-top)) 14px calc(166px + env(safe-area-inset-bottom))}.screen{display:none;animation:screen-in .24s ease both}.screen.active{display:block}@keyframes screen-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}.icon{width:22px;height:22px;display:block;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-    .hero,.map-hero{position:relative;overflow:hidden;padding:18px;margin-bottom:14px;border-radius:var(--radius-xl);color:#fff;box-shadow:var(--shadow-lg)}.hero{min-height:154px;background:radial-gradient(circle at 84% 18%,rgba(255,255,255,.34),transparent 18%),linear-gradient(135deg,#74afe9 0%,#427fc3 48%,#203b65 100%)}.map-hero{background:linear-gradient(135deg,#203b65,#427fc3 55%,#78b8ef)}.hero-row{position:relative;z-index:1;display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.hero h1,.map-hero h1{margin:0;font-size:26px;line-height:1.03;letter-spacing:-.035em}.map-hero h1{font-size:27px}.hero p,.map-hero p{margin:10px 0 0;max-width:285px;color:rgba(255,255,255,.82);font-size:14px;line-height:1.35}.hero-orb{width:58px;height:58px;display:grid;place-items:center;border-radius:20px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.25);backdrop-filter:blur(10px)}.hero-orb .icon{width:31px;height:31px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:17px}.stat{padding:10px;border-radius:18px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(12px)}.stat b{display:block;font-size:19px;line-height:1}.stat span{display:block;margin-top:4px;color:rgba(255,255,255,.76);font-size:11px;font-weight:650}
-    .tabs-wrap{position:sticky;top:0;z-index:3;padding-bottom:10px;backdrop-filter:blur(16px)}.tabs{display:flex;gap:5px;padding:5px;border-radius:20px;background:rgba(255,255,255,.58);border:1px solid rgba(111,139,173,.18);box-shadow:var(--shadow-sm)}.tab{flex:1 1 0;min-width:0;padding:10px 8px;border:0;border-radius:15px;background:transparent;color:var(--muted);font-size:13px;font-weight:800;white-space:nowrap;transition:.16s ease}.tab.active{color:var(--navy);background:#fff;box-shadow:0 6px 16px rgba(54,91,132,.13)}.tab-panel{display:none}.tab-panel.active{display:block;animation:panel-in .2s ease both}@keyframes panel-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-    .stack{display:grid;gap:12px}.card,.form-card,.profile-card,.empty-state{background:var(--glass);border:1px solid rgba(111,139,173,.20);border-radius:var(--radius-lg);box-shadow:var(--shadow-md);backdrop-filter:blur(18px)}.entry{position:relative;overflow:hidden;touch-action:pan-y;background:rgba(255,255,255,.02);transition:opacity .18s ease}.entry+.entry{border-top:1px solid rgba(111,139,173,.14)}.entry-slide{position:relative;z-index:2;display:grid;grid-template-columns:44px 1fr;gap:10px;padding:15px;background:rgba(255,255,255,.01);transition:transform .22s cubic-bezier(.2,.8,.2,1)}.entry.swiping .entry-slide{transition:none}.entry.swiped .entry-slide{transform:translateX(-96px)}.entry.deleting{opacity:0}.entry.deleting .entry-slide{transform:translateX(-120%)}.delete-btn{position:absolute;z-index:1;right:14px;top:50%;transform:translateY(-50%) scale(.94);height:38px;padding:0 17px;border-radius:999px;background:#ef4444;color:#fff;font-size:13px;font-weight:900;border:0;opacity:0;pointer-events:none;transition:.18s ease;box-shadow:0 10px 18px rgba(239,68,68,.25)}.entry.swiped .delete-btn{opacity:1;pointer-events:auto;transform:translateY(-50%) scale(1)}
-    .badge{width:38px;height:38px;display:grid;place-items:center;border-radius:15px;color:#fff;background:linear-gradient(145deg,#7bb7ef,#3876b8)}.badge.gold{background:linear-gradient(145deg,#ffd36f,#e49d29)}.badge.pink{background:linear-gradient(145deg,#f59ac4,#d85d95)}.badge.green{background:linear-gradient(145deg,#79d8ae,#31a376)}.badge.purple{background:linear-gradient(145deg,#b69cff,#6f58d9)}.badge .icon{width:20px;height:20px}.meta{margin-bottom:5px;color:var(--muted);font-size:13px;font-weight:750}.entry h3{margin:0 0 7px;font-size:17px;line-height:1.12;letter-spacing:-.018em}.entry p{margin:0;color:#35445b;font-size:14px;line-height:1.42}.item-head{display:grid;grid-template-columns:1fr 34px;gap:8px;align-items:start}.edit-icon{width:32px;height:32px;display:grid;place-items:center;border:1px solid rgba(91,126,170,.23);border-radius:13px;background:rgba(255,255,255,.78);color:var(--navy);box-shadow:var(--shadow-sm)}.edit-icon .icon{width:17px;height:17px}.progress-wrap{margin-top:11px}.progress-label{display:flex;justify-content:space-between;margin-bottom:7px;color:var(--muted);font-size:12px;font-weight:750}.progress{height:8px;overflow:hidden;border-radius:999px;background:rgba(111,139,173,.17)}.progress span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#62b1f2,#59cf9e)}
-    .empty-state{padding:22px;text-align:center}.empty-emoji{width:62px;height:62px;display:grid;place-items:center;margin:0 auto 10px;border-radius:22px;background:#fff;color:var(--blue);box-shadow:var(--shadow-sm)}.empty-state h3{margin:0 0 6px;font-size:19px}.empty-state p{margin:0;color:var(--muted);font-size:14px;line-height:1.42}.form-card{padding:16px;animation:form-in .2s ease both}@keyframes form-in{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}.form-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.form-title{margin:0;font-size:24px;line-height:1;font-weight:950}.pill{padding:7px 10px;border-radius:999px;background:#eef6ff;color:#2d6fb7;font-size:12px;font-weight:850}.field{margin-bottom:13px}.field label{display:block;margin-bottom:7px;color:#344962;font-size:13px;font-weight:850}.field input,.field textarea,.field select{width:100%;padding:12px 13px;border:1px solid rgba(111,139,173,.26);border-radius:17px;background:rgba(255,255,255,.86);color:var(--ink);outline:none;font-size:16px}.field input:focus,.field textarea:focus,.field select:focus{border-color:rgba(77,142,216,.65);box-shadow:0 0 0 4px rgba(77,142,216,.13)}.field textarea{min-height:96px;resize:vertical}.hint{margin-top:5px;color:var(--muted);font-size:12px}.form-actions{display:grid;grid-template-columns:.78fr 1.15fr;gap:10px}.ghost-btn,.save-btn{height:44px;border-radius:17px;font-size:16px;font-weight:900}.ghost-btn{border:1px solid rgba(111,139,173,.24);background:rgba(255,255,255,.74);color:#2d405a}.save-btn{border:0;background:linear-gradient(135deg,#66aceb,#2e74bb);color:#fff}.hidden{display:none!important}body.keyboard-open .bottom-nav,body.keyboard-open .floating-actions{transform:translate(-50%,140vh)!important;opacity:0;pointer-events:none}
-    .profile-head{display:grid;grid-template-columns:82px 1fr;gap:14px;align-items:center;padding:16px;margin-bottom:14px;border-radius:var(--radius-xl);background:rgba(255,255,255,.68);border:1px solid rgba(111,139,173,.18);box-shadow:var(--shadow-md);backdrop-filter:blur(18px)}.avatar{width:82px;height:82px;padding:4px;border-radius:28px;background:#fff;box-shadow:var(--shadow-sm)}.avatar-inner{width:100%;height:100%;display:grid;place-items:center;border-radius:24px;background:linear-gradient(135deg,#9dc9f2,#f8fbff 45%,#426d9d 46%,#16304c);color:#fff;font-size:28px;font-weight:950}.name{font-size:24px;font-weight:950}.role{margin-top:4px;color:var(--muted);font-size:14px;font-weight:700}.profile-card{overflow:hidden}.section-title{padding:13px 16px;background:linear-gradient(135deg,#6aa7e4,#407dbd);color:#fff;font-size:18px;font-weight:900}.profile-text{padding:16px;color:#25364d;font-size:16px;line-height:1.48}.summary-block{padding:14px 0;border-bottom:1px solid rgba(111,139,173,.16)}.summary-block:last-child{border-bottom:0}.summary-block p{margin:0 0 8px;color:#34465f}.summary-block strong{color:var(--navy)}.summary-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}.summary-head h3{margin:0;font-size:18px}.summary-icon{width:34px;height:34px;display:grid;place-items:center;border-radius:13px;color:#fff;background:linear-gradient(145deg,#7bb7ef,#3876b8)}.summary-icon.pink{background:linear-gradient(145deg,#f59ac4,#d85d95)}.summary-icon.green{background:linear-gradient(145deg,#79d8ae,#31a376)}.summary-icon.purple{background:linear-gradient(145deg,#b69cff,#6f58d9)}.placeholder{min-height:66vh;display:grid;place-items:center;padding:26px;color:var(--muted);text-align:center}.placeholder-card{width:100%;padding:26px;border-radius:var(--radius-xl);background:var(--glass);border:1px solid rgba(111,139,173,.18);box-shadow:var(--shadow-md)}.placeholder-card .big-icon{width:48px;height:48px;display:grid;place-items:center;margin:0 auto 10px;color:var(--blue)}.placeholder-card b{display:block;margin-bottom:6px;color:var(--ink);font-size:20px}
-    .map-shell{position:relative;min-height:560px;padding:22px 12px 18px;border-radius:var(--radius-xl);background:rgba(255,255,255,.58);border:1px solid rgba(111,139,173,.18);box-shadow:var(--shadow-md);backdrop-filter:blur(18px);overflow:hidden}.map-path-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.map-path-base{fill:none;stroke:rgba(89,118,156,.18);stroke-width:10;stroke-linecap:round}.map-path-progress{fill:none;stroke:url(#mapGrad);stroke-width:10;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:.58;filter:drop-shadow(0 8px 16px rgba(50,130,190,.22))}.map-node{position:absolute;z-index:2;width:138px;padding:10px;border:0;background:rgba(255,255,255,.82);border-radius:22px;box-shadow:0 14px 30px rgba(49,85,130,.16);text-align:left;color:var(--ink);transform:translate(-50%,-50%);transition:.2s ease}.map-node.active{background:#fff;box-shadow:0 18px 38px rgba(43,103,178,.25),0 0 0 5px rgba(98,177,242,.14)}.map-node.future{opacity:.72}.map-node-top{display:flex;align-items:center;gap:8px}.map-node-icon{width:34px;height:34px;display:grid;place-items:center;border-radius:14px;color:#fff;background:linear-gradient(145deg,#7bb7ef,#3876b8)}.map-node-icon.gold{background:linear-gradient(145deg,#ffd36f,#e49d29)}.map-node-icon.green{background:linear-gradient(145deg,#79d8ae,#31a376)}.map-node-icon.purple{background:linear-gradient(145deg,#b69cff,#6f58d9)}.map-node-icon .icon{width:18px;height:18px}.map-node-title{font-size:13px;font-weight:950;line-height:1.1}.map-node-meta{margin-top:2px;color:var(--muted);font-size:11px;font-weight:800}.map-mini-progress{height:5px;margin-top:9px;border-radius:99px;background:rgba(111,139,173,.16);overflow:hidden}.map-mini-progress i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#62b1f2,#59cf9e)}.map-avatar{position:absolute;z-index:3;width:42px;height:42px;display:grid;place-items:center;border-radius:17px;background:#fff;color:#1f6fb8;font-weight:950;box-shadow:0 16px 26px rgba(45,112,184,.24),0 0 0 8px rgba(98,177,242,.14);transform:translate(-50%,-50%)}.map-open-btn{width:100%;height:46px;margin-top:14px;border:0;border-radius:18px;background:linear-gradient(135deg,#67b2f3,#2d70b8);color:#fff;font-size:15px;font-weight:950;box-shadow:0 12px 22px rgba(44,102,170,.22)}.map-sheet{position:fixed;inset:0;z-index:50;pointer-events:none}.map-sheet.open{pointer-events:auto}.map-sheet-backdrop{position:absolute;inset:0;background:rgba(20,32,51,.24);opacity:0;transition:.22s ease;backdrop-filter:blur(2px)}.map-sheet.open .map-sheet-backdrop{opacity:1}.map-sheet-panel{position:absolute;left:50%;bottom:0;width:min(430px,100vw);max-height:78vh;overflow:auto;padding:8px 14px calc(104px + env(safe-area-inset-bottom));border-radius:30px 30px 0 0;background:rgba(255,255,255,.92);border:1px solid rgba(111,139,173,.20);box-shadow:0 -24px 60px rgba(49,85,130,.22);backdrop-filter:blur(24px);transform:translate(-50%,105%);transition:transform .28s cubic-bezier(.2,.8,.2,1)}.map-sheet.open .map-sheet-panel{transform:translate(-50%,0)}.map-sheet-handle{width:46px;height:5px;margin:7px auto 13px;border-radius:999px;background:rgba(102,117,140,.26)}.map-sheet-close{position:absolute;right:16px;top:15px;width:34px;height:34px;border:0;border-radius:14px;background:rgba(237,245,255,.9);color:#2d70b8;font-weight:950}.map-detail{padding:8px 2px 0}.map-detail-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}.map-detail h2{margin:0;font-size:22px;line-height:1.05}.map-detail p{margin:6px 0 0;color:#3a4b62;font-size:14px;line-height:1.4}.map-percent{min-width:54px;height:54px;display:grid;place-items:center;border-radius:19px;background:linear-gradient(135deg,#edf7ff,#fff);color:#2d70b8;font-size:17px;font-weight:950;box-shadow:var(--shadow-sm)}.step-list{display:grid;gap:8px;margin-top:12px}.step-item{display:grid;grid-template-columns:28px 1fr;gap:8px;padding:10px;border-radius:16px;background:rgba(246,249,255,.86);border:1px solid rgba(111,139,173,.14)}.step-check{width:24px;height:24px;display:grid;place-items:center;border-radius:50%;background:rgba(111,139,173,.16);color:#fff}.step-item.done .step-check{background:linear-gradient(135deg,#72d7a8,#31a376)}.step-item.active .step-check{background:linear-gradient(135deg,#72b7f1,#2d70b8)}.step-title{font-size:14px;font-weight:900}.step-sub{margin-top:2px;color:var(--muted);font-size:12px;font-weight:700}
-    .floating-actions{position:fixed;left:50%;bottom:calc(98px + env(safe-area-inset-bottom));transform:translate(-50%,var(--keyboard-offset));width:min(402px,calc(100vw - 28px));display:none;justify-content:center;pointer-events:none;z-index:8}.floating-actions.active{display:flex}.add-btn{min-width:176px;height:46px;padding:0 22px;border:0;border-radius:999px;background:linear-gradient(135deg,#67b2f3,#2d70b8);color:#fff;font-size:16px;font-weight:950;pointer-events:auto}.plus{display:inline-grid;place-items:center;width:24px;height:24px;margin-right:8px;border-radius:50%;background:rgba(255,255,255,.95);color:#3b7ec3;vertical-align:middle}.bottom-nav{position:fixed;left:50%;bottom:max(10px,env(safe-area-inset-bottom));transform:translate(-50%,var(--keyboard-offset));width:min(402px,calc(100vw - 28px));height:76px;display:grid;grid-template-columns:repeat(5,1fr);gap:4px;padding:8px;border-radius:26px;background:rgba(255,255,255,.82);border:1px solid rgba(111,139,173,.20);box-shadow:0 -16px 38px rgba(48,80,118,.16);backdrop-filter:blur(24px);z-index:10}.nav-item{display:grid;grid-template-rows:32px 1fr;gap:2px;place-items:center;min-width:0;border:0;border-radius:20px;background:transparent;color:#68768b;font-size:10.5px;font-weight:850}.nav-item span:last-child{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.nav-ico{width:32px;height:32px;display:grid;place-items:center;border-radius:14px}.nav-ico .icon{width:21px;height:21px}.nav-item.active{color:#1f6fb8;background:linear-gradient(180deg,rgba(238,247,255,.96),rgba(255,255,255,.72))}.nav-item.active .nav-ico{background:linear-gradient(135deg,#72b7f1,#2d70b8);color:#fff}
-    @media(max-width:370px){.hero h1{font-size:23px}.tab{padding-inline:6px;font-size:12px}.entry p{font-size:13px}}
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+    input,textarea,select{user-select:text;-webkit-user-select:text}
+    html,body{width:100%;min-height:100%;height:100%;margin:0;overflow-x:hidden;overscroll-behavior:none;touch-action:pan-x pan-y;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+    body{background:radial-gradient(circle at 20% 0%,rgba(91,148,210,.28),transparent 32%),radial-gradient(circle at 90% 16%,rgba(233,120,170,.16),transparent 30%),linear-gradient(180deg,var(--bg1),var(--bg2))}
+    body:before{content:"";position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(62,106,158,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(62,106,158,.045) 1px,transparent 1px);background-size:28px 28px}
+    button,input,textarea,select{font:inherit}
+    button{cursor:pointer}
+    .app{position:relative;width:min(430px,100vw);min-height:100vh;min-height:100dvh;margin:0 auto;padding:max(18px,env(safe-area-inset-top)) 14px calc(166px + env(safe-area-inset-bottom))}
+    .screen{display:none;animation:screen-in .24s ease both}
+    .screen.active{display:block}
+    @keyframes screen-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    .icon{width:22px;height:22px;display:block;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+    .hero,.map-hero{position:relative;overflow:hidden;padding:18px;margin-bottom:14px;border-radius:var(--radius-xl);color:#fff;box-shadow:var(--shadow-lg)}
+    .hero{min-height:154px;background:radial-gradient(circle at 84% 18%,rgba(255,255,255,.34),transparent 18%),linear-gradient(135deg,#74afe9 0%,#427fc3 48%,#203b65 100%)}
+    .map-hero{background:linear-gradient(135deg,#203b65,#427fc3 55%,#78b8ef)}
+    .hero-row{position:relative;z-index:1;display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+    .hero h1,.map-hero h1{margin:0;font-size:26px;line-height:1.03;letter-spacing:-.035em}
+    .map-hero h1{font-size:27px}
+    .hero p,.map-hero p{margin:10px 0 0;max-width:285px;color:rgba(255,255,255,.82);font-size:14px;line-height:1.35}
+    .hero-orb{width:58px;height:58px;display:grid;place-items:center;border-radius:20px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.25);backdrop-filter:blur(10px)}
+    .hero-orb .icon{width:31px;height:31px}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:17px}
+    .stat{padding:10px;border-radius:18px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(12px)}
+    .stat b{display:block;font-size:19px;line-height:1}
+    .stat span{display:block;margin-top:4px;color:rgba(255,255,255,.76);font-size:11px;font-weight:650}
+    .tabs-wrap{position:sticky;top:0;z-index:3;padding-bottom:10px;backdrop-filter:blur(16px)}
+    .tabs{display:flex;gap:5px;padding:5px;border-radius:20px;background:rgba(255,255,255,.58);border:1px solid rgba(111,139,173,.18);box-shadow:var(--shadow-sm)}
+    .tab{flex:1 1 0;min-width:0;padding:10px 8px;border:0;border-radius:15px;background:transparent;color:var(--muted);font-size:13px;font-weight:800;white-space:nowrap;transition:.16s ease}
+    .tab.active{color:var(--navy);background:#fff;box-shadow:0 6px 16px rgba(54,91,132,.13)}
+    .tab-panel{display:none}
+    .tab-panel.active{display:block;animation:panel-in .2s ease both}
+    @keyframes panel-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+    .stack{display:grid;gap:12px}
+    .card,.form-card,.profile-card,.empty-state{background:var(--glass);border:1px solid rgba(111,139,173,.20);border-radius:var(--radius-lg);box-shadow:var(--shadow-md);backdrop-filter:blur(18px)}
+    .entry{position:relative;overflow:hidden;touch-action:pan-y;background:rgba(255,255,255,.02);transition:opacity .18s ease}
+    .entry+.entry{border-top:1px solid rgba(111,139,173,.14)}
+    .entry-slide{position:relative;z-index:2;display:grid;grid-template-columns:44px 1fr;gap:10px;padding:15px;background:rgba(255,255,255,.01);transition:transform .22s cubic-bezier(.2,.8,.2,1)}
+    .entry.swiping .entry-slide{transition:none}
+    .entry.swiped .entry-slide{transform:translateX(-96px)}
+    .entry.deleting{opacity:0}
+    .entry.deleting .entry-slide{transform:translateX(-120%)}
+    .delete-btn{position:absolute;z-index:1;right:14px;top:50%;transform:translateY(-50%) scale(.94);height:38px;padding:0 17px;border-radius:999px;background:#ef4444;color:#fff;font-size:13px;font-weight:900;border:0;opacity:0;pointer-events:none;transition:.18s ease;box-shadow:0 10px 18px rgba(239,68,68,.25)}
+    .entry.swiped .delete-btn{opacity:1;pointer-events:auto;transform:translateY(-50%) scale(1)}
+    .badge{width:38px;height:38px;display:grid;place-items:center;border-radius:15px;color:#fff;background:linear-gradient(145deg,#7bb7ef,#3876b8)}
+    .badge.gold{background:linear-gradient(145deg,#ffd36f,#e49d29)}
+    .badge.pink{background:linear-gradient(145deg,#f59ac4,#d85d95)}
+    .badge.green{background:linear-gradient(145deg,#79d8ae,#31a376)}
+    .badge.purple{background:linear-gradient(145deg,#b69cff,#6f58d9)}
+    .badge .icon{width:20px;height:20px}
+    .meta{margin-bottom:5px;color:var(--muted);font-size:13px;font-weight:750}
+    .entry h3{margin:0 0 7px;font-size:17px;line-height:1.12;letter-spacing:-.018em}
+    .entry p{margin:0;color:#35445b;font-size:14px;line-height:1.42}
+    .item-head{display:grid;grid-template-columns:1fr 34px;gap:8px;align-items:start}
+    .edit-icon{width:32px;height:32px;display:grid;place-items:center;border:1px solid rgba(91,126,170,.23);border-radius:13px;background:rgba(255,255,255,.78);color:var(--navy);box-shadow:var(--shadow-sm)}
+    .edit-icon .icon{width:17px;height:17px}
+    .progress-wrap{margin-top:11px}
+    .progress-label{display:flex;justify-content:space-between;margin-bottom:7px;color:var(--muted);font-size:12px;font-weight:750}
+    .progress{height:8px;overflow:hidden;border-radius:999px;background:rgba(111,139,173,.17)}
+    .progress span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#62b1f2,#59cf9e)}
+    .empty-state{padding:22px;text-align:center}
+    .empty-emoji{width:62px;height:62px;display:grid;place-items:center;margin:0 auto 10px;border-radius:22px;background:#fff;color:var(--blue);box-shadow:var(--shadow-sm)}
+    .empty-state h3{margin:0 0 6px;font-size:19px}
+    .empty-state p{margin:0;color:var(--muted);font-size:14px;line-height:1.42}
+    .form-card{padding:16px;animation:form-in .2s ease both}
+    @keyframes form-in{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+    .form-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+    .form-title{margin:0;font-size:24px;line-height:1;font-weight:950}
+    .pill{padding:7px 10px;border-radius:999px;background:#eef6ff;color:#2d6fb7;font-size:12px;font-weight:850}
+    .field{margin-bottom:13px}
+    .field label{display:block;margin-bottom:7px;color:#344962;font-size:13px;font-weight:850}
+    .field input,.field textarea,.field select{width:100%;padding:12px 13px;border:1px solid rgba(111,139,173,.26);border-radius:17px;background:rgba(255,255,255,.86);color:var(--ink);outline:none;font-size:16px}
+    .field input:focus,.field textarea:focus,.field select:focus{border-color:rgba(77,142,216,.65);box-shadow:0 0 0 4px rgba(77,142,216,.13)}
+    .field textarea{min-height:96px;resize:vertical}
+    .hint{margin-top:5px;color:var(--muted);font-size:12px}
+    .form-actions{display:grid;grid-template-columns:.78fr 1.15fr;gap:10px}
+    .ghost-btn,.save-btn{height:44px;border-radius:17px;font-size:16px;font-weight:900}
+    .ghost-btn{border:1px solid rgba(111,139,173,.24);background:rgba(255,255,255,.74);color:#2d405a}
+    .save-btn{border:0;background:linear-gradient(135deg,#66aceb,#2e74bb);color:#fff}
+    .hidden{display:none!important}
+    body.keyboard-open .bottom-nav,body.keyboard-open .floating-actions{transform:translate(-50%,140vh)!important;opacity:0;pointer-events:none}
+    .profile-head{display:grid;grid-template-columns:82px 1fr;gap:14px;align-items:center;padding:16px;margin-bottom:14px;border-radius:var(--radius-xl);background:rgba(255,255,255,.68);border:1px solid rgba(111,139,173,.18);box-shadow:var(--shadow-md);backdrop-filter:blur(18px)}
+    .avatar{width:82px;height:82px;padding:4px;border-radius:28px;background:#fff;box-shadow:var(--shadow-sm)}
+    .avatar-inner{width:100%;height:100%;display:grid;place-items:center;border-radius:24px;background:linear-gradient(135deg,#9dc9f2,#f8fbff 45%,#426d9d 46%,#16304c);color:#fff;font-size:28px;font-weight:950;overflow:hidden}
+    .avatar-inner img,.map-avatar img{width:100%;height:100%;object-fit:cover;display:block}
+    .name{font-size:24px;font-weight:950}
+    .role{margin-top:4px;color:var(--muted);font-size:14px;font-weight:700}
+    .profile-card{overflow:hidden}
+    .section-title{padding:13px 16px;background:linear-gradient(135deg,#6aa7e4,#407dbd);color:#fff;font-size:18px;font-weight:900}
+    .profile-text{padding:16px;color:#25364d;font-size:16px;line-height:1.48}
+    .summary-block{padding:14px 0;border-bottom:1px solid rgba(111,139,173,.16)}
+    .summary-block:last-child{border-bottom:0}
+    .summary-block p{margin:0 0 8px;color:#34465f}
+    .summary-block strong{color:var(--navy)}
+    .summary-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .summary-head h3{margin:0;font-size:18px}
+    .summary-icon{width:34px;height:34px;display:grid;place-items:center;border-radius:13px;color:#fff;background:linear-gradient(145deg,#7bb7ef,#3876b8)}
+    .summary-icon.pink{background:linear-gradient(145deg,#f59ac4,#d85d95)}
+    .summary-icon.green{background:linear-gradient(145deg,#79d8ae,#31a376)}
+    .summary-icon.purple{background:linear-gradient(145deg,#b69cff,#6f58d9)}
+    .placeholder{min-height:66vh;display:grid;place-items:center;padding:26px;color:var(--muted);text-align:center}
+    .placeholder-card{width:100%;padding:26px;border-radius:var(--radius-xl);background:var(--glass);border:1px solid rgba(111,139,173,.18);box-shadow:var(--shadow-md)}
+    .placeholder-card .big-icon{width:48px;height:48px;display:grid;place-items:center;margin:0 auto 10px;color:var(--blue)}
+    .placeholder-card b{display:block;margin-bottom:6px;color:var(--ink);font-size:20px}
+    .map-shell{position:relative;min-height:560px;padding:22px 12px 18px;border-radius:var(--radius-xl);background:rgba(255,255,255,.58);border:1px solid rgba(111,139,173,.18);box-shadow:var(--shadow-md);backdrop-filter:blur(18px);overflow:hidden}
+    .map-path-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+    .map-path-base{fill:none;stroke:rgba(89,118,156,.18);stroke-width:10;stroke-linecap:round}
+    .map-path-progress{fill:none;stroke:url(#mapGrad);stroke-width:10;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:.58;filter:drop-shadow(0 8px 16px rgba(50,130,190,.22))}
+    .map-node{position:absolute;z-index:2;width:132px;min-height:76px;padding:10px;border:0;background:rgba(255,255,255,.92);border-radius:22px;box-shadow:0 12px 26px rgba(49,85,130,.14);text-align:left;color:var(--ink);transform:translate(-50%,-50%);transition:.2s ease}
+    .map-node.active{background:#fff;box-shadow:0 16px 34px rgba(43,103,178,.22),0 0 0 4px rgba(98,177,242,.12)}
+    .map-node.future{opacity:.74}
+    .map-node-top{display:flex;align-items:center;gap:7px}
+    .map-node-icon{width:30px;height:30px;display:grid;place-items:center;flex:0 0 auto;border-radius:13px;color:#fff;background:linear-gradient(145deg,#7bb7ef,#3876b8)}
+    .map-node-icon.gold{background:linear-gradient(145deg,#ffd36f,#e49d29)}
+    .map-node-icon.green{background:linear-gradient(145deg,#79d8ae,#31a376)}
+    .map-node-icon.purple{background:linear-gradient(145deg,#b69cff,#6f58d9)}
+    .map-node-icon.pink{background:linear-gradient(145deg,#f59ac4,#d85d95)}
+    .map-node-icon .icon{width:16px;height:16px}
+    .map-node-title{font-size:12px;font-weight:950;line-height:1.12;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .map-node-meta{margin-top:3px;color:var(--muted);font-size:10px;font-weight:800}
+    .map-mini-progress{height:4px;margin-top:8px;border-radius:99px;background:rgba(111,139,173,.16);overflow:hidden}
+    .map-mini-progress i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#62b1f2,#59cf9e)}
+    .map-avatar{position:absolute;z-index:3;width:42px;height:42px;display:grid;place-items:center;overflow:hidden;border-radius:17px;background:#fff;color:#1f6fb8;font-weight:950;box-shadow:0 16px 26px rgba(45,112,184,.24),0 0 0 8px rgba(98,177,242,.14);transform:translate(-50%,-50%)}
+    .map-open-btn{display:none}
+    .map-sheet{position:fixed;inset:0;z-index:50;pointer-events:none}
+    .map-sheet.open{pointer-events:auto}
+    .map-sheet-backdrop{position:absolute;inset:0;background:rgba(20,32,51,.24);opacity:0;transition:.22s ease;backdrop-filter:blur(2px)}
+    .map-sheet.open .map-sheet-backdrop{opacity:1}
+    .map-sheet-panel{position:absolute;left:50%;right:auto;bottom:0;width:min(390px,calc(100vw - 28px));max-height:66vh;overflow:auto;padding:8px 14px calc(74px + env(safe-area-inset-bottom));border-radius:28px 28px 0 0;background:rgba(255,255,255,.94);border:1px solid rgba(111,139,173,.20);box-shadow:0 -20px 50px rgba(49,85,130,.20);backdrop-filter:blur(24px);transform:translate3d(-50%,105%,0);transition:transform .28s cubic-bezier(.2,.8,.2,1)}
+    .map-sheet.open .map-sheet-panel{transform:translate3d(-50%,0,0)}
+    .map-sheet-handle{width:52px;height:5px;margin:8px auto 14px;border-radius:999px;background:rgba(102,117,140,.28)}
+    .map-sheet-close{display:none}
+    .map-detail{padding:8px 2px 0}
+    .map-detail-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}
+    .map-detail h2{margin:0;font-size:22px;line-height:1.05}
+    .map-detail p{margin:6px 0 0;color:#3a4b62;font-size:14px;line-height:1.4}
+    .map-percent{min-width:54px;height:54px;display:grid;place-items:center;border-radius:19px;background:linear-gradient(135deg,#edf7ff,#fff);color:#2d70b8;font-size:17px;font-weight:950;box-shadow:var(--shadow-sm)}
+    .step-list{display:grid;gap:8px;margin-top:12px}
+    .step-item{display:grid;grid-template-columns:28px 1fr;gap:8px;padding:10px;border-radius:16px;background:rgba(246,249,255,.86);border:1px solid rgba(111,139,173,.14)}
+    .step-check{width:24px;height:24px;display:grid;place-items:center;border-radius:50%;background:rgba(111,139,173,.16);color:#fff}
+    .step-item.done .step-check{background:linear-gradient(135deg,#72d7a8,#31a376)}
+    .step-item.active .step-check{background:linear-gradient(135deg,#72b7f1,#2d70b8)}
+    .step-title{font-size:14px;font-weight:900}
+    .step-sub{margin-top:2px;color:var(--muted);font-size:12px;font-weight:700}
+    .floating-actions{position:fixed;left:50%;bottom:calc(98px + env(safe-area-inset-bottom));transform:translate(-50%,var(--keyboard-offset));width:min(402px,calc(100vw - 28px));display:none;justify-content:center;pointer-events:none;z-index:8}
+    .floating-actions.active{display:flex}
+    .add-btn{min-width:176px;height:46px;padding:0 22px;border:0;border-radius:999px;background:linear-gradient(135deg,#67b2f3,#2d70b8);color:#fff;font-size:16px;font-weight:950;pointer-events:auto}
+    .plus{display:inline-grid;place-items:center;width:24px;height:24px;margin-right:8px;border-radius:50%;background:rgba(255,255,255,.95);color:#3b7ec3;vertical-align:middle}
+    .bottom-nav{position:fixed;left:50%;bottom:max(10px,env(safe-area-inset-bottom));transform:translate(-50%,var(--keyboard-offset));width:min(402px,calc(100vw - 28px));height:76px;display:grid;grid-template-columns:repeat(5,1fr);gap:4px;padding:8px;border-radius:26px;background:rgba(255,255,255,.82);border:1px solid rgba(111,139,173,.20);box-shadow:0 -16px 38px rgba(48,80,118,.16);backdrop-filter:blur(24px);z-index:10}
+    .nav-item{display:grid;grid-template-rows:32px 1fr;gap:2px;place-items:center;min-width:0;border:0;border-radius:20px;background:transparent;color:#68768b;font-size:10.5px;font-weight:850}
+    .nav-item span:last-child{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .nav-ico{width:32px;height:32px;display:grid;place-items:center;border-radius:14px}
+    .nav-ico .icon{width:21px;height:21px}
+    .nav-item.active{color:#1f6fb8;background:linear-gradient(180deg,rgba(238,247,255,.96),rgba(255,255,255,.72))}
+    .nav-item.active .nav-ico{background:linear-gradient(135deg,#72b7f1,#2d70b8);color:#fff}
+    @media(max-width:370px){.hero h1{font-size:23px}.tab{padding-inline:6px;font-size:12px}.entry p{font-size:13px}.map-node{width:118px}.map-node-title{font-size:11.5px}.map-shell{min-height:550px}}
   </style>
 </head>
 <body>
@@ -26,140 +171,413 @@
       <div class="hero"><div class="hero-row"><div><h1>Your future starts as a small note.</h1><p>Collect wishes, thoughts and dreams. Later Worker and D1 will turn them into your personal roadmap.</p></div><div class="hero-orb" data-icon="sparkles"></div></div><div class="stats"><div class="stat"><b id="wishCountStat">1</b><span>wishes</span></div><div class="stat"><b id="thoughtCountStat">1</b><span>thoughts</span></div><div class="stat"><b id="dreamCountStat">1</b><span>dreams</span></div></div></div>
       <div class="tabs-wrap"><div class="tabs" data-tabs="diary"><button class="tab active" data-tab="all" type="button">All</button><button class="tab" data-tab="wishes" type="button">Wish List</button><button class="tab" data-tab="thoughts" type="button">Thoughts</button><button class="tab" data-tab="dreams" type="button">Dreams</button></div></div>
       <div class="tab-panel active" data-scope="diary" data-panel="all"><div class="card" id="allEntriesList"></div></div>
-      <div class="tab-panel" data-scope="diary" data-panel="wishes"><div id="wishesListView" class="stack"><div class="card" id="wishesList"></div><div class="empty-state hidden" id="wishesEmpty"><div class="empty-emoji" data-icon="star"></div><h3>No wishes yet</h3><p>Tap Add Wish and write the first thing you want to bring into your life.</p></div></div><div class="form-card hidden" id="wishFormView"><div class="form-top"><h2 class="form-title" id="wishFormTitle">New Wish</h2><span class="pill">Private</span></div><div class="field"><label>Wish title</label><input id="wishTitle" placeholder="Example: Buy a house near the sea"></div><div class="field"><label>When should it come true?</label><select id="wishDueType"><option value="week">In one week</option><option value="month">In one month</option><option value="year">In one year</option><option value="custom">Custom date</option></select><div class="hint">This is a soft horizon, not a hard deadline.</div></div><div class="field hidden" id="wishCustomDateField"><label>Custom date</label><input id="wishCustomDate" type="date"></div><div class="field"><label>Why do I want this?</label><textarea id="wishReason" placeholder="Why is this wish important?"></textarea></div><div class="field"><label>First step</label><textarea id="wishStep" placeholder="What can I do first?"></textarea></div><div class="form-actions"><button class="ghost-btn" id="cancelWishBtn" type="button">Cancel</button><button class="save-btn" id="saveWishBtn" type="button">Save Wish</button></div></div></div>
-      <div class="tab-panel" data-scope="diary" data-panel="thoughts"><div id="thoughtsListView" class="stack"><div class="card" id="thoughtsList"></div><div class="empty-state hidden" id="thoughtsEmpty"><div class="empty-emoji" data-icon="bulb"></div><h3>No thoughts yet</h3><p>Tap Add Thought and capture the idea before it disappears.</p></div></div><div class="form-card hidden" id="thoughtFormView"><div class="form-top"><h2 class="form-title" id="thoughtFormTitle">New Thought</h2><span class="pill">Idea</span></div><div class="field"><label>Thought title</label><input id="thoughtTitle" placeholder="Example: Idea for a new product"></div><div class="field"><label>Category</label><select id="thoughtCategory"><option>Business idea</option><option>Personal growth</option><option>Career</option><option>Relationship</option></select></div><div class="field"><label>Thought</label><textarea id="thoughtText" placeholder="Write the thought as it is."></textarea></div><div class="field"><label>Why is it important?</label><textarea id="thoughtImportance" placeholder="Why did it catch your attention?"></textarea></div><div class="form-actions"><button class="ghost-btn" id="cancelThoughtBtn" type="button">Cancel</button><button class="save-btn" id="saveThoughtBtn" type="button">Save Thought</button></div></div></div>
-      <div class="tab-panel" data-scope="diary" data-panel="dreams"><div id="dreamsListView" class="stack"><div class="card" id="dreamsList"></div><div class="empty-state hidden" id="dreamsEmpty"><div class="empty-emoji" data-icon="moon"></div><h3>No dreams yet</h3><p>Tap Add Dream and save the details while they are fresh.</p></div></div><div class="form-card hidden" id="dreamFormView"><div class="form-top"><h2 class="form-title" id="dreamFormTitle">New Dream</h2><span class="pill">Subconscious</span></div><div class="field"><label>Dream title</label><input id="dreamTitle" placeholder="Example: A house near the sea"></div><div class="field"><label>Mood</label><select id="dreamMood"><option>Calm</option><option>Happy</option><option>Strange</option><option>Scary</option></select></div><div class="field"><label>Dream story</label><textarea id="dreamStory" placeholder="What happened in the dream?"></textarea></div><div class="field"><label>Symbols / details</label><textarea id="dreamSymbols" placeholder="People, places, objects, feelings."></textarea></div><div class="form-actions"><button class="ghost-btn" id="cancelDreamBtn" type="button">Cancel</button><button class="save-btn" id="saveDreamBtn" type="button">Save Dream</button></div></div></div>
+      <div class="tab-panel" data-scope="diary" data-panel="wishes">
+        <div id="wishesListView" class="stack"><div class="card" id="wishesList"></div><div class="empty-state hidden" id="wishesEmpty"><div class="empty-emoji" data-icon="star"></div><h3>No wishes yet</h3><p>Tap Add Wish and write the first thing you want to bring into your life.</p></div></div>
+        <div class="form-card hidden" id="wishFormView"><div class="form-top"><h2 class="form-title" id="wishFormTitle">New Wish</h2><span class="pill">Private</span></div><div class="field"><label>Wish title</label><input id="wishTitle" placeholder="Example: Buy a house near the sea"></div><div class="field"><label>When should it come true?</label><select id="wishDueType"><option value="week">In one week</option><option value="month">In one month</option><option value="year">In one year</option><option value="custom">Custom date</option></select><div class="hint">This is a soft horizon, not a hard deadline.</div></div><div class="field hidden" id="wishCustomDateField"><label>Custom date</label><input id="wishCustomDate" type="date"></div><div class="field"><label>Why do I want this?</label><textarea id="wishReason" placeholder="Why is this wish important?"></textarea></div><div class="field"><label>First step</label><textarea id="wishStep" placeholder="What can I do first?"></textarea></div><div class="form-actions"><button class="ghost-btn" id="cancelWishBtn" type="button">Cancel</button><button class="save-btn" id="saveWishBtn" type="button">Save Wish</button></div></div>
+      </div>
+      <div class="tab-panel" data-scope="diary" data-panel="thoughts">
+        <div id="thoughtsListView" class="stack"><div class="card" id="thoughtsList"></div><div class="empty-state hidden" id="thoughtsEmpty"><div class="empty-emoji" data-icon="bulb"></div><h3>No thoughts yet</h3><p>Tap Add Thought and capture the idea before it disappears.</p></div></div>
+        <div class="form-card hidden" id="thoughtFormView"><div class="form-top"><h2 class="form-title" id="thoughtFormTitle">New Thought</h2><span class="pill">Idea</span></div><div class="field"><label>Thought title</label><input id="thoughtTitle" placeholder="Example: Idea for a new product"></div><div class="field"><label>Category</label><select id="thoughtCategory"><option>Business idea</option><option>Personal growth</option><option>Career</option><option>Relationship</option></select></div><div class="field"><label>Thought</label><textarea id="thoughtText" placeholder="Write the thought as it is."></textarea></div><div class="field"><label>Why is it important?</label><textarea id="thoughtImportance" placeholder="Why did it catch your attention?"></textarea></div><div class="form-actions"><button class="ghost-btn" id="cancelThoughtBtn" type="button">Cancel</button><button class="save-btn" id="saveThoughtBtn" type="button">Save Thought</button></div></div>
+      </div>
+      <div class="tab-panel" data-scope="diary" data-panel="dreams">
+        <div id="dreamsListView" class="stack"><div class="card" id="dreamsList"></div><div class="empty-state hidden" id="dreamsEmpty"><div class="empty-emoji" data-icon="moon"></div><h3>No dreams yet</h3><p>Tap Add Dream and save the details while they are fresh.</p></div></div>
+        <div class="form-card hidden" id="dreamFormView"><div class="form-top"><h2 class="form-title" id="dreamFormTitle">New Dream</h2><span class="pill">Subconscious</span></div><div class="field"><label>Dream title</label><input id="dreamTitle" placeholder="Example: A house near the sea"></div><div class="field"><label>Mood</label><select id="dreamMood"><option>Calm</option><option>Happy</option><option>Strange</option><option>Scary</option></select></div><div class="field"><label>Dream story</label><textarea id="dreamStory" placeholder="What happened in the dream?"></textarea></div><div class="field"><label>Symbols / details</label><textarea id="dreamSymbols" placeholder="People, places, objects, feelings."></textarea></div><div class="form-actions"><button class="ghost-btn" id="cancelDreamBtn" type="button">Cancel</button><button class="save-btn" id="saveDreamBtn" type="button">Save Dream</button></div></div>
+      </div>
     </section>
 
-    <section id="profile" class="screen"><div class="profile-head"><div class="avatar"><div class="avatar-inner">AF</div></div><div><div class="name">Anatolio Fabbri</div><div class="role">Startup manager - Product builder</div></div></div><div class="tabs-wrap"><div class="tabs" data-tabs="profile"><button class="tab active" data-tab="main" type="button">Main</button><button class="tab" data-tab="career" type="button">Career</button><button class="tab" data-tab="interests" type="button">Interests</button><button class="tab" data-tab="hobby" type="button">Hobby</button><button class="tab" data-tab="achievements" type="button">Wins</button></div></div><div class="tab-panel active" data-scope="profile" data-panel="main"><div class="profile-card"><div class="section-title">Profile Summary</div><div class="profile-text" id="profileSummary"></div></div></div><div class="tab-panel" data-scope="profile" data-panel="career"><div id="careerListView" class="stack"><div class="card" id="careerList"></div><div class="empty-state hidden" id="careerEmpty"><div class="empty-emoji" data-icon="briefcase"></div><h3>No career cards yet</h3><p>Add roles, skills, projects or goals.</p></div></div><div class="form-card hidden" id="careerForm"><div class="form-top"><h2 class="form-title" id="careerFormTitle">New Career Card</h2><span class="pill">Growth</span></div><div class="field"><label>Title</label><input id="careerTitle" placeholder="Example: Startup manager"></div><div class="field"><label>Type</label><select id="careerType"><option>Role</option><option>Skill</option><option>Project</option><option>Goal</option></select></div><div class="field"><label>Description</label><textarea id="careerDescription"></textarea></div><div class="field"><label>Next step</label><textarea id="careerNext"></textarea></div><div class="form-actions"><button class="ghost-btn" id="cancelCareerBtn" type="button">Cancel</button><button class="save-btn" id="saveCareerBtn" type="button">Save Career</button></div></div></div><div class="tab-panel" data-scope="profile" data-panel="interests"><div id="interestsListView" class="stack"><div class="card" id="interestsList"></div><div class="empty-state hidden" id="interestsEmpty"><div class="empty-emoji" data-icon="heart"></div><h3>No interests yet</h3><p>Add topics, formats and things you want to explore.</p></div></div><div class="form-card hidden" id="interestsForm"><div class="form-top"><h2 class="form-title" id="interestsFormTitle">New Interest</h2><span class="pill">Taste</span></div><div class="field"><label>Interest</label><input id="interestTitle"></div><div class="field"><label>Format</label><select id="interestFormat"><option>Practice</option><option>Books</option><option>Courses</option><option>Podcasts</option></select></div><div class="field"><label>Why I like it</label><textarea id="interestReason"></textarea></div><div class="field"><label>Want to explore</label><textarea id="interestExplore"></textarea></div><div class="form-actions"><button class="ghost-btn" id="cancelInterestsBtn" type="button">Cancel</button><button class="save-btn" id="saveInterestsBtn" type="button">Save Interest</button></div></div></div><div class="tab-panel" data-scope="profile" data-panel="hobby"><div id="hobbyListView" class="stack"><div class="card" id="hobbyList"></div><div class="empty-state hidden" id="hobbyEmpty"><div class="empty-emoji" data-icon="energy"></div><h3>No hobbies yet</h3><p>Add activities that give you energy.</p></div></div><div class="form-card hidden" id="hobbyForm"><div class="form-top"><h2 class="form-title" id="hobbyFormTitle">New Hobby</h2><span class="pill">Energy</span></div><div class="field"><label>Hobby</label><input id="hobbyTitle"></div><div class="field"><label>How often?</label><select id="hobbyFrequency"><option>Every day</option><option>Few times a week</option><option>Sometimes</option></select></div><div class="field"><label>Why it gives energy</label><textarea id="hobbyReason"></textarea></div><div class="field"><label>How to do it more often</label><textarea id="hobbyPlan"></textarea></div><div class="form-actions"><button class="ghost-btn" id="cancelHobbyBtn" type="button">Cancel</button><button class="save-btn" id="saveHobbyBtn" type="button">Save Hobby</button></div></div></div><div class="tab-panel" data-scope="profile" data-panel="achievements"><div id="achievementsListView" class="stack"><div class="card" id="achievementsList"></div><div class="empty-state hidden" id="achievementsEmpty"><div class="empty-emoji" data-icon="trophy"></div><h3>No achievements yet</h3><p>Add wins, milestones and proof of progress.</p></div></div><div class="form-card hidden" id="achievementsForm"><div class="form-top"><h2 class="form-title" id="achievementsFormTitle">New Achievement</h2><span class="pill">Proof</span></div><div class="field"><label>Achievement</label><input id="achievementTitle"></div><div class="field"><label>Area</label><select id="achievementArea"><option>Business</option><option>Career</option><option>Personal</option><option>Education</option></select></div><div class="field"><label>What happened?</label><textarea id="achievementStory"></textarea></div><div class="field"><label>Why it matters</label><textarea id="achievementImpact"></textarea></div><div class="form-actions"><button class="ghost-btn" id="cancelAchievementsBtn" type="button">Cancel</button><button class="save-btn" id="saveAchievementsBtn" type="button">Save Win</button></div></div></div></section>
+    <section id="profile" class="screen">
+      <div class="profile-head"><div class="avatar"><div class="avatar-inner">AF</div></div><div><div class="name">Anatolio Fabbri</div><div class="role">Startup manager - Product builder</div></div></div>
+      <div class="tabs-wrap"><div class="tabs" data-tabs="profile"><button class="tab active" data-tab="main" type="button">Main</button><button class="tab" data-tab="career" type="button">Career</button><button class="tab" data-tab="interests" type="button">Interests</button><button class="tab" data-tab="hobby" type="button">Hobby</button><button class="tab" data-tab="achievements" type="button">Wins</button></div></div>
+      <div class="tab-panel active" data-scope="profile" data-panel="main"><div class="profile-card"><div class="section-title">Profile Summary</div><div class="profile-text" id="profileSummary"></div></div></div>
+      <div class="tab-panel" data-scope="profile" data-panel="career"><div id="careerListView" class="stack"><div class="card" id="careerList"></div><div class="empty-state hidden" id="careerEmpty"><div class="empty-emoji" data-icon="briefcase"></div><h3>No career cards yet</h3><p>Add roles, skills, projects or goals.</p></div></div><div class="form-card hidden" id="careerForm"><div class="form-top"><h2 class="form-title" id="careerFormTitle">New Career Card</h2><span class="pill">Growth</span></div><div class="field"><label>Title</label><input id="careerTitle" placeholder="Example: Startup manager"></div><div class="field"><label>Type</label><select id="careerType"><option>Role</option><option>Skill</option><option>Project</option><option>Goal</option></select></div><div class="field"><label>Description</label><textarea id="careerDescription"></textarea></div><div class="field"><label>Next step</label><textarea id="careerNext"></textarea></div><div class="form-actions"><button class="ghost-btn" id="cancelCareerBtn" type="button">Cancel</button><button class="save-btn" id="saveCareerBtn" type="button">Save Career</button></div></div></div>
+      <div class="tab-panel" data-scope="profile" data-panel="interests"><div id="interestsListView" class="stack"><div class="card" id="interestsList"></div><div class="empty-state hidden" id="interestsEmpty"><div class="empty-emoji" data-icon="heart"></div><h3>No interests yet</h3><p>Add topics, formats and things you want to explore.</p></div></div><div class="form-card hidden" id="interestsForm"><div class="form-top"><h2 class="form-title" id="interestsFormTitle">New Interest</h2><span class="pill">Taste</span></div><div class="field"><label>Interest</label><input id="interestTitle"></div><div class="field"><label>Format</label><select id="interestFormat"><option>Practice</option><option>Books</option><option>Courses</option><option>Podcasts</option></select></div><div class="field"><label>Why I like it</label><textarea id="interestReason"></textarea></div><div class="field"><label>Want to explore</label><textarea id="interestExplore"></textarea></div><div class="form-actions"><button class="ghost-btn" id="cancelInterestsBtn" type="button">Cancel</button><button class="save-btn" id="saveInterestsBtn" type="button">Save Interest</button></div></div></div>
+      <div class="tab-panel" data-scope="profile" data-panel="hobby"><div id="hobbyListView" class="stack"><div class="card" id="hobbyList"></div><div class="empty-state hidden" id="hobbyEmpty"><div class="empty-emoji" data-icon="energy"></div><h3>No hobbies yet</h3><p>Add activities that give you energy.</p></div></div><div class="form-card hidden" id="hobbyForm"><div class="form-top"><h2 class="form-title" id="hobbyFormTitle">New Hobby</h2><span class="pill">Energy</span></div><div class="field"><label>Hobby</label><input id="hobbyTitle"></div><div class="field"><label>How often?</label><select id="hobbyFrequency"><option>Every day</option><option>Few times a week</option><option>Sometimes</option></select></div><div class="field"><label>Why it gives energy</label><textarea id="hobbyReason"></textarea></div><div class="field"><label>How to do it more often</label><textarea id="hobbyPlan"></textarea></div><div class="form-actions"><button class="ghost-btn" id="cancelHobbyBtn" type="button">Cancel</button><button class="save-btn" id="saveHobbyBtn" type="button">Save Hobby</button></div></div></div>
+      <div class="tab-panel" data-scope="profile" data-panel="achievements"><div id="achievementsListView" class="stack"><div class="card" id="achievementsList"></div><div class="empty-state hidden" id="achievementsEmpty"><div class="empty-emoji" data-icon="trophy"></div><h3>No achievements yet</h3><p>Add wins, milestones and proof of progress.</p></div></div><div class="form-card hidden" id="achievementsForm"><div class="form-top"><h2 class="form-title" id="achievementsFormTitle">New Achievement</h2><span class="pill">Proof</span></div><div class="field"><label>Achievement</label><input id="achievementTitle"></div><div class="field"><label>Area</label><select id="achievementArea"><option>Business</option><option>Career</option><option>Personal</option><option>Education</option></select></div><div class="field"><label>What happened?</label><textarea id="achievementStory"></textarea></div><div class="field"><label>Why it matters</label><textarea id="achievementImpact"></textarea></div><div class="form-actions"><button class="ghost-btn" id="cancelAchievementsBtn" type="button">Cancel</button><button class="save-btn" id="saveAchievementsBtn" type="button">Save Win</button></div></div></div>
+    </section>
 
-    <section id="dashboard" class="screen"><div class="map-hero"><h1>Life Map</h1><p>Your goals become a visible path. Complete steps and move your marker forward.</p></div><div class="map-shell" id="lifeMapShell"><svg class="map-path-svg" viewBox="0 0 402 560" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="mapGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#62b1f2"></stop><stop offset="1" stop-color="#59cf9e"></stop></linearGradient></defs><path class="map-path-base" d="M205 42 C92 116 315 174 210 254 C92 344 306 390 198 515"></path><path class="map-path-progress" d="M205 42 C92 116 315 174 210 254 C92 344 306 390 198 515"></path></svg><div id="lifeMapNodes"></div><div class="map-avatar" id="lifeMapAvatar">AF</div></div><button class="map-open-btn" id="openMapGoalBtn" type="button">Open steps</button></section>
+    <section id="dashboard" class="screen">
+      <div class="map-hero"><h1>Life Map</h1><p>Your goals become a visible path. Complete steps and move your marker forward.</p></div>
+      <div class="map-shell" id="lifeMapShell"><svg class="map-path-svg" viewBox="0 0 402 560" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="mapGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#62b1f2"></stop><stop offset="1" stop-color="#59cf9e"></stop></linearGradient></defs><path class="map-path-base" d="M205 42 C92 116 315 174 210 254 C92 344 306 390 198 515"></path><path class="map-path-progress" d="M205 42 C92 116 315 174 210 254 C92 344 306 390 198 515"></path></svg><div id="lifeMapNodes"></div><div class="map-avatar" id="lifeMapAvatar">AF</div></div>
+    </section>
+
     <section id="activity" class="screen"><div class="placeholder"><div class="placeholder-card"><div class="big-icon" data-icon="progress"></div><b>Track actions</b><span>Later we will add steps, habits and progress.</span></div></div></section>
     <section id="chat" class="screen"><div class="placeholder"><div class="placeholder-card"><div class="big-icon" data-icon="ai"></div><b>AI reflection</b><span>Later we will connect requests to Cloudflare Worker.</span></div></div></section>
   </main>
 
-  <div class="map-sheet" id="mapSheet" aria-hidden="true"><div class="map-sheet-backdrop" id="mapSheetBackdrop"></div><section class="map-sheet-panel" role="dialog" aria-modal="true"><div class="map-sheet-handle"></div><button class="map-sheet-close" id="mapSheetClose" type="button">x</button><div class="map-detail" id="lifeMapDetail"></div></section></div>
+  <div class="map-sheet" id="mapSheet" aria-hidden="true"><div class="map-sheet-backdrop" id="mapSheetBackdrop"></div><section class="map-sheet-panel" role="dialog" aria-modal="true"><div class="map-sheet-handle"></div><div class="map-detail" id="lifeMapDetail"></div></section></div>
   <div class="floating-actions active" data-actionbar="diary"><button class="add-btn" id="mainDiaryAction" type="button"><span class="plus" data-icon="plus"></span><span id="mainDiaryActionText">Add Entry</span></button></div>
   <div class="floating-actions" data-actionbar="profile"><button class="add-btn" id="mainProfileAction" type="button"><span class="plus" data-icon="plus"></span><span id="mainProfileActionText">Add Card</span></button></div>
   <nav class="bottom-nav"><button class="nav-item" data-screen="profile" type="button"><span class="nav-ico" data-icon="user"></span><span>Profile</span></button><button class="nav-item active" data-screen="diary" type="button"><span class="nav-ico" data-icon="book"></span><span>Journal</span></button><button class="nav-item" data-screen="dashboard" type="button"><span class="nav-ico" data-icon="map"></span><span>Map</span></button><button class="nav-item" data-screen="activity" type="button"><span class="nav-ico" data-icon="progress"></span><span>Progress</span></button><button class="nav-item" data-screen="chat" type="button"><span class="nav-ico" data-icon="ai"></span><span>AI</span></button></nav>
 
   <script>
-    (function () {
+    (function(){
       'use strict';
-      var iconData = {
-        sparkles: [['path','M12 3l1.6 4.4L18 9l-4.4 1.6L12 15l-1.6-4.4L6 9l4.4-1.6L12 3z'],['path','M19 14l.9 2.1L22 17l-2.1.9L19 20l-.9-2.1L16 17l2.1-.9L19 14z']],
-        star: [['path','M12 3.5l2.6 5.3 5.9.8-4.2 4.1 1 5.8L12 16.8 6.7 19.5l1-5.8-4.2-4.1 5.9-.8L12 3.5z']],
-        bulb: [['path','M9 18h6'],['path','M10 22h4'],['path','M8.2 14.5A6 6 0 1 1 15.8 14.5c-.8.7-1.3 1.5-1.5 2.5H9.7c-.2-1-.7-1.8-1.5-2.5z']],
-        moon: [['path','M21 14.2A8.5 8.5 0 0 1 9.8 3a7 7 0 1 0 11.2 11.2z']],
-        plus: [['path','M12 5v14'],['path','M5 12h14']],
-        user: [['path','M20 21a8 8 0 0 0-16 0'],['circle','12','8','4']],
-        book: [['path','M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 0 4 22V5.5z'],['path','M4 5.5A2.5 2.5 0 0 1 6.5 8H20']],
-        map: [['path','M9 18l-6 3V6l6-3 6 3 6-3v15l-6 3-6-3z'],['path','M9 3v15'],['path','M15 6v15']],
-        progress: [['path','M4 19V5'],['path','M4 19h16'],['path','M8 15l3-3 3 2 5-7']],
-        ai: [['path','M12 3l1.3 3.7L17 8l-3.7 1.3L12 13l-1.3-3.7L7 8l3.7-1.3L12 3z'],['path','M19 13l.8 2.2L22 16l-2.2.8L19 19l-.8-2.2L16 16l2.2-.8L19 13z']],
-        edit: [['path','M4 20h4l10.5-10.5a2.1 2.1 0 0 0-3-3L5 17v3z'],['path','M13.5 7.5l3 3']],
-        briefcase: [['path','M10 6V5a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v1'],['path','M4 7h16v12H4z'],['path','M4 12h16']],
-        heart: [['path','M20.8 8.6c0 5.4-8.8 10.2-8.8 10.2S3.2 14 3.2 8.6A4.4 4.4 0 0 1 12 6a4.4 4.4 0 0 1 8.8 2.6z']],
-        energy: [['path','M13 2L4 14h7l-1 8 9-12h-7l1-8z']],
-        trophy: [['path','M8 4h8v4a4 4 0 0 1-8 0V4z'],['path','M6 6H3a4 4 0 0 0 4 4'],['path','M18 6h3a4 4 0 0 1-4 4'],['path','M12 12v5'],['path','M8 21h8'],['path','M10 17h4']]
+
+      var iconData={
+        sparkles:[['path','M12 3l1.6 4.4L18 9l-4.4 1.6L12 15l-1.6-4.4L6 9l4.4-1.6L12 3z'],['path','M19 14l.9 2.1L22 17l-2.1.9L19 20l-.9-2.1L16 17l2.1-.9L19 14z']],
+        star:[['path','M12 3.5l2.6 5.3 5.9.8-4.2 4.1 1 5.8L12 16.8 6.7 19.5l1-5.8-4.2-4.1 5.9-.8L12 3.5z']],
+        bulb:[['path','M9 18h6'],['path','M10 22h4'],['path','M8.2 14.5A6 6 0 1 1 15.8 14.5c-.8.7-1.3 1.5-1.5 2.5H9.7c-.2-1-.7-1.8-1.5-2.5z']],
+        moon:[['path','M21 14.2A8.5 8.5 0 0 1 9.8 3a7 7 0 1 0 11.2 11.2z']],
+        plus:[['path','M12 5v14'],['path','M5 12h14']],
+        user:[['path','M20 21a8 8 0 0 0-16 0'],['circle','12','8','4']],
+        book:[['path','M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 0 4 22V5.5z'],['path','M4 5.5A2.5 2.5 0 0 1 6.5 8H20']],
+        map:[['path','M9 18l-6 3V6l6-3 6 3 6-3v15l-6 3-6-3z'],['path','M9 3v15'],['path','M15 6v15']],
+        progress:[['path','M4 19V5'],['path','M4 19h16'],['path','M8 15l3-3 3 2 5-7']],
+        ai:[['path','M12 3l1.3 3.7L17 8l-3.7 1.3L12 13l-1.3-3.7L7 8l3.7-1.3L12 3z'],['path','M19 13l.8 2.2L22 16l-2.2.8L19 19l-.8-2.2L16 16l2.2-.8L19 13z']],
+        edit:[['path','M4 20h4l10.5-10.5a2.1 2.1 0 0 0-3-3L5 17v3z'],['path','M13.5 7.5l3 3']],
+        briefcase:[['path','M10 6V5a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v1'],['path','M4 7h16v12H4z'],['path','M4 12h16']],
+        heart:[['path','M20.8 8.6c0 5.4-8.8 10.2-8.8 10.2S3.2 14 3.2 8.6A4.4 4.4 0 0 1 12 6a4.4 4.4 0 0 1 8.8 2.6z']],
+        energy:[['path','M13 2L4 14h7l-1 8 9-12h-7l1-8z']],
+        trophy:[['path','M8 4h8v4a4 4 0 0 1-8 0V4z'],['path','M6 6H3a4 4 0 0 0 4 4'],['path','M18 6h3a4 4 0 0 1-4 4'],['path','M12 12v5'],['path','M8 21h8'],['path','M10 17h4']]
       };
-      iconData.wish = iconData.star;
-      iconData.thought = iconData.bulb;
-      iconData.dream = iconData.moon;
-      function byId(id) { return document.getElementById(id); }
-      function makeElement(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (typeof text === 'string') n.textContent = text; return n; }
-      function makeIcon(name) { var svg = document.createElementNS('http://www.w3.org/2000/svg','svg'); svg.setAttribute('viewBox','0 0 24 24'); svg.setAttribute('aria-hidden','true'); svg.setAttribute('class','icon'); (iconData[name] || iconData.star).forEach(function (s) { var e; if (s[0] === 'circle') { e = document.createElementNS('http://www.w3.org/2000/svg','circle'); e.setAttribute('cx',s[1]); e.setAttribute('cy',s[2]); e.setAttribute('r',s[3]); } else { e = document.createElementNS('http://www.w3.org/2000/svg','path'); e.setAttribute('d',s[1]); } svg.appendChild(e); }); return svg; }
-      function hydrateStaticIcons() { document.querySelectorAll('[data-icon]').forEach(function (n) { var name = n.getAttribute('data-icon'); n.textContent = ''; n.appendChild(makeIcon(name)); }); }
-      function setChildren(parent, children) { while (parent.firstChild) parent.removeChild(parent.firstChild); children.forEach(function (ch) { parent.appendChild(ch); }); }
-      function haptic(kind) { var tg = window.Telegram && window.Telegram.WebApp; if (!tg || !tg.HapticFeedback) return; try { if (kind === 'success') tg.HapticFeedback.notificationOccurred('success'); else if (kind === 'warning') tg.HapticFeedback.notificationOccurred('warning'); else if (kind === 'error') tg.HapticFeedback.notificationOccurred('error'); else if (kind === 'selection') tg.HapticFeedback.selectionChanged(); else tg.HapticFeedback.impactOccurred(kind || 'light'); } catch (e) {} }
-      function initTelegramWebApp() { var tg = window.Telegram && window.Telegram.WebApp; if (!tg) return; function lock() { try { if (tg.disableVerticalSwipes) tg.disableVerticalSwipes(); } catch (e) {} } try { tg.ready(); tg.expand(); lock(); if (tg.enableClosingConfirmation) tg.enableClosingConfirmation(); if (tg.setHeaderColor) tg.setHeaderColor('#f6f9ff'); if (tg.setBackgroundColor) tg.setBackgroundColor('#f6f9ff'); if (tg.onEvent) tg.onEvent('viewportChanged', function () { lock(); tg.expand(); }); } catch (e) {} setTimeout(lock,0); setTimeout(lock,300); setTimeout(lock,1000); }
-      function lockIOSPullToClose() { var tg = window.Telegram && window.Telegram.WebApp; var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent); if (!isIOS || (tg && typeof tg.disableVerticalSwipes === 'function')) return; var startY = 0; document.addEventListener('touchstart', function (e) { if (e.touches && e.touches.length) startY = e.touches[0].clientY; }, {passive:true}); document.addEventListener('touchmove', function (e) { if (!e.touches || !e.touches.length) return; var dy = e.touches[0].clientY - startY; if (dy > 0 && window.scrollY <= 0) e.preventDefault(); }, {passive:false}); }
-      function isTextInput(el) { return el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT'); }
-      function keyboardLooksOpen() { return Boolean(window.visualViewport && window.innerHeight - window.visualViewport.height > 120); }
-      function setKeyboardMode(open) { document.body.classList.toggle('keyboard-open', Boolean(open)); document.documentElement.style.setProperty('--keyboard-offset','0px'); }
-      function refreshKeyboardMode() { setKeyboardMode(isTextInput(document.activeElement) || keyboardLooksOpen()); }
-      function syncKeyboardOffset() { document.documentElement.style.setProperty('--keyboard-offset','0px'); refreshKeyboardMode(); }
 
-      var navItems = document.querySelectorAll('.nav-item');
-      var screens = document.querySelectorAll('.screen');
-      var actionBars = document.querySelectorAll('.floating-actions');
-      var mainDiaryAction = byId('mainDiaryAction');
-      var mainDiaryActionText = byId('mainDiaryActionText');
-      var mainProfileAction = byId('mainProfileAction');
-      var mainProfileActionText = byId('mainProfileActionText');
-      var currentDiaryTab = 'all';
-      var currentProfileTab = 'main';
+      iconData.wish=iconData.star;
+      iconData.thought=iconData.bulb;
+      iconData.dream=iconData.moon;
 
-      function openScreen(id) { haptic('light'); screens.forEach(function (s) { s.classList.toggle('active', s.id === id); }); navItems.forEach(function (i) { i.classList.toggle('active', i.getAttribute('data-screen') === id); }); actionBars.forEach(function (b) { b.classList.toggle('active', b.getAttribute('data-actionbar') === id); }); if (id === 'profile') syncProfileActionButton(currentProfileTab); if (id === 'diary') syncDiaryActionButton(currentDiaryTab); }
+      function byId(id){return document.getElementById(id)}
+      function makeElement(tag,cls,text){var n=document.createElement(tag);if(cls)n.className=cls;if(typeof text==='string')n.textContent=text;return n}
+      function makeIcon(name){
+        var svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+        svg.setAttribute('viewBox','0 0 24 24');
+        svg.setAttribute('aria-hidden','true');
+        svg.setAttribute('class','icon');
+        (iconData[name]||iconData.star).forEach(function(s){
+          var e;
+          if(s[0]==='circle'){e=document.createElementNS('http://www.w3.org/2000/svg','circle');e.setAttribute('cx',s[1]);e.setAttribute('cy',s[2]);e.setAttribute('r',s[3])}
+          else{e=document.createElementNS('http://www.w3.org/2000/svg','path');e.setAttribute('d',s[1])}
+          svg.appendChild(e);
+        });
+        return svg;
+      }
+      function hydrateStaticIcons(){document.querySelectorAll('[data-icon]').forEach(function(n){var name=n.getAttribute('data-icon');n.textContent='';n.appendChild(makeIcon(name))})}
+      function setChildren(parent,children){while(parent.firstChild)parent.removeChild(parent.firstChild);children.forEach(function(ch){parent.appendChild(ch)})}
+      function haptic(kind){
+        var tg=window.Telegram&&window.Telegram.WebApp;
+        if(!tg||!tg.HapticFeedback)return;
+        try{
+          if(kind==='success')tg.HapticFeedback.notificationOccurred('success');
+          else if(kind==='warning')tg.HapticFeedback.notificationOccurred('warning');
+          else if(kind==='error')tg.HapticFeedback.notificationOccurred('error');
+          else if(kind==='selection')tg.HapticFeedback.selectionChanged();
+          else tg.HapticFeedback.impactOccurred(kind||'light');
+        }catch(e){}
+      }
+      function initTelegramWebApp(){
+        var tg=window.Telegram&&window.Telegram.WebApp;
+        if(!tg)return;
+        function lock(){try{if(tg.disableVerticalSwipes)tg.disableVerticalSwipes()}catch(e){}}
+        try{tg.ready();tg.expand();lock();if(tg.enableClosingConfirmation)tg.enableClosingConfirmation();if(tg.setHeaderColor)tg.setHeaderColor('#f6f9ff');if(tg.setBackgroundColor)tg.setBackgroundColor('#f6f9ff');if(tg.onEvent)tg.onEvent('viewportChanged',function(){lock();tg.expand()})}catch(e){}
+        setTimeout(lock,0);setTimeout(lock,300);setTimeout(lock,1000);
+      }
+      function lockIOSPullToClose(){
+        var tg=window.Telegram&&window.Telegram.WebApp;
+        var isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
+        if(!isIOS||(tg&&typeof tg.disableVerticalSwipes==='function'))return;
+        var startY=0;
+        document.addEventListener('touchstart',function(e){if(e.touches&&e.touches.length)startY=e.touches[0].clientY},{passive:true});
+        document.addEventListener('touchmove',function(e){if(!e.touches||!e.touches.length)return;var dy=e.touches[0].clientY-startY;if(dy>0&&window.scrollY<=0)e.preventDefault()},{passive:false});
+      }
+      function isTextInput(el){return el&&(el.tagName==='INPUT'||el.tagName==='TEXTAREA'||el.tagName==='SELECT')}
+      function keyboardLooksOpen(){return Boolean(window.visualViewport&&window.innerHeight-window.visualViewport.height>120)}
+      function setKeyboardMode(open){document.body.classList.toggle('keyboard-open',Boolean(open));document.documentElement.style.setProperty('--keyboard-offset','0px')}
+      function refreshKeyboardMode(){setKeyboardMode(isTextInput(document.activeElement)||keyboardLooksOpen())}
+      function syncKeyboardOffset(){document.documentElement.style.setProperty('--keyboard-offset','0px');refreshKeyboardMode()}
 
-      var wishes = [{title:'Buy a house near the sea',dueType:'year',customDate:'',reason:'I want a peaceful place to rest, think and spend time with people I love.',step:'Research locations and estimate the budget.',progress:32}];
-      var thoughts = [{title:'Open a business',category:'Business idea',text:'I saw myself leading a team and calmly explaining what to do next.',importance:'This could become a real direction for my next project.'}];
-      var dreams = [{title:'Tree from childhood',mood:'Calm',story:'I saw a tree from my childhood and felt like I had always lived there.',symbols:'Tree, childhood, home, calm feeling.'}];
-      var editing = {wishes:null,thoughts:null,dreams:null};
-      var profileItems = {career:[{title:'Startup manager',type:'Role',description:'Strategy, marketing, sales and product launches.',next:'Build my own product and systemize the methodology.'}],interests:[{title:'AI assistants',format:'Practice',reason:'I like products that help people understand themselves.',explore:'Personal roadmaps and product growth.'}],hobby:[{title:'Walking',frequency:'Few times a week',reason:'Long walks clear my head and give me energy.',plan:'Schedule two evening walks every week.'}],achievements:[{title:'Launched 10+ projects',area:'Business',story:'Brought more than 10 projects to the market.',impact:'This proves I can move ideas into real products.'}]};
-      var profileEditing = {career:null,interests:null,hobby:null,achievements:null};
-      var roadmapGoals = [{id:'vision',title:'Find clear direction',type:'thought',icon:'bulb',badge:'green',progress:100,x:205,y:52,status:'done',text:'Turn scattered ideas into one direction for the next stage.',steps:[['Capture main thoughts',true,'Done'],['Choose one focus',true,'Done'],['Write first roadmap',true,'Done']]},{id:'home',title:'House near the sea',type:'wish',icon:'star',badge:'gold',progress:42,x:120,y:160,status:'active',text:'Build the financial and life plan for a peaceful home near the sea.',steps:[['Estimate budget',true,'First calculation'],['Research locations',false,'Current step'],['Create savings plan',false,'Next']]},{id:'product',title:'Launch personal product',type:'career',icon:'briefcase',badge:'',progress:25,x:285,y:265,status:'future',text:'Package experience into a product that helps people design their life path.',steps:[['Define audience',true,'Draft ready'],['Build MVP',false,'Next sprint'],['Connect Worker + D1',false,'Backend step']]},{id:'energy',title:'Build energy routine',type:'hobby',icon:'energy',badge:'green',progress:12,x:115,y:380,status:'future',text:'Create simple weekly rituals that keep energy stable.',steps:[['Pick 2 core habits',false,'Plan'],['Schedule walks',false,'Habit'],['Review weekly',false,'System']]},{id:'wins',title:'Collect proof of progress',type:'achievement',icon:'trophy',badge:'purple',progress:0,x:198,y:510,status:'future',text:'Every win becomes proof that the path is real.',steps:[['Save first milestone',false,'Soon'],['Add monthly recap',false,'Later'],['Share selected wins',false,'Optional']]}];
-      var selectedRoadmapId = 'home';
+      var navItems=document.querySelectorAll('.nav-item');
+      var screens=document.querySelectorAll('.screen');
+      var actionBars=document.querySelectorAll('.floating-actions');
+      var mainDiaryAction=byId('mainDiaryAction');
+      var mainDiaryActionText=byId('mainDiaryActionText');
+      var mainProfileAction=byId('mainProfileAction');
+      var mainProfileActionText=byId('mainProfileActionText');
+      var currentDiaryTab='all';
+      var currentProfileTab='main';
 
-      var lists = {wishes:{view:byId('wishesListView'),form:byId('wishFormView'),list:byId('wishesList'),empty:byId('wishesEmpty'),title:byId('wishFormTitle')},thoughts:{view:byId('thoughtsListView'),form:byId('thoughtFormView'),list:byId('thoughtsList'),empty:byId('thoughtsEmpty'),title:byId('thoughtFormTitle')},dreams:{view:byId('dreamsListView'),form:byId('dreamFormView'),list:byId('dreamsList'),empty:byId('dreamsEmpty'),title:byId('dreamFormTitle')}};
-      var wishFields = {title:byId('wishTitle'),dueType:byId('wishDueType'),customDate:byId('wishCustomDate'),reason:byId('wishReason'),step:byId('wishStep')};
-      var thoughtFields = {title:byId('thoughtTitle'),category:byId('thoughtCategory'),text:byId('thoughtText'),importance:byId('thoughtImportance')};
-      var dreamFields = {title:byId('dreamTitle'),mood:byId('dreamMood'),story:byId('dreamStory'),symbols:byId('dreamSymbols')};
-      var wishCustomDateField = byId('wishCustomDateField');
-      var profileLists = {career:{view:byId('careerListView'),form:byId('careerForm'),list:byId('careerList'),empty:byId('careerEmpty'),formTitle:byId('careerFormTitle')},interests:{view:byId('interestsListView'),form:byId('interestsForm'),list:byId('interestsList'),empty:byId('interestsEmpty'),formTitle:byId('interestsFormTitle')},hobby:{view:byId('hobbyListView'),form:byId('hobbyForm'),list:byId('hobbyList'),empty:byId('hobbyEmpty'),formTitle:byId('hobbyFormTitle')},achievements:{view:byId('achievementsListView'),form:byId('achievementsForm'),list:byId('achievementsList'),empty:byId('achievementsEmpty'),formTitle:byId('achievementsFormTitle')}};
-      var profileFields = {career:{title:byId('careerTitle'),type:byId('careerType'),description:byId('careerDescription'),next:byId('careerNext')},interests:{title:byId('interestTitle'),format:byId('interestFormat'),reason:byId('interestReason'),explore:byId('interestExplore')},hobby:{title:byId('hobbyTitle'),frequency:byId('hobbyFrequency'),reason:byId('hobbyReason'),plan:byId('hobbyPlan')},achievements:{title:byId('achievementTitle'),area:byId('achievementArea'),story:byId('achievementStory'),impact:byId('achievementImpact')}};
+      var telegramUser={firstName:'Anatolio',lastName:'Fabbri',username:'',photoUrl:'',initials:'AF'};
 
-      function switchTab(group, tab) { haptic('selection'); var scope = group.getAttribute('data-tabs'); var tabName = tab.getAttribute('data-tab'); group.querySelectorAll('.tab').forEach(function (i) { i.classList.remove('active'); }); tab.classList.add('active'); document.querySelectorAll('.tab-panel').forEach(function (p) { if (p.getAttribute('data-scope') === scope) p.classList.toggle('active', p.getAttribute('data-panel') === tabName); }); if (scope === 'diary') { currentDiaryTab = tabName; closeDiaryForm('wishes',false); closeDiaryForm('thoughts',false); closeDiaryForm('dreams',false); syncDiaryActionButton(tabName); } if (scope === 'profile') { currentProfileTab = tabName; closeProfileForm('career',false); closeProfileForm('interests',false); closeProfileForm('hobby',false); closeProfileForm('achievements',false); syncProfileActionButton(tabName); } }
-      function switchDiaryTo(t) { var g = document.querySelector('[data-tabs="diary"]'); switchTab(g, g.querySelector('[data-tab="' + t + '"]')); }
-      function formatWishDue(w) { if (w.dueType === 'week') return 'Should come true in one week'; if (w.dueType === 'month') return 'Should come true in one month'; if (w.dueType === 'year') return 'Should come true in one year'; if (w.dueType === 'custom' && w.customDate) { var p = w.customDate.split('-'); return 'Should come true by ' + p[2] + '.' + p[1] + '.' + p[0]; } return 'Custom date not set'; }
-      function closeOpenSwipes(exceptNode) { document.querySelectorAll('.entry.swiped').forEach(function (entry) { if (entry !== exceptNode) { entry.classList.remove('swiped'); var slide = entry.querySelector('.entry-slide'); if (slide) slide.style.transform = ''; } }); }
-      function attachSwipeDelete(node,onDelete) { if (!onDelete) return; var slide = node.querySelector('.entry-slide'); var startX = 0; var startY = 0; var dragging = false; var moved = false; var openedHaptic = false; var deleteBtn = document.createElement('button'); deleteBtn.className = 'delete-btn'; deleteBtn.type = 'button'; deleteBtn.textContent = 'Delete'; deleteBtn.addEventListener('click', function (e) { e.stopPropagation(); haptic('error'); node.classList.add('deleting'); setTimeout(function () { onDelete(); haptic('success'); }, 180); }); node.appendChild(deleteBtn); node.addEventListener('pointerdown', function (e) { if (e.target.closest('button')) return; closeOpenSwipes(node); startX = e.clientX; startY = e.clientY; dragging = true; moved = false; openedHaptic = false; node.classList.add('swiping'); }); node.addEventListener('pointermove', function (e) { if (!dragging || !slide) return; var dx = e.clientX - startX; var dy = e.clientY - startY; if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 12) { dragging = false; node.classList.remove('swiping'); if (!node.classList.contains('swiped')) slide.style.transform = ''; return; } if (dx < 0) { moved = true; var limited = Math.max(dx, -104); slide.style.transform = 'translateX(' + limited + 'px)'; if (limited < -62 && !openedHaptic) { openedHaptic = true; haptic('medium'); } } else if (dx > 0 && node.classList.contains('swiped')) { moved = true; var back = Math.min(-96 + dx, 0); slide.style.transform = 'translateX(' + back + 'px)'; } }); node.addEventListener('pointerup', function () { if (!dragging || !slide) return; dragging = false; node.classList.remove('swiping'); var raw = slide.style.transform.replace('translateX(', '').replace('px)', ''); var current = parseFloat(raw || '0'); if (moved && current < -52) { node.classList.add('swiped'); slide.style.transform = ''; } else { node.classList.remove('swiped'); slide.style.transform = ''; } }); node.addEventListener('pointercancel', function () { dragging = false; node.classList.remove('swiping'); if (!node.classList.contains('swiped') && slide) slide.style.transform = ''; }); }
-      function editableEntry(o) { var article = makeElement('article','entry'); var slide = makeElement('div','entry-slide'); var badge = makeElement('div','badge ' + (o.badgeClass || '')); var content = makeElement('div'); var head = makeElement('div','item-head'); var textWrap = makeElement('div'); var edit = makeElement('button','edit-icon'); badge.appendChild(makeIcon(o.icon)); edit.type = 'button'; edit.appendChild(makeIcon('edit')); edit.addEventListener('click', function (e) { e.stopPropagation(); o.onEdit(); }); textWrap.appendChild(makeElement('div','meta',o.meta)); textWrap.appendChild(makeElement('h3','',o.title)); head.appendChild(textWrap); head.appendChild(edit); content.appendChild(head); content.appendChild(makeElement('p','',o.text)); if (o.progress) { var pw = makeElement('div','progress-wrap'); var pl = makeElement('div','progress-label'); var pr = makeElement('div','progress'); var pb = makeElement('span'); pb.style.width = String(o.progress) + '%'; pl.appendChild(makeElement('span','','Clarity')); pl.appendChild(makeElement('span','',String(o.progress) + '%')); pr.appendChild(pb); pw.appendChild(pl); pw.appendChild(pr); content.appendChild(pw); } slide.appendChild(badge); slide.appendChild(content); article.appendChild(slide); attachSwipeDelete(article,o.onDelete); return article; }
-      function renderAllEntries() { var nodes = []; wishes.forEach(function (w,i) { nodes.push(editableEntry({icon:'wish',badgeClass:'gold',meta:'Wish - ' + formatWishDue(w),title:w.title || 'Untitled wish',text:w.reason || 'No reason yet.',progress:w.progress || 18,onEdit:function(){switchDiaryTo('wishes');openDiaryForm('wishes',i);},onDelete:function(){wishes.splice(i,1);renderDiary();}})); }); thoughts.forEach(function (t,i) { nodes.push(editableEntry({icon:'thought',badgeClass:'green',meta:'Thought - ' + t.category,title:t.title || 'Untitled thought',text:t.text || 'No thought yet.',onEdit:function(){switchDiaryTo('thoughts');openDiaryForm('thoughts',i);},onDelete:function(){thoughts.splice(i,1);renderDiary();}})); }); dreams.forEach(function (d,i) { nodes.push(editableEntry({icon:'dream',badgeClass:'pink',meta:'Dream - ' + d.mood,title:d.title || 'Untitled dream',text:d.story || 'No story yet.',onEdit:function(){switchDiaryTo('dreams');openDiaryForm('dreams',i);},onDelete:function(){dreams.splice(i,1);renderDiary();}})); }); setChildren(byId('allEntriesList'),nodes); }
-      function renderDiaryList(type) { var data = type === 'wishes' ? wishes : type === 'thoughts' ? thoughts : dreams; var nodes = []; data.forEach(function (item,i) { if (type === 'wishes') nodes.push(editableEntry({icon:'wish',badgeClass:'gold',meta:'Wish - ' + formatWishDue(item),title:item.title || 'Untitled wish',text:item.reason || 'No reason yet.',progress:item.progress || 18,onEdit:function(){openDiaryForm(type,i);},onDelete:function(){data.splice(i,1);renderDiary();}})); if (type === 'thoughts') nodes.push(editableEntry({icon:'thought',badgeClass:'green',meta:'Thought - ' + item.category,title:item.title || 'Untitled thought',text:item.text || 'No thought yet.',onEdit:function(){openDiaryForm(type,i);},onDelete:function(){data.splice(i,1);renderDiary();}})); if (type === 'dreams') nodes.push(editableEntry({icon:'dream',badgeClass:'pink',meta:'Dream - ' + item.mood,title:item.title || 'Untitled dream',text:item.story || 'No story yet.',onEdit:function(){openDiaryForm(type,i);},onDelete:function(){data.splice(i,1);renderDiary();}})); }); setChildren(lists[type].list,nodes); lists[type].empty.classList.toggle('hidden',data.length > 0); lists[type].list.classList.toggle('hidden',data.length === 0); byId('wishCountStat').textContent = String(wishes.length); byId('thoughtCountStat').textContent = String(thoughts.length); byId('dreamCountStat').textContent = String(dreams.length); }
-      function renderDiary() { renderDiaryList('wishes'); renderDiaryList('thoughts'); renderDiaryList('dreams'); renderAllEntries(); renderLifeMap(); }
-      function openDiaryForm(type,i) { haptic('medium'); mainDiaryAction.parentElement.classList.remove('active'); var isEdit = typeof i === 'number'; editing[type] = isEdit ? i : null; lists[type].view.classList.add('hidden'); lists[type].form.classList.remove('hidden'); if (type === 'wishes') { var w = isEdit ? wishes[i] : {title:'',dueType:'week',customDate:'',reason:'',step:'',progress:18}; lists[type].title.textContent = isEdit ? 'Edit Wish' : 'New Wish'; wishFields.title.value = w.title; wishFields.dueType.value = w.dueType; wishFields.customDate.value = w.customDate; wishFields.reason.value = w.reason; wishFields.step.value = w.step; wishCustomDateField.classList.toggle('hidden', wishFields.dueType.value !== 'custom'); } if (type === 'thoughts') { var t = isEdit ? thoughts[i] : {title:'',category:'Business idea',text:'',importance:''}; lists[type].title.textContent = isEdit ? 'Edit Thought' : 'New Thought'; thoughtFields.title.value = t.title; thoughtFields.category.value = t.category; thoughtFields.text.value = t.text; thoughtFields.importance.value = t.importance; } if (type === 'dreams') { var d = isEdit ? dreams[i] : {title:'',mood:'Calm',story:'',symbols:''}; lists[type].title.textContent = isEdit ? 'Edit Dream' : 'New Dream'; dreamFields.title.value = d.title; dreamFields.mood.value = d.mood; dreamFields.story.value = d.story; dreamFields.symbols.value = d.symbols; } window.scrollTo({top:0,behavior:'smooth'}); }
-      function closeDiaryForm(type,reset) { if (!lists[type]) return; if (typeof reset === 'undefined') reset = true; if (reset) haptic('light'); lists[type].form.classList.add('hidden'); lists[type].view.classList.remove('hidden'); if (reset) editing[type] = null; if (reset && currentDiaryTab === type) syncDiaryActionButton(currentDiaryTab); }
-      function saveDiaryItem(type) { if (type === 'wishes') { var wd = {title:wishFields.title.value.trim() || 'Untitled wish',dueType:wishFields.dueType.value,customDate:wishFields.customDate.value,reason:wishFields.reason.value.trim(),step:wishFields.step.value.trim(),progress:wishFields.reason.value.trim() && wishFields.step.value.trim() ? 68 : 36}; if (editing.wishes === null) wishes.unshift(wd); else wishes[editing.wishes] = wd; } if (type === 'thoughts') { var td = {title:thoughtFields.title.value.trim() || 'Untitled thought',category:thoughtFields.category.value,text:thoughtFields.text.value.trim(),importance:thoughtFields.importance.value.trim()}; if (editing.thoughts === null) thoughts.unshift(td); else thoughts[editing.thoughts] = td; } if (type === 'dreams') { var dd = {title:dreamFields.title.value.trim() || 'Untitled dream',mood:dreamFields.mood.value,story:dreamFields.story.value.trim(),symbols:dreamFields.symbols.value.trim()}; if (editing.dreams === null) dreams.unshift(dd); else dreams[editing.dreams] = dd; } renderDiary(); haptic('success'); closeDiaryForm(type); }
-      function syncDiaryActionButton(tab) { if (tab === 'wishes') { mainDiaryAction.parentElement.classList.add('active'); mainDiaryActionText.textContent = 'Add Wish'; mainDiaryAction.onclick = function () { openDiaryForm('wishes'); }; return; } if (tab === 'thoughts') { mainDiaryAction.parentElement.classList.add('active'); mainDiaryActionText.textContent = 'Add Thought'; mainDiaryAction.onclick = function () { openDiaryForm('thoughts'); }; return; } if (tab === 'dreams') { mainDiaryAction.parentElement.classList.add('active'); mainDiaryActionText.textContent = 'Add Dream'; mainDiaryAction.onclick = function () { openDiaryForm('dreams'); }; return; } mainDiaryAction.parentElement.classList.remove('active'); mainDiaryAction.onclick = null; }
+      function loadTelegramUser(){
+        var tg=window.Telegram&&window.Telegram.WebApp;
+        var user=tg&&tg.initDataUnsafe&&tg.initDataUnsafe.user;
+        if(user){
+          telegramUser.firstName=user.first_name||'';
+          telegramUser.lastName=user.last_name||'';
+          telegramUser.username=user.username||'';
+          telegramUser.photoUrl=user.photo_url||'';
+        }
+        var a=(telegramUser.firstName||'').charAt(0);
+        var b=(telegramUser.lastName||'').charAt(0);
+        telegramUser.initials=(a+b||'U').toUpperCase();
+        var fullName=[telegramUser.firstName,telegramUser.lastName].filter(Boolean).join(' ')||telegramUser.username||'Telegram User';
+        var nameNode=document.querySelector('.name');
+        var avatarNode=document.querySelector('.avatar-inner');
+        var mapAvatar=byId('lifeMapAvatar');
+        if(nameNode)nameNode.textContent=fullName;
+        function fillAvatar(node){
+          if(!node)return;
+          node.textContent='';
+          if(telegramUser.photoUrl){
+            var img=document.createElement('img');
+            img.src=telegramUser.photoUrl;
+            img.alt=fullName;
+            node.appendChild(img);
+          }else{
+            node.textContent=telegramUser.initials;
+          }
+        }
+        fillAvatar(avatarNode);
+        fillAvatar(mapAvatar);
+      }
 
-      function openMapSheet() { var sheet = byId('mapSheet'); if (!sheet) return; sheet.classList.add('open'); sheet.setAttribute('aria-hidden','false'); haptic('medium'); }
-      function closeMapSheet() { var sheet = byId('mapSheet'); if (!sheet) return; sheet.classList.remove('open'); sheet.setAttribute('aria-hidden','true'); haptic('light'); }
-      function renderLifeMap() { var nodesWrap = byId('lifeMapNodes'); var detail = byId('lifeMapDetail'); var avatar = byId('lifeMapAvatar'); var openBtn = byId('openMapGoalBtn'); if (!nodesWrap || !detail || !avatar) return; var nodes = []; roadmapGoals.forEach(function (goal) { var btn = makeElement('button','map-node ' + goal.status + (goal.id === selectedRoadmapId ? ' active' : '')); btn.type = 'button'; btn.style.left = goal.x + 'px'; btn.style.top = goal.y + 'px'; var top = makeElement('div','map-node-top'); var ico = makeElement('div','map-node-icon ' + goal.badge); var txt = makeElement('div'); ico.appendChild(makeIcon(goal.icon)); txt.appendChild(makeElement('div','map-node-title',goal.title)); txt.appendChild(makeElement('div','map-node-meta',String(goal.progress) + '% - ' + goal.type)); top.appendChild(ico); top.appendChild(txt); var pr = makeElement('div','map-mini-progress'); var bar = makeElement('i'); bar.style.width = String(goal.progress) + '%'; pr.appendChild(bar); btn.appendChild(top); btn.appendChild(pr); btn.addEventListener('click', function () { selectedRoadmapId = goal.id; haptic('selection'); renderLifeMap(); openMapSheet(); }); nodes.push(btn); }); setChildren(nodesWrap,nodes); var active = roadmapGoals.filter(function (g) { return g.id === selectedRoadmapId; })[0] || roadmapGoals[0]; avatar.style.left = (active.x + 34) + 'px'; avatar.style.top = (active.y - 34) + 'px'; var head = makeElement('div','map-detail-head'); var titleWrap = makeElement('div'); var percent = makeElement('div','map-percent',String(active.progress) + '%'); titleWrap.appendChild(makeElement('h2','',active.title)); titleWrap.appendChild(makeElement('p','',active.text)); head.appendChild(titleWrap); head.appendChild(percent); var steps = makeElement('div','step-list'); active.steps.forEach(function (step,index) { var row = makeElement('div','step-item ' + (step[1] ? 'done' : index === 1 ? 'active' : '')); var check = makeElement('div','step-check'); check.appendChild(makeIcon(step[1] ? 'plus' : 'progress')); var text = makeElement('div'); text.appendChild(makeElement('div','step-title',step[0])); text.appendChild(makeElement('div','step-sub',step[2])); row.appendChild(check); row.appendChild(text); steps.appendChild(row); }); setChildren(detail,[head,steps]); if (openBtn) { openBtn.textContent = 'Open ' + active.title + ' steps'; openBtn.onclick = function () { openMapSheet(); }; } }
+      var wishes=[{title:'Buy a house near the sea',dueType:'year',customDate:'',reason:'I want a peaceful place to rest, think and spend time with people I love.',step:'Research locations and estimate the budget.',progress:42}];
+      var thoughts=[{title:'Open a business',category:'Business idea',text:'I saw myself leading a team and calmly explaining what to do next.',importance:'This could become a real direction for my next project.'}];
+      var dreams=[{title:'Tree from childhood',mood:'Calm',story:'I saw a tree from my childhood and felt like I had always lived there.',symbols:'Tree, childhood, home, calm feeling.'}];
+      var editing={wishes:null,thoughts:null,dreams:null};
+      var profileItems={career:[{title:'Startup manager',type:'Role',description:'Strategy, marketing, sales and product launches.',next:'Build my own product and systemize the methodology.'}],interests:[{title:'AI assistants',format:'Practice',reason:'I like products that help people understand themselves.',explore:'Personal roadmaps and product growth.'}],hobby:[{title:'Walking',frequency:'Few times a week',reason:'Long walks clear my head and give me energy.',plan:'Schedule two evening walks every week.'}],achievements:[{title:'Launched 10+ projects',area:'Business',story:'Brought more than 10 projects to the market.',impact:'This proves I can move ideas into real products.'}]};
+      var profileEditing={career:null,interests:null,hobby:null,achievements:null};
+      var selectedRoadmapId='wish-0';
 
-      function profileMeta(type,item) { if (type === 'career') return item.type; if (type === 'interests') return item.format; if (type === 'hobby') return item.frequency; return item.area; }
-      function profileText(type,item) { if (type === 'career') return item.description || 'No description yet.'; if (type === 'interests') return item.reason || 'No reason yet.'; if (type === 'hobby') return item.reason || 'No reason yet.'; return item.story || 'No story yet.'; }
-      function profileIcon(type) { if (type === 'career') return 'briefcase'; if (type === 'interests') return 'heart'; if (type === 'hobby') return 'energy'; return 'trophy'; }
-      function profileBadge(type) { if (type === 'career') return ''; if (type === 'interests') return 'pink'; if (type === 'hobby') return 'green'; return 'purple'; }
-      function renderProfileList(type) { var arr = profileItems[type]; var nodes = []; arr.forEach(function (item,i) { nodes.push(editableEntry({icon:profileIcon(type),badgeClass:profileBadge(type),meta:profileMeta(type,item),title:item.title || 'Untitled',text:profileText(type,item),onEdit:function(){openProfileForm(type,i);},onDelete:function(){profileItems[type].splice(i,1);renderProfileLists();}})); }); setChildren(profileLists[type].list,nodes); profileLists[type].empty.classList.toggle('hidden',arr.length > 0); profileLists[type].list.classList.toggle('hidden',arr.length === 0); }
-      function renderProfileLists() { renderProfileList('career'); renderProfileList('interests'); renderProfileList('hobby'); renderProfileList('achievements'); renderProfileSummary(); }
-      function openProfileForm(type,i) { haptic('medium'); mainProfileAction.parentElement.classList.remove('active'); var isEdit = typeof i === 'number'; var item = isEdit ? profileItems[type][i] : null; profileEditing[type] = isEdit ? i : null; profileLists[type].view.classList.add('hidden'); profileLists[type].form.classList.remove('hidden'); if (type === 'career') { var c = item || {title:'',type:'Role',description:'',next:''}; profileLists[type].formTitle.textContent = isEdit ? 'Edit Career Card' : 'New Career Card'; profileFields.career.title.value = c.title; profileFields.career.type.value = c.type; profileFields.career.description.value = c.description; profileFields.career.next.value = c.next; } if (type === 'interests') { var it = item || {title:'',format:'Practice',reason:'',explore:''}; profileLists[type].formTitle.textContent = isEdit ? 'Edit Interest' : 'New Interest'; profileFields.interests.title.value = it.title; profileFields.interests.format.value = it.format; profileFields.interests.reason.value = it.reason; profileFields.interests.explore.value = it.explore; } if (type === 'hobby') { var h = item || {title:'',frequency:'Few times a week',reason:'',plan:''}; profileLists[type].formTitle.textContent = isEdit ? 'Edit Hobby' : 'New Hobby'; profileFields.hobby.title.value = h.title; profileFields.hobby.frequency.value = h.frequency; profileFields.hobby.reason.value = h.reason; profileFields.hobby.plan.value = h.plan; } if (type === 'achievements') { var a = item || {title:'',area:'Business',story:'',impact:''}; profileLists[type].formTitle.textContent = isEdit ? 'Edit Achievement' : 'New Achievement'; profileFields.achievements.title.value = a.title; profileFields.achievements.area.value = a.area; profileFields.achievements.story.value = a.story; profileFields.achievements.impact.value = a.impact; } window.scrollTo({top:0,behavior:'smooth'}); }
-      function closeProfileForm(type,reset) { if (!profileLists[type]) return; if (typeof reset === 'undefined') reset = true; if (reset) haptic('light'); profileLists[type].form.classList.add('hidden'); profileLists[type].view.classList.remove('hidden'); if (reset) profileEditing[type] = null; if (reset && currentProfileTab === type) syncProfileActionButton(currentProfileTab); }
-      function saveProfileItem(type) { var f = profileFields[type]; var data = null; if (type === 'career') data = {title:f.title.value.trim() || 'Untitled career card',type:f.type.value,description:f.description.value.trim(),next:f.next.value.trim()}; if (type === 'interests') data = {title:f.title.value.trim() || 'Untitled interest',format:f.format.value,reason:f.reason.value.trim(),explore:f.explore.value.trim()}; if (type === 'hobby') data = {title:f.title.value.trim() || 'Untitled hobby',frequency:f.frequency.value,reason:f.reason.value.trim(),plan:f.plan.value.trim()}; if (type === 'achievements') data = {title:f.title.value.trim() || 'Untitled achievement',area:f.area.value,story:f.story.value.trim(),impact:f.impact.value.trim()}; if (profileEditing[type] === null) profileItems[type].unshift(data); else profileItems[type][profileEditing[type]] = data; renderProfileLists(); haptic('success'); closeProfileForm(type); }
-      function syncProfileActionButton(tab) { if (tab === 'career' || tab === 'interests' || tab === 'hobby' || tab === 'achievements') { mainProfileAction.parentElement.classList.add('active'); mainProfileActionText.textContent = tab === 'career' ? 'Add Career' : tab === 'interests' ? 'Add Interest' : tab === 'hobby' ? 'Add Hobby' : 'Add Win'; mainProfileAction.onclick = function () { openProfileForm(tab); }; return; } mainProfileAction.parentElement.classList.remove('active'); mainProfileAction.onclick = null; }
-      function summaryBlock(title,items) { var key = title.toLowerCase() === 'achievements' ? 'achievements' : title.toLowerCase(); var block = makeElement('div','summary-block'); var head = makeElement('div','summary-head'); var icon = makeElement('div','summary-icon ' + profileBadge(key)); icon.appendChild(makeIcon(profileIcon(key))); head.appendChild(icon); head.appendChild(makeElement('h3','',title)); block.appendChild(head); if (!items.length) block.appendChild(makeElement('p','','No cards yet.')); items.slice(0,3).forEach(function (item) { var p = makeElement('p'); p.appendChild(makeElement('strong','',item.title + ': ')); p.appendChild(document.createTextNode(profileText(key,item))); block.appendChild(p); }); return block; }
-      function renderProfileSummary() { setChildren(byId('profileSummary'),[summaryBlock('Career',profileItems.career),summaryBlock('Interests',profileItems.interests),summaryBlock('Hobby',profileItems.hobby),summaryBlock('Achievements',profileItems.achievements)]); }
+      function buildRoadmapGoals(){
+        var spots=[{x:205,y:52},{x:115,y:165},{x:287,y:255},{x:118,y:365},{x:222,y:505}];
+        var goals=[{id:'vision',title:'Find clear direction',type:'thought',icon:'bulb',badge:'green',progress:100,x:spots[0].x,y:spots[0].y,status:'done',text:'Turn scattered ideas into one direction for the next stage.',steps:[['Capture main thoughts',true,'Done'],['Choose one focus',true,'Done'],['Write first roadmap',true,'Done']]}];
+        var source=[];
+        wishes.forEach(function(w,i){source.push({id:'wish-'+i,title:w.title||'Untitled wish',type:'wish',icon:'star',badge:'gold',progress:w.progress||36,text:w.reason||w.step||'Personal wish from your journal.',steps:[['Describe wish',true,'Saved'],[w.step||'Choose first step',false,'Next'],['Build simple plan',false,'Later']]})});
+        thoughts.forEach(function(t,i){source.push({id:'thought-'+i,title:t.title||'Untitled thought',type:'thought',icon:'bulb',badge:'green',progress:28,text:t.text||t.importance||'Thought from your journal.',steps:[['Capture idea',true,'Saved'],['Find value',false,'Next'],['Turn into action',false,'Later']]})});
+        dreams.forEach(function(d,i){source.push({id:'dream-'+i,title:d.title||'Untitled dream',type:'dream',icon:'moon',badge:'pink',progress:18,text:d.story||d.symbols||'Dream from your journal.',steps:[['Save dream',true,'Saved'],['Read symbols',false,'Reflection'],['Find message',false,'Later']]})});
+        source.slice(0,4).forEach(function(item,i){item.x=spots[i+1].x;item.y=spots[i+1].y;item.status=i===0?'active':'future';goals.push(item)});
+        return goals;
+      }
 
-      navItems.forEach(function (btn) { btn.addEventListener('click', function () { openScreen(btn.getAttribute('data-screen')); }); });
-      document.querySelectorAll('[data-tabs]').forEach(function (group) { group.querySelectorAll('.tab').forEach(function (tab) { tab.addEventListener('click', function () { switchTab(group,tab); }); }); });
-      var mapSheetCloseBtn = byId('mapSheetClose'); var mapSheetBackdrop = byId('mapSheetBackdrop'); if (mapSheetCloseBtn) mapSheetCloseBtn.addEventListener('click', closeMapSheet); if (mapSheetBackdrop) mapSheetBackdrop.addEventListener('click', closeMapSheet);
-      document.addEventListener('focusin', function (e) { if (isTextInput(e.target)) setKeyboardMode(true); });
-      document.addEventListener('focusout', function (e) { if (!isTextInput(e.target)) return; setTimeout(refreshKeyboardMode,320); });
-      document.addEventListener('click', function (e) { if (!e.target.closest('.entry')) closeOpenSwipes(null); });
-      if (window.visualViewport) { window.visualViewport.addEventListener('resize',syncKeyboardOffset); window.visualViewport.addEventListener('scroll',syncKeyboardOffset); }
-      window.addEventListener('resize',syncKeyboardOffset); window.addEventListener('orientationchange', function () { setTimeout(refreshKeyboardMode,350); });
-      wishFields.dueType.addEventListener('change', function () { wishCustomDateField.classList.toggle('hidden', wishFields.dueType.value !== 'custom'); });
-      byId('cancelWishBtn').addEventListener('click', function () { closeDiaryForm('wishes'); }); byId('saveWishBtn').addEventListener('click', function () { saveDiaryItem('wishes'); });
-      byId('cancelThoughtBtn').addEventListener('click', function () { closeDiaryForm('thoughts'); }); byId('saveThoughtBtn').addEventListener('click', function () { saveDiaryItem('thoughts'); });
-      byId('cancelDreamBtn').addEventListener('click', function () { closeDiaryForm('dreams'); }); byId('saveDreamBtn').addEventListener('click', function () { saveDiaryItem('dreams'); });
-      byId('cancelCareerBtn').addEventListener('click', function () { closeProfileForm('career'); }); byId('saveCareerBtn').addEventListener('click', function () { saveProfileItem('career'); });
-      byId('cancelInterestsBtn').addEventListener('click', function () { closeProfileForm('interests'); }); byId('saveInterestsBtn').addEventListener('click', function () { saveProfileItem('interests'); });
-      byId('cancelHobbyBtn').addEventListener('click', function () { closeProfileForm('hobby'); }); byId('saveHobbyBtn').addEventListener('click', function () { saveProfileItem('hobby'); });
-      byId('cancelAchievementsBtn').addEventListener('click', function () { closeProfileForm('achievements'); }); byId('saveAchievementsBtn').addEventListener('click', function () { saveProfileItem('achievements'); });
+      var lists={wishes:{view:byId('wishesListView'),form:byId('wishFormView'),list:byId('wishesList'),empty:byId('wishesEmpty'),title:byId('wishFormTitle')},thoughts:{view:byId('thoughtsListView'),form:byId('thoughtFormView'),list:byId('thoughtsList'),empty:byId('thoughtsEmpty'),title:byId('thoughtFormTitle')},dreams:{view:byId('dreamsListView'),form:byId('dreamFormView'),list:byId('dreamsList'),empty:byId('dreamsEmpty'),title:byId('dreamFormTitle')}};
+      var wishFields={title:byId('wishTitle'),dueType:byId('wishDueType'),customDate:byId('wishCustomDate'),reason:byId('wishReason'),step:byId('wishStep')};
+      var thoughtFields={title:byId('thoughtTitle'),category:byId('thoughtCategory'),text:byId('thoughtText'),importance:byId('thoughtImportance')};
+      var dreamFields={title:byId('dreamTitle'),mood:byId('dreamMood'),story:byId('dreamStory'),symbols:byId('dreamSymbols')};
+      var wishCustomDateField=byId('wishCustomDateField');
+      var profileLists={career:{view:byId('careerListView'),form:byId('careerForm'),list:byId('careerList'),empty:byId('careerEmpty'),formTitle:byId('careerFormTitle')},interests:{view:byId('interestsListView'),form:byId('interestsForm'),list:byId('interestsList'),empty:byId('interestsEmpty'),formTitle:byId('interestsFormTitle')},hobby:{view:byId('hobbyListView'),form:byId('hobbyForm'),list:byId('hobbyList'),empty:byId('hobbyEmpty'),formTitle:byId('hobbyFormTitle')},achievements:{view:byId('achievementsListView'),form:byId('achievementsForm'),list:byId('achievementsList'),empty:byId('achievementsEmpty'),formTitle:byId('achievementsFormTitle')}};
+      var profileFields={career:{title:byId('careerTitle'),type:byId('careerType'),description:byId('careerDescription'),next:byId('careerNext')},interests:{title:byId('interestTitle'),format:byId('interestFormat'),reason:byId('interestReason'),explore:byId('interestExplore')},hobby:{title:byId('hobbyTitle'),frequency:byId('hobbyFrequency'),reason:byId('hobbyReason'),plan:byId('hobbyPlan')},achievements:{title:byId('achievementTitle'),area:byId('achievementArea'),story:byId('achievementStory'),impact:byId('achievementImpact')}};
 
-      initTelegramWebApp(); lockIOSPullToClose(); hydrateStaticIcons(); renderDiary(); renderProfileLists(); renderLifeMap(); syncDiaryActionButton(currentDiaryTab); syncProfileActionButton(currentProfileTab); syncKeyboardOffset();
-      function runSmokeTests() { console.assert(document.querySelector('[data-tab="achievements"]') !== null,'Achievements tab exists'); console.assert(mainProfileAction !== null,'Profile add button exists'); console.assert(document.querySelectorAll('.icon').length > 0,'SVG icons rendered'); console.assert(typeof attachSwipeDelete === 'function','Swipe delete exists'); console.assert(typeof haptic === 'function','Telegram haptic helper exists'); console.assert(typeof initTelegramWebApp === 'function','Telegram WebApp init exists'); console.assert(typeof lockIOSPullToClose === 'function','iOS pull lock exists'); console.assert(typeof refreshKeyboardMode === 'function','Keyboard mode refresh exists'); console.assert(typeof renderLifeMap === 'function','Life Map render exists'); console.assert(typeof openMapSheet === 'function','Map sheet opens'); console.assert(typeof closeMapSheet === 'function','Map sheet closes'); switchTab(document.querySelector('[data-tabs="profile"]'), document.querySelector('[data-tab="career"]')); console.assert(mainProfileActionText.textContent === 'Add Career','Career action label'); switchTab(document.querySelector('[data-tabs="profile"]'), document.querySelector('[data-tab="achievements"]')); console.assert(mainProfileActionText.textContent === 'Add Win','Achievements action label'); switchTab(document.querySelector('[data-tabs="profile"]'), document.querySelector('[data-tab="main"]')); }
-      runSmokeTests();
+      function openScreen(id){haptic('light');screens.forEach(function(s){s.classList.toggle('active',s.id===id)});navItems.forEach(function(i){i.classList.toggle('active',i.getAttribute('data-screen')===id)});actionBars.forEach(function(b){b.classList.toggle('active',b.getAttribute('data-actionbar')===id)});if(id==='profile')syncProfileActionButton(currentProfileTab);if(id==='diary')syncDiaryActionButton(currentDiaryTab)}
+      function switchTab(group,tab){
+        haptic('selection');
+        var scope=group.getAttribute('data-tabs');
+        var tabName=tab.getAttribute('data-tab');
+        group.querySelectorAll('.tab').forEach(function(i){i.classList.remove('active')});
+        tab.classList.add('active');
+        document.querySelectorAll('.tab-panel').forEach(function(p){if(p.getAttribute('data-scope')===scope)p.classList.toggle('active',p.getAttribute('data-panel')===tabName)});
+        if(scope==='diary'){currentDiaryTab=tabName;closeDiaryForm('wishes',false);closeDiaryForm('thoughts',false);closeDiaryForm('dreams',false);syncDiaryActionButton(tabName)}
+        if(scope==='profile'){currentProfileTab=tabName;closeProfileForm('career',false);closeProfileForm('interests',false);closeProfileForm('hobby',false);closeProfileForm('achievements',false);syncProfileActionButton(tabName)}
+      }
+      function switchDiaryTo(t){var g=document.querySelector('[data-tabs="diary"]');switchTab(g,g.querySelector('[data-tab="'+t+'"]'))}
+      function formatWishDue(w){if(w.dueType==='week')return'Should come true in one week';if(w.dueType==='month')return'Should come true in one month';if(w.dueType==='year')return'Should come true in one year';if(w.dueType==='custom'&&w.customDate){var p=w.customDate.split('-');return'Should come true by '+p[2]+'.'+p[1]+'.'+p[0]}return'Custom date not set'}
+      function closeOpenSwipes(exceptNode){document.querySelectorAll('.entry.swiped').forEach(function(entry){if(entry!==exceptNode){entry.classList.remove('swiped');var slide=entry.querySelector('.entry-slide');if(slide)slide.style.transform=''}})}
+
+      function attachSwipeDelete(node,onDelete){
+        if(!onDelete)return;
+        var slide=node.querySelector('.entry-slide'),startX=0,startY=0,dragging=false,moved=false,openedHaptic=false;
+        var deleteBtn=document.createElement('button');
+        deleteBtn.className='delete-btn';deleteBtn.type='button';deleteBtn.textContent='Delete';
+        deleteBtn.addEventListener('click',function(e){e.stopPropagation();haptic('error');node.classList.add('deleting');setTimeout(function(){onDelete();haptic('success')},180)});
+        node.appendChild(deleteBtn);
+        node.addEventListener('pointerdown',function(e){if(e.target.closest('button'))return;closeOpenSwipes(node);startX=e.clientX;startY=e.clientY;dragging=true;moved=false;openedHaptic=false;node.classList.add('swiping')});
+        node.addEventListener('pointermove',function(e){
+          if(!dragging||!slide)return;
+          var dx=e.clientX-startX,dy=e.clientY-startY;
+          if(Math.abs(dy)>Math.abs(dx)&&Math.abs(dy)>12){dragging=false;node.classList.remove('swiping');if(!node.classList.contains('swiped'))slide.style.transform='';return}
+          if(dx<0){moved=true;var limited=Math.max(dx,-104);slide.style.transform='translateX('+limited+'px)';if(limited<-62&&!openedHaptic){openedHaptic=true;haptic('medium')}}
+          else if(dx>0&&node.classList.contains('swiped')){moved=true;var back=Math.min(-96+dx,0);slide.style.transform='translateX('+back+'px)'}
+        });
+        node.addEventListener('pointerup',function(){if(!dragging||!slide)return;dragging=false;node.classList.remove('swiping');var raw=slide.style.transform.replace('translateX(','').replace('px)','');var current=parseFloat(raw||'0');if(moved&&current<-52){node.classList.add('swiped');slide.style.transform=''}else{node.classList.remove('swiped');slide.style.transform=''}});
+        node.addEventListener('pointercancel',function(){dragging=false;node.classList.remove('swiping');if(!node.classList.contains('swiped')&&slide)slide.style.transform=''});
+      }
+
+      function editableEntry(o){
+        var article=makeElement('article','entry'),slide=makeElement('div','entry-slide'),badge=makeElement('div','badge '+(o.badgeClass||'')),content=makeElement('div'),head=makeElement('div','item-head'),textWrap=makeElement('div'),edit=makeElement('button','edit-icon');
+        badge.appendChild(makeIcon(o.icon));
+        edit.type='button';edit.appendChild(makeIcon('edit'));edit.addEventListener('click',function(e){e.stopPropagation();o.onEdit()});
+        textWrap.appendChild(makeElement('div','meta',o.meta));textWrap.appendChild(makeElement('h3','',o.title));
+        head.appendChild(textWrap);head.appendChild(edit);
+        content.appendChild(head);content.appendChild(makeElement('p','',o.text));
+        if(o.progress){var pw=makeElement('div','progress-wrap'),pl=makeElement('div','progress-label'),pr=makeElement('div','progress'),pb=makeElement('span');pb.style.width=String(o.progress)+'%';pl.appendChild(makeElement('span','','Clarity'));pl.appendChild(makeElement('span','',String(o.progress)+'%'));pr.appendChild(pb);pw.appendChild(pl);pw.appendChild(pr);content.appendChild(pw)}
+        slide.appendChild(badge);slide.appendChild(content);article.appendChild(slide);attachSwipeDelete(article,o.onDelete);return article;
+      }
+
+      function renderAllEntries(){
+        var nodes=[];
+        wishes.forEach(function(w,i){nodes.push(editableEntry({icon:'wish',badgeClass:'gold',meta:'Wish - '+formatWishDue(w),title:w.title||'Untitled wish',text:w.reason||'No reason yet.',progress:w.progress||18,onEdit:function(){switchDiaryTo('wishes');openDiaryForm('wishes',i)},onDelete:function(){wishes.splice(i,1);renderDiary()}}))});
+        thoughts.forEach(function(t,i){nodes.push(editableEntry({icon:'thought',badgeClass:'green',meta:'Thought - '+t.category,title:t.title||'Untitled thought',text:t.text||'No thought yet.',onEdit:function(){switchDiaryTo('thoughts');openDiaryForm('thoughts',i)},onDelete:function(){thoughts.splice(i,1);renderDiary()}}))});
+        dreams.forEach(function(d,i){nodes.push(editableEntry({icon:'dream',badgeClass:'pink',meta:'Dream - '+d.mood,title:d.title||'Untitled dream',text:d.story||'No story yet.',onEdit:function(){switchDiaryTo('dreams');openDiaryForm('dreams',i)},onDelete:function(){dreams.splice(i,1);renderDiary()}}))});
+        setChildren(byId('allEntriesList'),nodes);
+      }
+
+      function renderDiaryList(type){
+        var data=type==='wishes'?wishes:type==='thoughts'?thoughts:dreams;
+        var nodes=[];
+        data.forEach(function(item,i){
+          if(type==='wishes')nodes.push(editableEntry({icon:'wish',badgeClass:'gold',meta:'Wish - '+formatWishDue(item),title:item.title||'Untitled wish',text:item.reason||'No reason yet.',progress:item.progress||18,onEdit:function(){openDiaryForm(type,i)},onDelete:function(){data.splice(i,1);renderDiary()}}));
+          if(type==='thoughts')nodes.push(editableEntry({icon:'thought',badgeClass:'green',meta:'Thought - '+item.category,title:item.title||'Untitled thought',text:item.text||'No thought yet.',onEdit:function(){openDiaryForm(type,i)},onDelete:function(){data.splice(i,1);renderDiary()}}));
+          if(type==='dreams')nodes.push(editableEntry({icon:'dream',badgeClass:'pink',meta:'Dream - '+item.mood,title:item.title||'Untitled dream',text:item.story||'No story yet.',onEdit:function(){openDiaryForm(type,i)},onDelete:function(){data.splice(i,1);renderDiary()}}));
+        });
+        setChildren(lists[type].list,nodes);
+        lists[type].empty.classList.toggle('hidden',data.length>0);
+        lists[type].list.classList.toggle('hidden',data.length===0);
+        byId('wishCountStat').textContent=String(wishes.length);
+        byId('thoughtCountStat').textContent=String(thoughts.length);
+        byId('dreamCountStat').textContent=String(dreams.length);
+      }
+      function renderDiary(){renderDiaryList('wishes');renderDiaryList('thoughts');renderDiaryList('dreams');renderAllEntries();renderLifeMap();loadTelegramUser()}
+
+      function openDiaryForm(type,i){
+        haptic('medium');mainDiaryAction.parentElement.classList.remove('active');
+        var isEdit=typeof i==='number';editing[type]=isEdit?i:null;
+        lists[type].view.classList.add('hidden');lists[type].form.classList.remove('hidden');
+        if(type==='wishes'){var w=isEdit?wishes[i]:{title:'',dueType:'week',customDate:'',reason:'',step:'',progress:18};lists[type].title.textContent=isEdit?'Edit Wish':'New Wish';wishFields.title.value=w.title;wishFields.dueType.value=w.dueType;wishFields.customDate.value=w.customDate;wishFields.reason.value=w.reason;wishFields.step.value=w.step;wishCustomDateField.classList.toggle('hidden',wishFields.dueType.value!=='custom')}
+        if(type==='thoughts'){var t=isEdit?thoughts[i]:{title:'',category:'Business idea',text:'',importance:''};lists[type].title.textContent=isEdit?'Edit Thought':'New Thought';thoughtFields.title.value=t.title;thoughtFields.category.value=t.category;thoughtFields.text.value=t.text;thoughtFields.importance.value=t.importance}
+        if(type==='dreams'){var d=isEdit?dreams[i]:{title:'',mood:'Calm',story:'',symbols:''};lists[type].title.textContent=isEdit?'Edit Dream':'New Dream';dreamFields.title.value=d.title;dreamFields.mood.value=d.mood;dreamFields.story.value=d.story;dreamFields.symbols.value=d.symbols}
+        window.scrollTo({top:0,behavior:'smooth'});
+      }
+      function closeDiaryForm(type,reset){if(!lists[type])return;if(typeof reset==='undefined')reset=true;if(reset)haptic('light');lists[type].form.classList.add('hidden');lists[type].view.classList.remove('hidden');if(reset)editing[type]=null;if(reset&&currentDiaryTab===type)syncDiaryActionButton(currentDiaryTab)}
+      function saveDiaryItem(type){
+        if(type==='wishes'){var wd={title:wishFields.title.value.trim()||'Untitled wish',dueType:wishFields.dueType.value,customDate:wishFields.customDate.value,reason:wishFields.reason.value.trim(),step:wishFields.step.value.trim(),progress:wishFields.reason.value.trim()&&wishFields.step.value.trim()?68:36};if(editing.wishes===null)wishes.unshift(wd);else wishes[editing.wishes]=wd}
+        if(type==='thoughts'){var td={title:thoughtFields.title.value.trim()||'Untitled thought',category:thoughtFields.category.value,text:thoughtFields.text.value.trim(),importance:thoughtFields.importance.value.trim()};if(editing.thoughts===null)thoughts.unshift(td);else thoughts[editing.thoughts]=td}
+        if(type==='dreams'){var dd={title:dreamFields.title.value.trim()||'Untitled dream',mood:dreamFields.mood.value,story:dreamFields.story.value.trim(),symbols:dreamFields.symbols.value.trim()};if(editing.dreams===null)dreams.unshift(dd);else dreams[editing.dreams]=dd}
+        renderDiary();haptic('success');closeDiaryForm(type);
+      }
+      function syncDiaryActionButton(tab){
+        if(tab==='wishes'){mainDiaryAction.parentElement.classList.add('active');mainDiaryActionText.textContent='Add Wish';mainDiaryAction.onclick=function(){openDiaryForm('wishes')};return}
+        if(tab==='thoughts'){mainDiaryAction.parentElement.classList.add('active');mainDiaryActionText.textContent='Add Thought';mainDiaryAction.onclick=function(){openDiaryForm('thoughts')};return}
+        if(tab==='dreams'){mainDiaryAction.parentElement.classList.add('active');mainDiaryActionText.textContent='Add Dream';mainDiaryAction.onclick=function(){openDiaryForm('dreams')};return}
+        mainDiaryAction.parentElement.classList.remove('active');mainDiaryAction.onclick=null;
+      }
+
+      function openMapSheet(){var sheet=byId('mapSheet');if(!sheet)return;sheet.classList.add('open');sheet.setAttribute('aria-hidden','false');haptic('medium')}
+      function closeMapSheet(){var sheet=byId('mapSheet');if(!sheet)return;sheet.classList.remove('open');sheet.setAttribute('aria-hidden','true');haptic('light')}
+      function attachMapSheetSwipeClose(){
+        var panel=document.querySelector('.map-sheet-panel');
+        if(!panel)return;
+        var startY=0,currentY=0,dragging=false;
+        panel.addEventListener('pointerdown',function(e){if(panel.scrollTop>0)return;startY=e.clientY;currentY=0;dragging=true;panel.style.transition='none'});
+        panel.addEventListener('pointermove',function(e){if(!dragging)return;currentY=Math.max(0,e.clientY-startY);if(currentY>0)panel.style.transform='translate3d(-50%,'+currentY+'px,0)'});
+        panel.addEventListener('pointerup',function(){if(!dragging)return;dragging=false;panel.style.transition='';panel.style.transform='';if(currentY>90)closeMapSheet()});
+        panel.addEventListener('pointercancel',function(){dragging=false;panel.style.transition='';panel.style.transform=''});
+      }
+
+      function renderLifeMap(){
+        var roadmapGoals=buildRoadmapGoals();
+        if(!roadmapGoals.some(function(g){return g.id===selectedRoadmapId}))selectedRoadmapId=roadmapGoals[1]?roadmapGoals[1].id:roadmapGoals[0].id;
+        var nodesWrap=byId('lifeMapNodes'),detail=byId('lifeMapDetail'),avatar=byId('lifeMapAvatar');
+        if(!nodesWrap||!detail||!avatar)return;
+        var nodes=[];
+        roadmapGoals.forEach(function(goal){
+          var btn=makeElement('button','map-node '+goal.status+(goal.id===selectedRoadmapId?' active':''));
+          btn.type='button';btn.style.left=goal.x+'px';btn.style.top=goal.y+'px';
+          var top=makeElement('div','map-node-top'),ico=makeElement('div','map-node-icon '+goal.badge),txt=makeElement('div');
+          ico.appendChild(makeIcon(goal.icon));
+          txt.appendChild(makeElement('div','map-node-title',goal.title));
+          txt.appendChild(makeElement('div','map-node-meta',String(goal.progress)+'% - '+goal.type));
+          top.appendChild(ico);top.appendChild(txt);
+          var pr=makeElement('div','map-mini-progress'),bar=makeElement('i');
+          bar.style.width=String(goal.progress)+'%';pr.appendChild(bar);
+          btn.appendChild(top);btn.appendChild(pr);
+          btn.addEventListener('click',function(){selectedRoadmapId=goal.id;haptic('selection');renderLifeMap();loadTelegramUser();openMapSheet()});
+          nodes.push(btn);
+        });
+        setChildren(nodesWrap,nodes);
+        var active=roadmapGoals.filter(function(g){return g.id===selectedRoadmapId})[0]||roadmapGoals[0];
+        avatar.style.left=(active.x+34)+'px';avatar.style.top=(active.y-34)+'px';
+        var head=makeElement('div','map-detail-head'),titleWrap=makeElement('div'),percent=makeElement('div','map-percent',String(active.progress)+'%');
+        titleWrap.appendChild(makeElement('h2','',active.title));titleWrap.appendChild(makeElement('p','',active.text));
+        head.appendChild(titleWrap);head.appendChild(percent);
+        var steps=makeElement('div','step-list');
+        active.steps.forEach(function(step,index){
+          var row=makeElement('div','step-item '+(step[1]?'done':index===1?'active':'')),check=makeElement('div','step-check'),text=makeElement('div');
+          check.appendChild(makeIcon(step[1]?'plus':'progress'));
+          text.appendChild(makeElement('div','step-title',step[0]));text.appendChild(makeElement('div','step-sub',step[2]));
+          row.appendChild(check);row.appendChild(text);steps.appendChild(row);
+        });
+        setChildren(detail,[head,steps]);
+      }
+
+      function profileMeta(type,item){if(type==='career')return item.type;if(type==='interests')return item.format;if(type==='hobby')return item.frequency;return item.area}
+      function profileText(type,item){if(type==='career')return item.description||'No description yet.';if(type==='interests')return item.reason||'No reason yet.';if(type==='hobby')return item.reason||'No reason yet.';return item.story||'No story yet.'}
+      function profileIcon(type){if(type==='career')return'briefcase';if(type==='interests')return'heart';if(type==='hobby')return'energy';return'trophy'}
+      function profileBadge(type){if(type==='career')return'';if(type==='interests')return'pink';if(type==='hobby')return'green';return'purple'}
+      function renderProfileList(type){
+        var arr=profileItems[type],nodes=[];
+        arr.forEach(function(item,i){nodes.push(editableEntry({icon:profileIcon(type),badgeClass:profileBadge(type),meta:profileMeta(type,item),title:item.title||'Untitled',text:profileText(type,item),onEdit:function(){openProfileForm(type,i)},onDelete:function(){profileItems[type].splice(i,1);renderProfileLists()}}))});
+        setChildren(profileLists[type].list,nodes);
+        profileLists[type].empty.classList.toggle('hidden',arr.length>0);
+        profileLists[type].list.classList.toggle('hidden',arr.length===0);
+      }
+      function renderProfileLists(){renderProfileList('career');renderProfileList('interests');renderProfileList('hobby');renderProfileList('achievements');renderProfileSummary()}
+      function openProfileForm(type,i){
+        haptic('medium');mainProfileAction.parentElement.classList.remove('active');
+        var isEdit=typeof i==='number',item=isEdit?profileItems[type][i]:null;profileEditing[type]=isEdit?i:null;
+        profileLists[type].view.classList.add('hidden');profileLists[type].form.classList.remove('hidden');
+        if(type==='career'){var c=item||{title:'',type:'Role',description:'',next:''};profileLists[type].formTitle.textContent=isEdit?'Edit Career Card':'New Career Card';profileFields.career.title.value=c.title;profileFields.career.type.value=c.type;profileFields.career.description.value=c.description;profileFields.career.next.value=c.next}
+        if(type==='interests'){var it=item||{title:'',format:'Practice',reason:'',explore:''};profileLists[type].formTitle.textContent=isEdit?'Edit Interest':'New Interest';profileFields.interests.title.value=it.title;profileFields.interests.format.value=it.format;profileFields.interests.reason.value=it.reason;profileFields.interests.explore.value=it.explore}
+        if(type==='hobby'){var h=item||{title:'',frequency:'Few times a week',reason:'',plan:''};profileLists[type].formTitle.textContent=isEdit?'Edit Hobby':'New Hobby';profileFields.hobby.title.value=h.title;profileFields.hobby.frequency.value=h.frequency;profileFields.hobby.reason.value=h.reason;profileFields.hobby.plan.value=h.plan}
+        if(type==='achievements'){var a=item||{title:'',area:'Business',story:'',impact:''};profileLists[type].formTitle.textContent=isEdit?'Edit Achievement':'New Achievement';profileFields.achievements.title.value=a.title;profileFields.achievements.area.value=a.area;profileFields.achievements.story.value=a.story;profileFields.achievements.impact.value=a.impact}
+        window.scrollTo({top:0,behavior:'smooth'});
+      }
+      function closeProfileForm(type,reset){if(!profileLists[type])return;if(typeof reset==='undefined')reset=true;if(reset)haptic('light');profileLists[type].form.classList.add('hidden');profileLists[type].view.classList.remove('hidden');if(reset)profileEditing[type]=null;if(reset&&currentProfileTab===type)syncProfileActionButton(currentProfileTab)}
+      function saveProfileItem(type){
+        var f=profileFields[type],data=null;
+        if(type==='career')data={title:f.title.value.trim()||'Untitled career card',type:f.type.value,description:f.description.value.trim(),next:f.next.value.trim()};
+        if(type==='interests')data={title:f.title.value.trim()||'Untitled interest',format:f.format.value,reason:f.reason.value.trim(),explore:f.explore.value.trim()};
+        if(type==='hobby')data={title:f.title.value.trim()||'Untitled hobby',frequency:f.frequency.value,reason:f.reason.value.trim(),plan:f.plan.value.trim()};
+        if(type==='achievements')data={title:f.title.value.trim()||'Untitled achievement',area:f.area.value,story:f.story.value.trim(),impact:f.impact.value.trim()};
+        if(profileEditing[type]===null)profileItems[type].unshift(data);else profileItems[type][profileEditing[type]]=data;
+        renderProfileLists();haptic('success');closeProfileForm(type);
+      }
+      function syncProfileActionButton(tab){
+        if(tab==='career'||tab==='interests'||tab==='hobby'||tab==='achievements'){
+          mainProfileAction.parentElement.classList.add('active');
+          mainProfileActionText.textContent=tab==='career'?'Add Career':tab==='interests'?'Add Interest':tab==='hobby'?'Add Hobby':'Add Win';
+          mainProfileAction.onclick=function(){openProfileForm(tab)};
+          return;
+        }
+        mainProfileAction.parentElement.classList.remove('active');mainProfileAction.onclick=null;
+      }
+      function summaryBlock(title,items){
+        var key=title.toLowerCase()==='achievements'?'achievements':title.toLowerCase();
+        var block=makeElement('div','summary-block'),head=makeElement('div','summary-head'),icon=makeElement('div','summary-icon '+profileBadge(key));
+        icon.appendChild(makeIcon(profileIcon(key)));head.appendChild(icon);head.appendChild(makeElement('h3','',title));block.appendChild(head);
+        if(!items.length)block.appendChild(makeElement('p','','No cards yet.'));
+        items.slice(0,3).forEach(function(item){var p=makeElement('p');p.appendChild(makeElement('strong','',item.title+': '));p.appendChild(document.createTextNode(profileText(key,item)));block.appendChild(p)});
+        return block;
+      }
+      function renderProfileSummary(){setChildren(byId('profileSummary'),[summaryBlock('Career',profileItems.career),summaryBlock('Interests',profileItems.interests),summaryBlock('Hobby',profileItems.hobby),summaryBlock('Achievements',profileItems.achievements)])}
+
+      navItems.forEach(function(btn){btn.addEventListener('click',function(){openScreen(btn.getAttribute('data-screen'))})});
+      document.querySelectorAll('[data-tabs]').forEach(function(group){group.querySelectorAll('.tab').forEach(function(tab){tab.addEventListener('click',function(){switchTab(group,tab)})})});
+      var mapSheetBackdrop=byId('mapSheetBackdrop');if(mapSheetBackdrop)mapSheetBackdrop.addEventListener('click',closeMapSheet);
+      document.addEventListener('focusin',function(e){if(isTextInput(e.target))setKeyboardMode(true)});
+      document.addEventListener('focusout',function(e){if(!isTextInput(e.target))return;setTimeout(refreshKeyboardMode,320)});
+      document.addEventListener('click',function(e){if(!e.target.closest('.entry'))closeOpenSwipes(null)});
+      if(window.visualViewport){window.visualViewport.addEventListener('resize',syncKeyboardOffset);window.visualViewport.addEventListener('scroll',syncKeyboardOffset)}
+      window.addEventListener('resize',syncKeyboardOffset);
+      window.addEventListener('orientationchange',function(){setTimeout(refreshKeyboardMode,350)});
+      wishFields.dueType.addEventListener('change',function(){wishCustomDateField.classList.toggle('hidden',wishFields.dueType.value!=='custom')});
+      byId('cancelWishBtn').addEventListener('click',function(){closeDiaryForm('wishes')});byId('saveWishBtn').addEventListener('click',function(){saveDiaryItem('wishes')});
+      byId('cancelThoughtBtn').addEventListener('click',function(){closeDiaryForm('thoughts')});byId('saveThoughtBtn').addEventListener('click',function(){saveDiaryItem('thoughts')});
+      byId('cancelDreamBtn').addEventListener('click',function(){closeDiaryForm('dreams')});byId('saveDreamBtn').addEventListener('click',function(){saveDiaryItem('dreams')});
+      byId('cancelCareerBtn').addEventListener('click',function(){closeProfileForm('career')});byId('saveCareerBtn').addEventListener('click',function(){saveProfileItem('career')});
+      byId('cancelInterestsBtn').addEventListener('click',function(){closeProfileForm('interests')});byId('saveInterestsBtn').addEventListener('click',function(){saveProfileItem('interests')});
+      byId('cancelHobbyBtn').addEventListener('click',function(){closeProfileForm('hobby')});byId('saveHobbyBtn').addEventListener('click',function(){saveProfileItem('hobby')});
+      byId('cancelAchievementsBtn').addEventListener('click',function(){closeProfileForm('achievements')});byId('saveAchievementsBtn').addEventListener('click',function(){saveProfileItem('achievements')});
+
+      initTelegramWebApp();
+      lockIOSPullToClose();
+      hydrateStaticIcons();
+      loadTelegramUser();
+      attachMapSheetSwipeClose();
+      renderDiary();
+      renderProfileLists();
+      renderLifeMap();
+      loadTelegramUser();
+      syncDiaryActionButton(currentDiaryTab);
+      syncProfileActionButton(currentProfileTab);
+      syncKeyboardOffset();
     }());
   </script>
 </body>
