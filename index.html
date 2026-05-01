@@ -611,7 +611,27 @@
   font-size:14px;
 }
 
+    .goal-toggle{
+  width:100%;
+  border:0;
+  background:transparent;
+  text-align:left;
+}
+
+.goal-toggle:active{
+  transform:scale(.99);
+}
+
+.goal-card .goal-bar{
+  margin-bottom:14px;
+}
+
     @media(max-width:370px){.hero h1{font-size:23px}.tab{padding-inline:6px;font-size:12px}.entry p{font-size:13px}.map-node{width:118px}.map-node-title{font-size:11.5px}.map-shell{min-height:550px}}
+
+
+
+
+    
   </style>
 </head>
 <body>
@@ -910,8 +930,9 @@ var avatarUrl=workerAvatarUrl;
       var profileEditing={career:null,interests:null,hobby:null,achievements:null};
       var selectedRoadmapId='wish-0';
 
-      var progressFilter='all';
+var progressFilter='all';
 var progressStepState={};
+var progressOpenGoals={};
 
       function buildRoadmapGoals(){
         var spots=[{x:205,y:52},{x:115,y:165},{x:287,y:255},{x:118,y:365},{x:222,y:505}];
@@ -1246,8 +1267,11 @@ function makeProgressStep(goal,step,index){
 function makeGoalCard(goal){
   var card=makeElement('article','goal-card');
   var percent=getGoalPercent(goal);
+  var isOpen=!!progressOpenGoals[goal.id];
 
-  var top=makeElement('div','goal-top');
+  var top=makeElement('button','goal-top goal-toggle');
+  top.type='button';
+
   var ico=makeElement('div','goal-ico '+goal.badge);
   ico.appendChild(makeIcon(goal.icon));
 
@@ -1261,20 +1285,29 @@ function makeGoalCard(goal){
   top.appendChild(text);
   top.appendChild(pct);
 
+  top.addEventListener('click',function(){
+    progressOpenGoals[goal.id]=!isOpen;
+    haptic('selection');
+    renderProgress();
+  });
+
   var bar=makeElement('div','goal-bar');
   var fill=makeElement('span');
   fill.style.width=percent+'%';
   bar.appendChild(fill);
 
-  var stack=makeElement('div','step-stack');
-
-  goal.steps.forEach(function(step,index){
-    stack.appendChild(makeProgressStep(goal,step,index));
-  });
-
   card.appendChild(top);
   card.appendChild(bar);
-  card.appendChild(stack);
+
+  if(isOpen){
+    var stack=makeElement('div','step-stack');
+
+    goal.steps.forEach(function(step,index){
+      stack.appendChild(makeProgressStep(goal,step,index));
+    });
+
+    card.appendChild(stack);
+  }
 
   return card;
 }
