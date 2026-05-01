@@ -226,6 +226,126 @@
     .nav-ico .icon{width:21px;height:21px}
     .nav-item.active{color:#1f6fb8;background:linear-gradient(180deg,rgba(238,247,255,.96),rgba(255,255,255,.72))}
     .nav-item.active .nav-ico{background:linear-gradient(135deg,#72b7f1,#2d70b8);color:#fff}
+
+    .ai-chat{
+  min-height:calc(100vh - 170px);
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.ai-head{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  padding:18px;
+  border-radius:var(--radius-xl);
+  background:linear-gradient(135deg,#203b65,#427fc3 55%,#78b8ef);
+  color:#fff;
+  box-shadow:var(--shadow-lg);
+}
+
+.ai-head h1{
+  margin:0;
+  font-size:27px;
+  line-height:1;
+  letter-spacing:-.035em;
+}
+
+.ai-head p{
+  margin:9px 0 0;
+  color:rgba(255,255,255,.82);
+  font-size:14px;
+  line-height:1.35;
+}
+
+.ai-orb{
+  width:52px;
+  height:52px;
+  display:grid;
+  place-items:center;
+  flex:0 0 auto;
+  border-radius:19px;
+  background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.24);
+}
+
+.ai-messages{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  min-height:360px;
+  padding:12px;
+  border-radius:var(--radius-xl);
+  background:rgba(255,255,255,.62);
+  border:1px solid rgba(111,139,173,.18);
+  box-shadow:var(--shadow-md);
+  overflow:auto;
+}
+
+.ai-msg{
+  max-width:86%;
+  padding:11px 13px;
+  border-radius:18px;
+  font-size:14px;
+  line-height:1.4;
+  white-space:pre-wrap;
+}
+
+.ai-msg.user{
+  align-self:flex-end;
+  background:linear-gradient(135deg,#67b2f3,#2d70b8);
+  color:#fff;
+  border-bottom-right-radius:7px;
+}
+
+.ai-msg.bot{
+  align-self:flex-start;
+  background:#fff;
+  color:#24354c;
+  border:1px solid rgba(111,139,173,.16);
+  border-bottom-left-radius:7px;
+}
+
+.ai-msg.loading{
+  opacity:.7;
+}
+
+.ai-inputbar{
+  position:sticky;
+  bottom:88px;
+  display:grid;
+  grid-template-columns:1fr 76px;
+  gap:8px;
+  padding:9px;
+  border-radius:22px;
+  background:rgba(255,255,255,.86);
+  border:1px solid rgba(111,139,173,.20);
+  box-shadow:var(--shadow-md);
+  backdrop-filter:blur(20px);
+}
+
+.ai-inputbar textarea{
+  width:100%;
+  max-height:110px;
+  resize:none;
+  border:0;
+  outline:none;
+  padding:11px 12px;
+  border-radius:16px;
+  background:#f6f9ff;
+  color:var(--ink);
+  font-size:16px;
+}
+
+.ai-inputbar button{
+  border:0;
+  border-radius:16px;
+  background:linear-gradient(135deg,#66aceb,#2e74bb);
+  color:#fff;
+  font-weight:950;
+}
     @media(max-width:370px){.hero h1{font-size:23px}.tab{padding-inline:6px;font-size:12px}.entry p{font-size:13px}.map-node{width:118px}.map-node-title{font-size:11.5px}.map-shell{min-height:550px}}
   </style>
 </head>
@@ -265,7 +385,24 @@
     </section>
 
     <section id="activity" class="screen"><div class="placeholder"><div class="placeholder-card"><div class="big-icon" data-icon="progress"></div><b>Track actions</b><span>Later we will add steps, habits and progress.</span></div></div></section>
-    <section id="chat" class="screen"><div class="placeholder"><div class="placeholder-card"><div class="big-icon" data-icon="ai"></div><b>AI reflection</b><span>Later we will connect requests to Cloudflare Worker.</span></div></div></section>
+    <section id="chat" class="screen">
+  <div class="ai-chat">
+    <div class="ai-head">
+      <div>
+        <h1>AI Reflection</h1>
+        <p>Ask about your goals, thoughts, dreams or next steps.</p>
+      </div>
+      <div class="ai-orb" data-icon="ai"></div>
+    </div>
+
+    <div class="ai-messages" id="aiMessages"></div>
+
+    <div class="ai-inputbar">
+      <textarea id="aiInput" rows="1" placeholder="Write a message..."></textarea>
+      <button id="aiSendBtn" type="button">Send</button>
+    </div>
+  </div>
+</section>
   </main>
 
   <div class="map-sheet" id="mapSheet" aria-hidden="true"><div class="map-sheet-backdrop" id="mapSheetBackdrop"></div><section class="map-sheet-panel" role="dialog" aria-modal="true"><div class="map-sheet-handle"></div><div class="map-detail" id="lifeMapDetail"></div></section></div>
@@ -681,6 +818,108 @@ var avatarUrl=workerAvatarUrl;
       }
       function renderProfileSummary(){setChildren(byId('profileSummary'),[summaryBlock('Career',profileItems.career),summaryBlock('Interests',profileItems.interests),summaryBlock('Hobby',profileItems.hobby),summaryBlock('Achievements',profileItems.achievements)])}
 
+      var AI_WORKER_URL='https://life-arch.cyberian13.workers.dev/ai';
+
+var aiMessages=[
+  {
+    role:'assistant',
+    content:'Hi. I can help you reflect on goals, thoughts, dreams and next steps.'
+  }
+];
+
+function renderAiMessages(){
+  var box=byId('aiMessages');
+  if(!box)return;
+
+  var nodes=[];
+
+  aiMessages.forEach(function(m){
+    var div=makeElement(
+      'div',
+      'ai-msg '+(m.role==='user'?'user':'bot')+(m.loading?' loading':''),
+      m.content
+    );
+    nodes.push(div);
+  });
+
+  setChildren(box,nodes);
+  box.scrollTop=box.scrollHeight;
+}
+
+async function sendAiMessage(){
+  var input=byId('aiInput');
+  var btn=byId('aiSendBtn');
+
+  if(!input||!btn)return;
+
+  var text=input.value.trim();
+  if(!text)return;
+
+  haptic('selection');
+
+  aiMessages.push({role:'user',content:text});
+  aiMessages.push({role:'assistant',content:'Thinking...',loading:true});
+
+  input.value='';
+  renderAiMessages();
+
+  btn.disabled=true;
+
+  try{
+    var res=await fetch(AI_WORKER_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        message:text,
+        messages:aiMessages
+          .filter(function(m){return !m.loading})
+          .map(function(m){
+            return {
+              role:m.role,
+              content:m.content
+            };
+          }),
+        profile:{
+          wishes:wishes,
+          thoughts:thoughts,
+          dreams:dreams,
+          career:profileItems.career,
+          interests:profileItems.interests,
+          hobby:profileItems.hobby,
+          achievements:profileItems.achievements
+        }
+      })
+    });
+
+    var data=await res.json();
+
+    aiMessages.pop();
+
+    if(!res.ok||!data.ok){
+      aiMessages.push({
+        role:'assistant',
+        content:'AI is not connected yet. Worker returned an error.'
+      });
+    }else{
+      aiMessages.push({
+        role:'assistant',
+        content:data.answer||'No answer.'
+      });
+      haptic('success');
+    }
+  }catch(e){
+    aiMessages.pop();
+    aiMessages.push({
+      role:'assistant',
+      content:'AI Worker is not ready yet. Later this message will go to OpenAI through your Worker.'
+    });
+    console.log('ai request failed',e);
+  }
+
+  btn.disabled=false;
+  renderAiMessages();
+}
+
       navItems.forEach(function(btn){btn.addEventListener('click',function(){openScreen(btn.getAttribute('data-screen'))})});
       document.querySelectorAll('[data-tabs]').forEach(function(group){group.querySelectorAll('.tab').forEach(function(tab){tab.addEventListener('click',function(){switchTab(group,tab)})})});
       var mapSheetBackdrop=byId('mapSheetBackdrop');if(mapSheetBackdrop)mapSheetBackdrop.addEventListener('click',closeMapSheet);
@@ -702,6 +941,28 @@ var avatarUrl=workerAvatarUrl;
 
 
 
+      var aiSendBtn=byId('aiSendBtn');
+var aiInput=byId('aiInput');
+
+if(aiSendBtn)aiSendBtn.addEventListener('click',sendAiMessage);
+
+if(aiInput){
+  aiInput.addEventListener('input',function(){
+    this.style.height='auto';
+    this.style.height=Math.min(this.scrollHeight,110)+'px';
+  });
+
+  aiInput.addEventListener('keydown',function(e){
+    if(e.key==='Enter'&&!e.shiftKey){
+      e.preventDefault();
+      sendAiMessage();
+    }
+  });
+}
+
+
+
+
 
 
 
@@ -714,6 +975,8 @@ var avatarUrl=workerAvatarUrl;
       renderDiary();
       renderProfileLists();
       renderLifeMap();
+
+      renderAiMessages();
 
       loadTelegramUser();
 
