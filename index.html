@@ -1245,7 +1245,6 @@ function makeProgressStep(goal,step,index){
 
 function makeGoalCard(goal){
   var card=makeElement('article','goal-card');
-
   var percent=getGoalPercent(goal);
 
   var top=makeElement('div','goal-top');
@@ -1270,11 +1269,7 @@ function makeGoalCard(goal){
   var stack=makeElement('div','step-stack');
 
   goal.steps.forEach(function(step,index){
-    var status=getStepStatus(goal.id,index);
-
-    if(progressFilter==='all' || progressFilter===status || progressFilter==='active'&&status==='active'){
-      stack.appendChild(makeProgressStep(goal,step,index));
-    }
+    stack.appendChild(makeProgressStep(goal,step,index));
   });
 
   card.appendChild(top);
@@ -1284,22 +1279,73 @@ function makeGoalCard(goal){
   return card;
 }
 
+
+      function makeStepOnlyCard(goal,step,index){
+  var status=getStepStatus(goal.id,index);
+  var locked=index>0 && getStepStatus(goal.id,index-1)!=='done';
+  if(locked)status='locked';
+
+  var card=makeElement('article','goal-card');
+
+  var top=makeElement('div','goal-top');
+  var ico=makeElement('div','goal-ico '+goal.badge);
+  ico.appendChild(makeIcon(goal.icon));
+
+  var text=makeElement('div');
+  text.appendChild(makeElement('h3','goal-title',step.title));
+  text.appendChild(makeElement('div','goal-meta',goal.meta+' · '+goal.title));
+
+  var pct=makeElement('div','goal-percent',
+    status==='done'?'Done':
+    status==='active'?'Doing':
+    status==='locked'?'Lock':
+    'Todo'
+  );
+
+  top.appendChild(ico);
+  top.appendChild(text);
+  top.appendChild(pct);
+
+  var stack=makeElement('div','step-stack');
+  stack.appendChild(makeProgressStep(goal,step,index));
+
+  card.appendChild(top);
+  card.appendChild(stack);
+
+  return card;
+}
+
 function renderProgress(){
   var box=byId('progressList');
   if(!box)return;
 
-  var goals=getProgressGoals().filter(goalMatchesFilter);
   var nodes=[];
+  var goals=getProgressGoals();
 
-  if(!goals.length){
-    var empty=makeElement('div','progress-empty');
-    empty.appendChild(makeElement('b','','No steps here yet'));
-    empty.appendChild(makeElement('span','','Add wishes, thoughts or dreams in Journal, and they will appear here.'));
-    nodes.push(empty);
-  }else{
+  if(progressFilter==='all'){
     goals.forEach(function(goal){
       nodes.push(makeGoalCard(goal));
     });
+  }else{
+    goals.forEach(function(goal){
+      goal.steps.forEach(function(step,index){
+        var status=getStepStatus(goal.id,index);
+        var locked=index>0 && getStepStatus(goal.id,index-1)!=='done';
+
+        if(locked)status='locked';
+
+        if(status===progressFilter){
+          nodes.push(makeStepOnlyCard(goal,step,index));
+        }
+      });
+    });
+  }
+
+  if(!nodes.length){
+    var empty=makeElement('div','progress-empty');
+    empty.appendChild(makeElement('b','','No steps here yet'));
+    empty.appendChild(makeElement('span','','Steps will appear here when they match this filter.'));
+    nodes.push(empty);
   }
 
   setChildren(box,nodes);
