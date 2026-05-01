@@ -638,6 +638,16 @@
   font-weight:750;
 }
 
+
+    .step-only-card .goal-top{
+  align-items:center;
+}
+
+.step-only-card .goal-ico .icon{
+  width:20px;
+  height:20px;
+}
+    
     @media(max-width:370px){.hero h1{font-size:23px}.tab{padding-inline:6px;font-size:12px}.entry p{font-size:13px}.map-node{width:118px}.map-node-title{font-size:11.5px}.map-shell{min-height:550px}}
 
 
@@ -1333,16 +1343,25 @@ card.appendChild(wrap);
 }
 
 
-      function makeStepOnlyCard(goal,step,index){
+function makeStepOnlyCard(goal,step,index){
   var status=getStepStatus(goal.id,index);
   var locked=index>0 && getStepStatus(goal.id,index-1)!=='done';
   if(locked)status='locked';
 
-  var card=makeElement('article','goal-card');
+  var card=makeElement('article','goal-card step-only-card');
 
   var top=makeElement('div','goal-top');
   var ico=makeElement('div','goal-ico '+goal.badge);
-  ico.appendChild(makeIcon(goal.icon));
+
+  if(status==='done'){
+    ico.appendChild(makeIcon('plus'));
+  }else if(status==='locked'){
+    ico.appendChild(makeIcon('lock'));
+  }else if(status==='active'){
+    ico.appendChild(makeIcon('progress'));
+  }else{
+    ico.appendChild(makeIcon(goal.icon));
+  }
 
   var text=makeElement('div');
   text.appendChild(makeElement('h3','goal-title',step.title));
@@ -1351,7 +1370,7 @@ card.appendChild(wrap);
   var pct=makeElement('div','goal-percent',
     status==='done'?'Done':
     status==='active'?'Doing':
-    status==='locked'?'Lock':
+    status==='locked'?'Locked':
     'Todo'
   );
 
@@ -1359,11 +1378,7 @@ card.appendChild(wrap);
   top.appendChild(text);
   top.appendChild(pct);
 
-  var stack=makeElement('div','step-stack');
-  stack.appendChild(makeProgressStep(goal,step,index));
-
   card.appendChild(top);
-  card.appendChild(stack);
 
   return card;
 }
