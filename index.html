@@ -345,6 +345,259 @@
   background:linear-gradient(135deg,#66aceb,#2e74bb);
   color:#fff;
   font-weight:950;
+
+
+  .progress-hero{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  padding:18px;
+  margin-bottom:12px;
+  border-radius:var(--radius-xl);
+  background:linear-gradient(135deg,#203b65,#427fc3 55%,#78b8ef);
+  color:#fff;
+  box-shadow:var(--shadow-lg);
+}
+
+.progress-hero h1{
+  margin:0;
+  font-size:28px;
+  line-height:1;
+  letter-spacing:-.035em;
+}
+
+.progress-hero p{
+  margin:9px 0 0;
+  color:rgba(255,255,255,.82);
+  font-size:14px;
+  line-height:1.35;
+}
+
+.progress-orb{
+  width:54px;
+  height:54px;
+  display:grid;
+  place-items:center;
+  flex:0 0 auto;
+  border-radius:20px;
+  background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.24);
+}
+
+.progress-tabs{
+  position:sticky;
+  top:0;
+  z-index:4;
+  display:flex;
+  gap:5px;
+  padding:5px;
+  margin-bottom:12px;
+  border-radius:20px;
+  background:rgba(255,255,255,.62);
+  border:1px solid rgba(111,139,173,.18);
+  box-shadow:var(--shadow-sm);
+  backdrop-filter:blur(18px);
+}
+
+.progress-tab{
+  flex:1;
+  min-width:0;
+  border:0;
+  padding:10px 5px;
+  border-radius:15px;
+  background:transparent;
+  color:var(--muted);
+  font-size:11.5px;
+  font-weight:900;
+  white-space:nowrap;
+}
+
+.progress-tab.active{
+  background:#fff;
+  color:var(--navy);
+  box-shadow:0 6px 16px rgba(54,91,132,.13);
+}
+
+.progress-list{
+  display:grid;
+  gap:12px;
+}
+
+.goal-card{
+  overflow:hidden;
+  border-radius:var(--radius-xl);
+  background:rgba(255,255,255,.72);
+  border:1px solid rgba(111,139,173,.20);
+  box-shadow:var(--shadow-md);
+  backdrop-filter:blur(18px);
+}
+
+.goal-top{
+  display:grid;
+  grid-template-columns:42px 1fr 54px;
+  gap:10px;
+  align-items:start;
+  padding:14px;
+}
+
+.goal-ico{
+  width:40px;
+  height:40px;
+  display:grid;
+  place-items:center;
+  border-radius:16px;
+  color:#fff;
+  background:linear-gradient(145deg,#7bb7ef,#3876b8);
+}
+
+.goal-ico.gold{background:linear-gradient(145deg,#ffd36f,#e49d29)}
+.goal-ico.green{background:linear-gradient(145deg,#79d8ae,#31a376)}
+.goal-ico.pink{background:linear-gradient(145deg,#f59ac4,#d85d95)}
+
+.goal-title{
+  margin:0;
+  font-size:17px;
+  line-height:1.12;
+  letter-spacing:-.018em;
+}
+
+.goal-meta{
+  margin-top:4px;
+  color:var(--muted);
+  font-size:12px;
+  font-weight:800;
+}
+
+.goal-percent{
+  width:52px;
+  height:52px;
+  display:grid;
+  place-items:center;
+  border-radius:18px;
+  background:linear-gradient(135deg,#edf7ff,#fff);
+  color:#2d70b8;
+  font-size:15px;
+  font-weight:950;
+  box-shadow:var(--shadow-sm);
+}
+
+.goal-bar{
+  height:7px;
+  margin:0 14px 12px;
+  border-radius:999px;
+  background:rgba(111,139,173,.16);
+  overflow:hidden;
+}
+
+.goal-bar span{
+  display:block;
+  height:100%;
+  border-radius:inherit;
+  background:linear-gradient(90deg,#62b1f2,#59cf9e);
+}
+
+.step-stack{
+  display:grid;
+  gap:8px;
+  padding:0 12px 12px;
+}
+
+.progress-step{
+  display:grid;
+  grid-template-columns:34px 1fr auto;
+  gap:9px;
+  align-items:center;
+  padding:10px;
+  border-radius:17px;
+  background:rgba(246,249,255,.88);
+  border:1px solid rgba(111,139,173,.14);
+}
+
+.step-state{
+  width:30px;
+  height:30px;
+  display:grid;
+  place-items:center;
+  border-radius:12px;
+  background:rgba(111,139,173,.14);
+  color:#6b7b91;
+  font-size:15px;
+  font-weight:950;
+}
+
+.progress-step.done .step-state{
+  background:linear-gradient(135deg,#72d7a8,#31a376);
+  color:#fff;
+}
+
+.progress-step.active .step-state{
+  background:linear-gradient(135deg,#72b7f1,#2d70b8);
+  color:#fff;
+}
+
+.progress-step.blocked .step-state{
+  background:linear-gradient(135deg,#b9c1cf,#64748b);
+  color:#fff;
+}
+
+.step-main b{
+  display:block;
+  font-size:14px;
+  line-height:1.18;
+}
+
+.step-main span{
+  display:block;
+  margin-top:3px;
+  color:var(--muted);
+  font-size:11.5px;
+  font-weight:750;
+}
+
+.step-actions{
+  display:flex;
+  gap:5px;
+}
+
+.step-action{
+  width:31px;
+  height:31px;
+  border:0;
+  border-radius:12px;
+  background:#fff;
+  color:#2d405a;
+  font-size:14px;
+  font-weight:950;
+  box-shadow:var(--shadow-sm);
+}
+
+.step-action.done-btn{
+  color:#1f8b5d;
+}
+
+.step-action.block-btn{
+  color:#64748b;
+}
+
+.progress-empty{
+  padding:22px;
+  text-align:center;
+  border-radius:var(--radius-xl);
+  background:rgba(255,255,255,.72);
+  border:1px solid rgba(111,139,173,.18);
+  box-shadow:var(--shadow-md);
+}
+
+.progress-empty b{
+  display:block;
+  font-size:19px;
+  margin-bottom:6px;
+}
+
+.progress-empty span{
+  color:var(--muted);
+  font-size:14px;
+}
 }
     @media(max-width:370px){.hero h1{font-size:23px}.tab{padding-inline:6px;font-size:12px}.entry p{font-size:13px}.map-node{width:118px}.map-node-title{font-size:11.5px}.map-shell{min-height:550px}}
   </style>
@@ -384,7 +637,25 @@
       <div class="map-shell" id="lifeMapShell"><svg class="map-path-svg" viewBox="0 0 402 560" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="mapGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#62b1f2"></stop><stop offset="1" stop-color="#59cf9e"></stop></linearGradient></defs><path class="map-path-base" d="M205 42 C92 116 315 174 210 254 C92 344 306 390 198 515"></path><path class="map-path-progress" d="M205 42 C92 116 315 174 210 254 C92 344 306 390 198 515"></path></svg><div id="lifeMapNodes"></div><div class="map-avatar" id="lifeMapAvatar">   <img id="mapAvatarImg" alt="">   <span id="mapAvatarFallback">AF</span> </div></div>
     </section>
 
-    <section id="activity" class="screen"><div class="placeholder"><div class="placeholder-card"><div class="big-icon" data-icon="progress"></div><b>Track actions</b><span>Later we will add steps, habits and progress.</span></div></div></section>
+    <section id="activity" class="screen">
+  <div class="progress-hero">
+    <div>
+      <h1>Progress</h1>
+      <p>Your wishes, thoughts and dreams become steps. Mark what is done, active or blocked.</p>
+    </div>
+    <div class="progress-orb" data-icon="progress"></div>
+  </div>
+
+  <div class="progress-tabs">
+    <button class="progress-tab active" data-progress-filter="all" type="button">All</button>
+    <button class="progress-tab" data-progress-filter="active" type="button">Doing</button>
+    <button class="progress-tab" data-progress-filter="todo" type="button">To do</button>
+    <button class="progress-tab" data-progress-filter="done" type="button">Done</button>
+    <button class="progress-tab" data-progress-filter="blocked" type="button">Locked</button>
+  </div>
+
+  <div id="progressList" class="progress-list"></div>
+</section>
     <section id="chat" class="screen">
   <div class="ai-chat">
     <div class="ai-head">
@@ -607,6 +878,9 @@ var avatarUrl=workerAvatarUrl;
       var profileEditing={career:null,interests:null,hobby:null,achievements:null};
       var selectedRoadmapId='wish-0';
 
+      var progressFilter='all';
+var progressStepState={};
+
       function buildRoadmapGoals(){
         var spots=[{x:205,y:52},{x:115,y:165},{x:287,y:255},{x:118,y:365},{x:222,y:505}];
         var goals=[{id:'vision',title:'Find clear direction',type:'thought',icon:'bulb',badge:'green',progress:100,x:spots[0].x,y:spots[0].y,status:'done',text:'Turn scattered ideas into one direction for the next stage.',steps:[['Capture main thoughts',true,'Done'],['Choose one focus',true,'Done'],['Write first roadmap',true,'Done']]}];
@@ -694,7 +968,7 @@ var avatarUrl=workerAvatarUrl;
         byId('thoughtCountStat').textContent=String(thoughts.length);
         byId('dreamCountStat').textContent=String(dreams.length);
       }
-      function renderDiary(){renderDiaryList('wishes');renderDiaryList('thoughts');renderDiaryList('dreams');renderAllEntries();renderLifeMap();loadTelegramUser()}
+      function renderDiary(){renderDiaryList('wishes');renderDiaryList('thoughts');renderDiaryList('dreams');renderAllEntries();renderLifeMap();renderProgress()}
 
       function openDiaryForm(type,i){
         haptic('medium');mainDiaryAction.parentElement.classList.remove('active');
@@ -766,6 +1040,246 @@ var avatarUrl=workerAvatarUrl;
         });
         setChildren(detail,[head,steps]);
       }
+
+      function progressGoalKey(type,index){
+  return type+'-'+index;
+}
+
+function makeDefaultSteps(type,item){
+  if(type==='wish'){
+    return [
+      {title:'Clarify the wish',sub:'Write why it matters'},
+      {title:item.step||'Choose first step',sub:'Start with one small action'},
+      {title:'Create simple plan',sub:'Turn the wish into weekly actions'}
+    ];
+  }
+
+  if(type==='thought'){
+    return [
+      {title:'Capture the idea',sub:'Keep the core thought clear'},
+      {title:'Find practical value',sub:'Why can this matter?'},
+      {title:'Turn into action',sub:'Choose one experiment'}
+    ];
+  }
+
+  return [
+    {title:'Save the dream',sub:'Keep the story and symbols'},
+    {title:'Understand the message',sub:'Reflect on emotion and meaning'},
+    {title:'Connect to real life',sub:'Find one useful insight'}
+  ];
+}
+
+function getProgressGoals(){
+  var goals=[];
+
+  wishes.forEach(function(w,i){
+    goals.push({
+      id:progressGoalKey('wish',i),
+      type:'wish',
+      icon:'star',
+      badge:'gold',
+      title:w.title||'Untitled wish',
+      meta:'Wish',
+      text:w.reason||w.step||'Personal wish from your journal.',
+      steps:makeDefaultSteps('wish',w)
+    });
+  });
+
+  thoughts.forEach(function(t,i){
+    goals.push({
+      id:progressGoalKey('thought',i),
+      type:'thought',
+      icon:'bulb',
+      badge:'green',
+      title:t.title||'Untitled thought',
+      meta:'Thought',
+      text:t.text||t.importance||'Thought from your journal.',
+      steps:makeDefaultSteps('thought',t)
+    });
+  });
+
+  dreams.forEach(function(d,i){
+    goals.push({
+      id:progressGoalKey('dream',i),
+      type:'dream',
+      icon:'moon',
+      badge:'pink',
+      title:d.title||'Untitled dream',
+      meta:'Dream',
+      text:d.story||d.symbols||'Dream from your journal.',
+      steps:makeDefaultSteps('dream',d)
+    });
+  });
+
+  return goals;
+}
+
+function getStepStatus(goalId,stepIndex){
+  var key=goalId+'-'+stepIndex;
+  return progressStepState[key]||'todo';
+}
+
+function setStepStatus(goalId,stepIndex,status){
+  var key=goalId+'-'+stepIndex;
+  progressStepState[key]=status;
+  haptic(status==='done'?'success':status==='blocked'?'warning':'selection');
+  renderProgress();
+}
+
+function getGoalPercent(goal){
+  if(!goal.steps.length)return 0;
+
+  var done=goal.steps.filter(function(_,i){
+    return getStepStatus(goal.id,i)==='done';
+  }).length;
+
+  return Math.round(done/goal.steps.length*100);
+}
+
+function goalMatchesFilter(goal){
+  if(progressFilter==='all')return true;
+
+  return goal.steps.some(function(_,i){
+    var status=getStepStatus(goal.id,i);
+
+    if(progressFilter==='active')return status==='active';
+    if(progressFilter==='todo')return status==='todo';
+    if(progressFilter==='done')return status==='done';
+    if(progressFilter==='blocked')return status==='blocked';
+
+    return true;
+  });
+}
+
+function makeProgressStep(goal,step,index){
+  var status=getStepStatus(goal.id,index);
+  var row=makeElement('div','progress-step '+status);
+
+  var state=makeElement('div','step-state');
+  state.textContent=status==='done'?'✓':status==='blocked'?'🔒':status==='active'?'●':'○';
+
+  var main=makeElement('div','step-main');
+  main.appendChild(makeElement('b','',step.title));
+  main.appendChild(makeElement('span','',
+    status==='done'?'Done':
+    status==='blocked'?'Blocked':
+    status==='active'?'In progress':
+    step.sub
+  ));
+
+  var actions=makeElement('div','step-actions');
+
+  var activeBtn=makeElement('button','step-action','●');
+  activeBtn.type='button';
+  activeBtn.title='In progress';
+  activeBtn.addEventListener('click',function(e){
+    e.stopPropagation();
+    setStepStatus(goal.id,index,'active');
+  });
+
+  var doneBtn=makeElement('button','step-action done-btn','✓');
+  doneBtn.type='button';
+  doneBtn.title='Done';
+  doneBtn.addEventListener('click',function(e){
+    e.stopPropagation();
+    setStepStatus(goal.id,index,'done');
+  });
+
+  var blockBtn=makeElement('button','step-action block-btn','🔒');
+  blockBtn.type='button';
+  blockBtn.title='Blocked';
+  blockBtn.addEventListener('click',function(e){
+    e.stopPropagation();
+    setStepStatus(goal.id,index,'blocked');
+  });
+
+  actions.appendChild(activeBtn);
+  actions.appendChild(doneBtn);
+  actions.appendChild(blockBtn);
+
+  row.appendChild(state);
+  row.appendChild(main);
+  row.appendChild(actions);
+
+  return row;
+}
+
+function makeGoalCard(goal){
+  var card=makeElement('article','goal-card');
+
+  var percent=getGoalPercent(goal);
+
+  var top=makeElement('div','goal-top');
+  var ico=makeElement('div','goal-ico '+goal.badge);
+  ico.appendChild(makeIcon(goal.icon));
+
+  var text=makeElement('div');
+  text.appendChild(makeElement('h3','goal-title',goal.title));
+  text.appendChild(makeElement('div','goal-meta',goal.meta+' · '+goal.text));
+
+  var pct=makeElement('div','goal-percent',percent+'%');
+
+  top.appendChild(ico);
+  top.appendChild(text);
+  top.appendChild(pct);
+
+  var bar=makeElement('div','goal-bar');
+  var fill=makeElement('span');
+  fill.style.width=percent+'%';
+  bar.appendChild(fill);
+
+  var stack=makeElement('div','step-stack');
+
+  goal.steps.forEach(function(step,index){
+    var status=getStepStatus(goal.id,index);
+
+    if(progressFilter==='all' || progressFilter===status || progressFilter==='active'&&status==='active'){
+      stack.appendChild(makeProgressStep(goal,step,index));
+    }
+  });
+
+  card.appendChild(top);
+  card.appendChild(bar);
+  card.appendChild(stack);
+
+  return card;
+}
+
+function renderProgress(){
+  var box=byId('progressList');
+  if(!box)return;
+
+  var goals=getProgressGoals().filter(goalMatchesFilter);
+  var nodes=[];
+
+  if(!goals.length){
+    var empty=makeElement('div','progress-empty');
+    empty.appendChild(makeElement('b','','No steps here yet'));
+    empty.appendChild(makeElement('span','','Add wishes, thoughts or dreams in Journal, and they will appear here.'));
+    nodes.push(empty);
+  }else{
+    goals.forEach(function(goal){
+      nodes.push(makeGoalCard(goal));
+    });
+  }
+
+  setChildren(box,nodes);
+}
+
+function initProgressTabs(){
+  document.querySelectorAll('.progress-tab').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      progressFilter=btn.getAttribute('data-progress-filter')||'all';
+
+      document.querySelectorAll('.progress-tab').forEach(function(b){
+        b.classList.toggle('active',b===btn);
+      });
+
+      haptic('selection');
+      renderProgress();
+    });
+  });
+}
 
       function profileMeta(type,item){if(type==='career')return item.type;if(type==='interests')return item.format;if(type==='hobby')return item.frequency;return item.area}
       function profileText(type,item){if(type==='career')return item.description||'No description yet.';if(type==='interests')return item.reason||'No reason yet.';if(type==='hobby')return item.reason||'No reason yet.';return item.story||'No story yet.'}
@@ -972,11 +1486,15 @@ if(aiInput){
       hydrateStaticIcons();
       attachMapSheetSwipeClose();
 
+      initProgressTabs();
+
       renderDiary();
       renderProfileLists();
       renderLifeMap();
 
       renderAiMessages();
+
+      renderProgress();
 
       loadTelegramUser();
 
