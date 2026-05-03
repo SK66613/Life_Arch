@@ -673,6 +673,271 @@
 .step-action-text.return-btn{
   color:#64748b;
 }
+
+
+
+    .journey-map{
+  position:relative;
+  overflow:hidden;
+  min-height:690px;
+  border-radius:32px;
+  background:linear-gradient(180deg,#8fc8ff 0%,#ddecff 48%,#f8fbff 100%);
+  box-shadow:var(--shadow-lg);
+  border:1px solid rgba(111,139,173,.18);
+}
+
+.journey-sky{
+  position:relative;
+  height:620px;
+  overflow:hidden;
+}
+
+.cloud{
+  position:absolute;
+  border-radius:999px;
+  background:rgba(255,255,255,.78);
+  filter:blur(.2px);
+  box-shadow:26px 4px 0 rgba(255,255,255,.62),52px 0 0 rgba(255,255,255,.48);
+}
+
+.cloud-a{width:76px;height:26px;left:24px;top:92px}
+.cloud-b{width:94px;height:30px;right:32px;top:148px}
+.cloud-c{width:80px;height:25px;left:112px;top:260px;opacity:.72}
+
+.mountain{
+  position:absolute;
+  bottom:58px;
+  width:0;
+  height:0;
+  filter:drop-shadow(0 18px 28px rgba(31,65,105,.18));
+}
+
+.mountain-back{
+  left:42px;
+  border-left:150px solid transparent;
+  border-right:150px solid transparent;
+  border-bottom:360px solid rgba(76,111,153,.32);
+}
+
+.mountain-main{
+  left:86px;
+  border-left:170px solid transparent;
+  border-right:170px solid transparent;
+  border-bottom:470px solid rgba(47,76,112,.72);
+}
+
+.mountain-side{
+  right:22px;
+  border-left:126px solid transparent;
+  border-right:126px solid transparent;
+  border-bottom:330px solid rgba(86,126,166,.42);
+}
+
+.mountain-main:after{
+  content:"";
+  position:absolute;
+  left:-50px;
+  top:116px;
+  width:100px;
+  height:120px;
+  background:linear-gradient(135deg,#fff,rgba(255,255,255,.1));
+  clip-path:polygon(50% 0,100% 100%,55% 72%,28% 100%,0 100%);
+}
+
+.summit-flag{
+  position:absolute;
+  left:196px;
+  top:72px;
+  width:4px;
+  height:42px;
+  background:#513b2a;
+  border-radius:99px;
+  z-index:4;
+}
+
+.summit-flag:after{
+  content:"";
+  position:absolute;
+  left:4px;
+  top:3px;
+  width:38px;
+  height:22px;
+  background:#ef4444;
+  border-radius:4px 12px 12px 4px;
+  clip-path:polygon(0 0,100% 18%,82% 55%,100% 100%,0 82%);
+}
+
+.journey-path{
+  position:absolute;
+  inset:0;
+  z-index:2;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+}
+
+.journey-path-base{
+  fill:none;
+  stroke:rgba(255,244,220,.78);
+  stroke-width:18;
+  stroke-linecap:round;
+  filter:drop-shadow(0 6px 10px rgba(94,70,42,.18));
+}
+
+.journey-path-fill{
+  fill:none;
+  stroke:linear-gradient(180deg,#60a5fa,#34d399);
+  stroke:#5fd0a0;
+  stroke-width:10;
+  stroke-linecap:round;
+  stroke-dasharray:1;
+  stroke-dashoffset:.65;
+}
+
+.journey-stop{
+  position:absolute;
+  z-index:5;
+  width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  border:0;
+  border-radius:16px;
+  color:#fff;
+  background:linear-gradient(145deg,#7bb7ef,#3876b8);
+  box-shadow:0 12px 24px rgba(31,65,105,.22);
+  transform:translate(-50%,-50%);
+}
+
+.journey-stop.gold{background:linear-gradient(145deg,#ffd36f,#e49d29)}
+.journey-stop.green{background:linear-gradient(145deg,#79d8ae,#31a376)}
+.journey-stop.pink{background:linear-gradient(145deg,#f59ac4,#d85d95)}
+.journey-stop.locked{background:linear-gradient(145deg,#b9c1cf,#64748b);opacity:.82}
+
+.journey-stop .icon{
+  width:20px;
+  height:20px;
+}
+
+.journey-stop.active{
+  box-shadow:0 16px 34px rgba(45,112,184,.34),0 0 0 7px rgba(255,255,255,.42);
+}
+
+.journey-avatar{
+  position:absolute;
+  z-index:6;
+  width:48px;
+  height:48px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  border-radius:18px;
+  background:#eef6ff;
+  color:#2d70b8;
+  font-weight:950;
+  box-shadow:0 14px 30px rgba(31,65,105,.25);
+  transform:translate(-50%,-50%);
+}
+
+.journey-avatar img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:none;
+}
+
+.journey-avatar.has-photo img{
+  display:block;
+}
+
+.journey-avatar.has-photo span{
+  display:none;
+}
+
+.journey-meter{
+  position:absolute;
+  z-index:7;
+  right:18px;
+  top:190px;
+  width:94px;
+  padding:12px 10px;
+  border-radius:22px;
+  background:rgba(255,255,255,.78);
+  border:1px solid rgba(111,139,173,.18);
+  box-shadow:var(--shadow-md);
+  backdrop-filter:blur(18px);
+  text-align:center;
+}
+
+.journey-meter b{
+  display:block;
+  font-size:13px;
+  color:var(--navy);
+}
+
+.journey-meter span{
+  display:block;
+  margin:5px 0 8px;
+  color:#2d70b8;
+  font-size:18px;
+  font-weight:950;
+}
+
+.meter-track{
+  position:relative;
+  width:18px;
+  height:128px;
+  margin:0 auto 8px;
+  overflow:hidden;
+  border-radius:999px;
+  background:linear-gradient(180deg,#d1d5db,#eef2ff);
+}
+
+.meter-track i{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  height:0%;
+  border-radius:inherit;
+  background:linear-gradient(180deg,#34d399,#facc15,#ef4444);
+}
+
+.journey-meter small{
+  color:var(--muted);
+  font-size:11px;
+  font-weight:800;
+}
+
+.journey-caption{
+  position:absolute;
+  left:16px;
+  right:16px;
+  bottom:16px;
+  z-index:8;
+  padding:15px;
+  border-radius:24px;
+  background:rgba(255,255,255,.78);
+  border:1px solid rgba(111,139,173,.18);
+  backdrop-filter:blur(18px);
+  box-shadow:var(--shadow-md);
+}
+
+.journey-caption h1{
+  margin:0;
+  font-size:26px;
+  line-height:1;
+  letter-spacing:-.035em;
+}
+
+.journey-caption p{
+  margin:8px 0 0;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.35;
+}
     
     @media(max-width:370px){.hero h1{font-size:23px}.tab{padding-inline:6px;font-size:12px}.entry p{font-size:13px}.map-node{width:118px}.map-node-title{font-size:11.5px}.map-shell{min-height:550px}}
 
@@ -712,45 +977,44 @@
       <div class="tab-panel" data-scope="profile" data-panel="achievements"><div id="achievementsListView" class="stack"><div class="card" id="achievementsList"></div><div class="empty-state hidden" id="achievementsEmpty"><div class="empty-emoji" data-icon="trophy"></div><h3>No achievements yet</h3><p>Add wins, milestones and proof of progress.</p></div></div><div class="form-card hidden" id="achievementsForm"><div class="form-top"><h2 class="form-title" id="achievementsFormTitle">New Achievement</h2><span class="pill">Proof</span></div><div class="field"><label>Achievement</label><input id="achievementTitle"></div><div class="field"><label>Area</label><select id="achievementArea"><option>Business</option><option>Career</option><option>Personal</option><option>Education</option></select></div><div class="field"><label>What happened?</label><textarea id="achievementStory"></textarea></div><div class="field"><label>Why it matters</label><textarea id="achievementImpact"></textarea></div><div class="form-actions"><button class="ghost-btn" id="cancelAchievementsBtn" type="button">Cancel</button><button class="save-btn" id="saveAchievementsBtn" type="button">Save Win</button></div></div></div>
     </section>
 
-    <section id="dashboard" class="screen">
-      <div class="map-hero"><h1>Life Map</h1><p>Your goals become a visible path. Complete steps and move your marker forward.</p></div>
-      <div class="map-shell" id="lifeMapShell"><svg class="map-path-svg" viewBox="0 0 402 560" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="mapGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#62b1f2"></stop><stop offset="1" stop-color="#59cf9e"></stop></linearGradient></defs><path class="map-path-base" d="M205 42 C92 116 315 174 210 254 C92 344 306 390 198 515"></path><path class="map-path-progress" d="M205 42 C92 116 315 174 210 254 C92 344 306 390 198 515"></path></svg><div id="lifeMapNodes"></div><div class="map-avatar" id="lifeMapAvatar">   <img id="mapAvatarImg" alt="">   <span id="mapAvatarFallback">AF</span> </div></div>
-    </section>
+<section id="dashboard" class="screen">
+  <div class="journey-map">
+    <div class="journey-sky">
+      <div class="cloud cloud-a"></div>
+      <div class="cloud cloud-b"></div>
+      <div class="cloud cloud-c"></div>
 
-    <section id="activity" class="screen">
-  <div class="progress-hero">
-    <div>
-      <h1>Progress</h1>
-      <p>Your wishes, thoughts and dreams become steps. Mark what is done, active or blocked.</p>
-    </div>
-    <div class="progress-orb" data-icon="progress"></div>
-  </div>
+      <div class="mountain mountain-back"></div>
+      <div class="mountain mountain-main"></div>
+      <div class="mountain mountain-side"></div>
 
-  <div class="progress-tabs">
-    <button class="progress-tab active" data-progress-filter="all" type="button">All</button>
-    <button class="progress-tab" data-progress-filter="active" type="button">Doing</button>
-    <button class="progress-tab" data-progress-filter="todo" type="button">To do</button>
-    <button class="progress-tab" data-progress-filter="done" type="button">Done</button>
-    <button class="progress-tab" data-progress-filter="blocked" type="button">Locked</button>
-  </div>
+      <div class="summit-flag"></div>
 
-  <div id="progressList" class="progress-list"></div>
-</section>
-    <section id="chat" class="screen">
-  <div class="ai-chat">
-    <div class="ai-head">
-      <div>
-        <h1>AI Reflection</h1>
-        <p>Ask about your goals, thoughts, dreams or next steps.</p>
+      <svg class="journey-path" viewBox="0 0 402 620" preserveAspectRatio="none" aria-hidden="true">
+        <path class="journey-path-base" d="M198 570 C120 500 300 455 210 390 C105 315 292 260 205 190 C145 140 230 95 198 55"></path>
+        <path class="journey-path-fill" id="journeyPathFill" d="M198 570 C120 500 300 455 210 390 C105 315 292 260 205 190 C145 140 230 95 198 55"></path>
+      </svg>
+
+      <div id="journeyStops"></div>
+
+      <div class="journey-avatar" id="journeyAvatar">
+        <img id="journeyAvatarImg" alt="">
+        <span id="journeyAvatarFallback">AF</span>
       </div>
-      <div class="ai-orb" data-icon="ai"></div>
+
+      <div class="journey-meter">
+        <b>Progress</b>
+        <span id="journeyDays">0%</span>
+        <div class="meter-track">
+          <i id="journeyMeterFill"></i>
+        </div>
+        <small>Flow</small>
+      </div>
     </div>
 
-    <div class="ai-messages" id="aiMessages"></div>
-
-    <div class="ai-inputbar">
-      <textarea id="aiInput" rows="1" placeholder="Write a message..."></textarea>
-      <button id="aiSendBtn" type="button">Send</button>
+    <div class="journey-caption">
+      <h1>Life Map</h1>
+      <p>Your goals become a mountain route. Complete steps and move higher.</p>
     </div>
   </div>
 </section>
@@ -964,8 +1228,15 @@ var avatarUrl=workerAvatarUrl;
 
   console.log('avatar url', avatarUrl);
 
-  setPhoto(profileBox,profileImg,profileFall,avatarUrl);
-  setPhoto(mapBox,mapImg,mapFall,avatarUrl);
+setPhoto(profileBox,profileImg,profileFall,avatarUrl);
+setPhoto(mapBox,mapImg,mapFall,avatarUrl);
+
+setPhoto(
+  byId('journeyAvatar'),
+  byId('journeyAvatarImg'),
+  byId('journeyAvatarFallback'),
+  avatarUrl
+);
 }
 
 
@@ -1106,41 +1377,88 @@ var progressOpenGoals={};
         panel.addEventListener('pointercancel',function(){dragging=false;panel.style.transition='';panel.style.transform=''});
       }
 
-      function renderLifeMap(){
-        var roadmapGoals=buildRoadmapGoals();
-        if(!roadmapGoals.some(function(g){return g.id===selectedRoadmapId}))selectedRoadmapId=roadmapGoals[1]?roadmapGoals[1].id:roadmapGoals[0].id;
-        var nodesWrap=byId('lifeMapNodes'),detail=byId('lifeMapDetail'),avatar=byId('lifeMapAvatar');
-        if(!nodesWrap||!detail||!avatar)return;
-        var nodes=[];
-        roadmapGoals.forEach(function(goal){
-          var btn=makeElement('button','map-node '+goal.status+(goal.id===selectedRoadmapId?' active':''));
-          btn.type='button';btn.style.left=goal.x+'px';btn.style.top=goal.y+'px';
-          var top=makeElement('div','map-node-top'),ico=makeElement('div','map-node-icon '+goal.badge),txt=makeElement('div');
-          ico.appendChild(makeIcon(goal.icon));
-          txt.appendChild(makeElement('div','map-node-title',goal.title));
-          txt.appendChild(makeElement('div','map-node-meta',String(goal.progress)+'% - '+goal.type));
-          top.appendChild(ico);top.appendChild(txt);
-          var pr=makeElement('div','map-mini-progress'),bar=makeElement('i');
-          bar.style.width=String(goal.progress)+'%';pr.appendChild(bar);
-          btn.appendChild(top);btn.appendChild(pr);
-          btn.addEventListener('click',function(){selectedRoadmapId=goal.id;haptic('selection');renderLifeMap();loadTelegramUser();openMapSheet()});
-          nodes.push(btn);
-        });
-        setChildren(nodesWrap,nodes);
-        var active=roadmapGoals.filter(function(g){return g.id===selectedRoadmapId})[0]||roadmapGoals[0];
-        avatar.style.left=(active.x+34)+'px';avatar.style.top=(active.y-34)+'px';
-        var head=makeElement('div','map-detail-head'),titleWrap=makeElement('div'),percent=makeElement('div','map-percent',String(active.progress)+'%');
-        titleWrap.appendChild(makeElement('h2','',active.title));titleWrap.appendChild(makeElement('p','',active.text));
-        head.appendChild(titleWrap);head.appendChild(percent);
-        var steps=makeElement('div','step-list');
-        active.steps.forEach(function(step,index){
-          var row=makeElement('div','step-item '+(step[1]?'done':index===1?'active':'')),check=makeElement('div','step-check'),text=makeElement('div');
-          check.appendChild(makeIcon(step[1]?'plus':'progress'));
-          text.appendChild(makeElement('div','step-title',step[0]));text.appendChild(makeElement('div','step-sub',step[2]));
-          row.appendChild(check);row.appendChild(text);steps.appendChild(row);
-        });
-        setChildren(detail,[head,steps]);
-      }
+function renderLifeMap(){
+  var goals=buildRoadmapGoals();
+  var stopsWrap=byId('journeyStops');
+  var avatar=byId('journeyAvatar');
+  var meter=byId('journeyMeterFill');
+  var pctText=byId('journeyDays');
+  var pathFill=byId('journeyPathFill');
+
+  if(!stopsWrap||!avatar)return;
+
+  var points=[
+    {x:198,y:570},
+    {x:132,y:488},
+    {x:244,y:404},
+    {x:165,y:312},
+    {x:226,y:218},
+    {x:198,y:112}
+  ];
+
+  var allGoals=getProgressGoals ? getProgressGoals() : [];
+  var totalSteps=0;
+  var doneSteps=0;
+
+  allGoals.forEach(function(g){
+    totalSteps+=g.steps.length;
+    g.steps.forEach(function(_,i){
+      if(getStepStatus(g.id,i)==='done')doneSteps++;
+    });
+  });
+
+  var overall=totalSteps?Math.round(doneSteps/totalSteps*100):0;
+  var activeIndex=Math.min(points.length-1,Math.floor(overall/100*(points.length-1)));
+  var activePoint=points[activeIndex];
+
+  if(pctText)pctText.textContent=overall+'%';
+  if(meter)meter.style.height=overall+'%';
+  if(pathFill)pathFill.style.strokeDashoffset=String(1 - overall/100);
+
+  var nodes=[];
+
+  goals.slice(0,6).forEach(function(goal,i){
+    var p=points[i]||points[points.length-1];
+
+    var btn=makeElement(
+      'button',
+      'journey-stop '+(goal.badge||'')+(i===activeIndex?' active':'')+(i>activeIndex+1?' locked':'')
+    );
+
+    btn.type='button';
+    btn.style.left=p.x+'px';
+    btn.style.top=p.y+'px';
+
+    btn.appendChild(makeIcon(i>activeIndex+1?'lock':goal.icon));
+
+    btn.addEventListener('click',function(){
+      selectedRoadmapId=goal.id;
+      haptic('selection');
+      renderLifeMap();
+      openMapSheet();
+    });
+
+    nodes.push(btn);
+  });
+
+  setChildren(stopsWrap,nodes);
+
+  avatar.style.left=activePoint.x+'px';
+  avatar.style.top=(activePoint.y-38)+'px';
+
+  var profileImg=byId('profileAvatarImg');
+  var journeyImg=byId('journeyAvatarImg');
+  var journeyFall=byId('journeyAvatarFallback');
+
+  if(journeyFall)journeyFall.textContent=telegramUser.initials||'U';
+
+  if(profileImg&&profileImg.src&&journeyImg){
+    journeyImg.onload=function(){
+      avatar.classList.add('has-photo');
+    };
+    journeyImg.src=profileImg.src;
+  }
+}
 
       function progressGoalKey(type,index){
   return type+'-'+index;
