@@ -866,6 +866,47 @@
   font-size:13px;
   line-height:1.35;
 }
+
+    .journey-path-fill{
+  transition:stroke-dashoffset .7s cubic-bezier(.2,.8,.2,1);
+  animation:pathGlow 2.6s ease-in-out infinite;
+}
+
+@keyframes pathGlow{
+  0%,100%{filter:drop-shadow(0 8px 14px rgba(49,140,120,.18))}
+  50%{filter:drop-shadow(0 10px 20px rgba(52,211,153,.38))}
+}
+
+.journey-stop.active{
+  animation:activePulse 1.8s ease-in-out infinite;
+}
+
+@keyframes activePulse{
+  0%,100%{transform:translate(-50%,-50%) scale(1)}
+  50%{transform:translate(-50%,-50%) scale(1.08)}
+}
+
+.journey-avatar{
+  transition:left .7s cubic-bezier(.2,.8,.2,1),top .7s cubic-bezier(.2,.8,.2,1);
+  animation:avatarFloat 2.8s ease-in-out infinite;
+}
+
+@keyframes avatarFloat{
+  0%,100%{margin-top:0}
+  50%{margin-top:-5px}
+}
+
+.journey-stop.locked{
+  filter:saturate(.7);
+}
+
+.journey-meter{
+  transition:transform .25s ease;
+}
+
+.journey-meter:active{
+  transform:scale(.98);
+}
     
     @media(max-width:370px){.hero h1{font-size:23px}.tab{padding-inline:6px;font-size:12px}.entry p{font-size:13px}.map-node{width:118px}.map-node-title{font-size:11.5px}.map-shell{min-height:550px}}
 
@@ -1341,7 +1382,12 @@ var points=[
 
   if(pctText)pctText.textContent=overall+'%';
   if(meter)meter.style.width=overall+'%';
-  if(pathFill)pathFill.style.strokeDashoffset=String(1 - overall/100);
+  if(pathFill){
+  pathFill.style.strokeDasharray='1';
+  requestAnimationFrame(function(){
+    pathFill.style.strokeDashoffset=String(1 - overall/100);
+  });
+}
 
   var nodes=[];
 
@@ -1371,8 +1417,8 @@ var points=[
 
   setChildren(stopsWrap,nodes);
 
-  avatar.style.left=activePoint.x+'px';
-  avatar.style.top=(activePoint.y-38)+'px';
+avatar.style.left=activePoint.x+'px';
+avatar.style.top=(activePoint.y-42)+'px';
 
   var profileImg=byId('profileAvatarImg');
   var journeyImg=byId('journeyAvatarImg');
