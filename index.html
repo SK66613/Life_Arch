@@ -676,10 +676,10 @@
 
 
 
-    .journey-map{
+.journey-map{
   position:relative;
   overflow:hidden;
-  min-height:690px;
+  min-height:620px;
   border-radius:32px;
   background:linear-gradient(180deg,#8fc8ff 0%,#ddecff 48%,#f8fbff 100%);
   box-shadow:var(--shadow-lg);
@@ -912,31 +912,7 @@
 }
 
 .journey-caption{
-  position:absolute;
-  left:16px;
-  right:16px;
-  bottom:16px;
-  z-index:8;
-  padding:15px;
-  border-radius:24px;
-  background:rgba(255,255,255,.78);
-  border:1px solid rgba(111,139,173,.18);
-  backdrop-filter:blur(18px);
-  box-shadow:var(--shadow-md);
-}
-
-.journey-caption h1{
-  margin:0;
-  font-size:26px;
-  line-height:1;
-  letter-spacing:-.035em;
-}
-
-.journey-caption p{
-  margin:8px 0 0;
-  color:var(--muted);
-  font-size:14px;
-  line-height:1.35;
+  display:none;
 }
     
     @media(max-width:370px){.hero h1{font-size:23px}.tab{padding-inline:6px;font-size:12px}.entry p{font-size:13px}.map-node{width:118px}.map-node-title{font-size:11.5px}.map-shell{min-height:550px}}
