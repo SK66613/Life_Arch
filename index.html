@@ -1971,7 +1971,7 @@ function closeProfileForm(type,reset){
   if(reset&&currentProfileTab===type)syncProfileActionButton(currentProfileTab);
 }
 
-function saveProfileItem(type){
+async function saveProfileItem(type){
   var f=profileFields[type];
   var data=null;
 
@@ -1984,10 +1984,56 @@ function saveProfileItem(type){
       from:f.from.value.trim(),
       to:f.to.value.trim(),
       responsibility:f.responsibility.value.trim(),
-      functions:careerFunctionsDraft,
+      functions:careerFunctionsDraft.slice(),
       progress:f.progress.value.trim()
     };
   }
+
+  if(type==='interests'){
+    data={
+      direction:f.direction.value.trim(),
+      sections:f.sections.value.trim(),
+      representatives:f.representatives.value.trim()
+    };
+  }
+
+  if(type==='hobby'){
+    data={
+      name:f.name.value.trim(),
+      category:f.category.value.trim(),
+      description:f.description.value.trim(),
+      meaning:f.meaning.value.trim()
+    };
+  }
+
+  if(type==='assets'){
+    data={
+      name:f.name.value.trim(),
+      type:f.type.value.trim(),
+      description:f.description.value.trim(),
+      value:f.value.value.trim()
+    };
+  }
+
+  if(profileEditing[type]===null)profileItems[type].unshift(data);
+  else profileItems[type][profileEditing[type]]=data;
+
+  generatedProfileText='';
+
+  renderProfileLists();
+  closeProfileForm(type);
+  syncProfileActionButton(currentProfileTab);
+  haptic('success');
+
+  try{
+    await saveProfileToWorker();
+    console.log('profile saved to D1');
+  }catch(e){
+    console.log('profile save failed',e);
+    alert('Save failed: '+e.message);
+    haptic('error');
+  }
+}
 
   if(type==='interests'){
     data={
@@ -2122,6 +2168,45 @@ function renderProfileSummary(){
   }
 }
 
+      async function saveProfileToWorker(){
+  var tg=window.Telegram&&window.Telegram.WebApp;
+  var user=tg&&tg.initDataUnsafe&&tg.initDataUnsafe.user;
+
+  if(!user||!user.id){
+    throw new Error('Telegram user not found');
+  }
+
+  var res=await fetch(PROFILE_SAVE_URL,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      user_id:String(user.id),
+      user:{
+        first_name:user.first_name||'',
+        last_name:user.last_name||'',
+        username:user.username||'',
+        photo_url:user.photo_url||''
+      },
+      profile:{
+        career:profileItems.career,
+        interests:profileItems.interests,
+        hobby:profileItems.hobby,
+        assets:profileItems.assets,
+        profile_text:generatedProfileText||''
+      }
+    })
+  });
+
+  var data=await res.json().catch(function(){return null});
+
+  if(!res.ok||!data||!data.ok){
+    console.log('profile save failed response',data);
+    throw new Error((data&&data.error)||'Profile save failed');
+  }
+
+  return data;
+}
+
 async function loadProfileFromWorker(){
   try{
     var tg=window.Telegram&&window.Telegram.WebApp;
@@ -2169,7 +2254,7 @@ async function loadProfileFromWorker(){
 
     if(btn){
       btn.disabled=true;
-      btn.textContent='Generating...';
+      mainProfileActionText.textContent='Generating...';
     }
 
     haptic('selection');
@@ -2188,7 +2273,7 @@ async function loadProfileFromWorker(){
 
     if(!res.ok||!data.ok){
       console.log('profile generate failed',data);
-      alert('Profile generation failed');
+      alert('Profile generation failed: '+((data&&data.error)||'unknown error'));
       haptic('error');
       return;
     }
