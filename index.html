@@ -1885,10 +1885,11 @@ function renderProfileList(type){
         item.name || 'Asset',
       text:profileText(type,item),
       onEdit:function(){openProfileForm(type,i)},
-      onDelete:function(){
-        profileItems[type].splice(i,1);
-        renderProfileLists();
-      }
+onDelete:function(){
+  profileItems[type].splice(i,1);
+  saveProfileToWorker();
+  renderProfileLists();
+}
     }));
   });
 
@@ -2075,6 +2076,8 @@ function renderProfileSummary(){var missing=[];if(!profileItems.career.length)mi
 
       var PROFILE_SAVE_URL='https://life-arch.cyberian13.workers.dev/profile/save';
 
+      var PROFILE_GET_URL='https://life-arch.cyberian13.workers.dev/profile/get';
+
 async function saveProfileToWorker(){
   try{
     var tg=window.Telegram&&window.Telegram.WebApp;
@@ -2085,11 +2088,48 @@ async function saveProfileToWorker(){
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
         user_id:user&&user.id?String(user.id):'demo',
+        user:{
+          first_name:user&&user.first_name?user.first_name:'',
+          last_name:user&&user.last_name?user.last_name:'',
+          username:user&&user.username?user.username:'',
+          photo_url:user&&user.photo_url?user.photo_url:''
+        },
         profile:profileItems
       })
     });
   }catch(e){
     console.log('profile save failed',e);
+  }
+}
+
+async function loadProfileFromWorker(){
+  try{
+    var tg=window.Telegram&&window.Telegram.WebApp;
+    var user=tg&&tg.initDataUnsafe&&tg.initDataUnsafe.user;
+
+    if(!user||!user.id){
+      console.log('profile load skipped: no telegram user');
+      return;
+    }
+
+    var res=await fetch(PROFILE_GET_URL+'?user_id='+encodeURIComponent(user.id));
+    var data=await res.json();
+
+    if(!res.ok||!data.ok||!data.profile){
+      console.log('profile load failed response',data);
+      return;
+    }
+
+    profileItems.career=data.profile.career||[];
+    profileItems.interests=data.profile.interests||[];
+    profileItems.hobby=data.profile.hobby||[];
+    profileItems.assets=data.profile.assets||[];
+
+    renderProfileLists();
+
+    console.log('profile loaded from D1',profileItems);
+  }catch(e){
+    console.log('profile load failed',e);
   }
 }
 
@@ -2269,7 +2309,8 @@ if(aiInput){
 
       renderProgress();
 
-      loadTelegramUser();
+     loadTelegramUser();
+loadProfileFromWorker();
 
 
       syncDiaryActionButton(currentDiaryTab);
