@@ -2442,9 +2442,10 @@ if(aiInput){
 
       renderProgress();
 
-loadTelegramUser().then(function(){
+setTimeout(function(){
+  loadTelegramUser();
   loadProfileFromWorker();
-});
+}, 300);
 
       syncDiaryActionButton(currentDiaryTab);
       syncProfileActionButton(currentProfileTab);
