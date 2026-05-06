@@ -847,6 +847,11 @@
     <div class="profile-card">
       <div class="section-title">Main</div>
       <div class="profile-text" id="profileSummary"></div>
+<div style="padding:0 16px 16px">
+  <button class="save-btn" id="generateProfileBtn" type="button" style="width:100%">
+    Generate AI profile
+  </button>
+</div>
     </div>
   </div>
 
@@ -2070,35 +2075,47 @@ function summaryBlock(title,type,items){
   return block;
 }
 
-function renderProfileSummary(){var missing=[];if(!profileItems.career.length)missing.push('Career');if(!profileItems.interests.length)missing.push('Interests');if(!profileItems.hobby.length)missing.push('Hobby');if(!profileItems.assets.length)missing.push('Assets');var roleLine=byId('profileRoleLine');if(missing.length){var block=makeElement('div','summary-block');block.appendChild(makeElement('h3','','Fill your profile'));block.appendChild(makeElement('p','','To generate a useful personal description, please fill: '+missing.join(', ')+'.'));block.appendChild(makeElement('p','','After that AI will create your profile description here in Main.'));setChildren(byId('profileSummary'),[block]);if(roleLine)roleLine.textContent='Profile not filled yet';return;}setChildren(byId('profileSummary'),[summaryBlock('Career','career',profileItems.career),summaryBlock('Interests','interests',profileItems.interests),summaryBlock('Hobby','hobby',profileItems.hobby),summaryBlock('Assets','assets',profileItems.assets)]);var lastCareer=profileItems.career[0];if(roleLine&&lastCareer){roleLine.textContent=[lastCareer.post,lastCareer.field].filter(Boolean).join(' - ')||'Profile filled';}}
-      
-      var AI_WORKER_URL='https://life-arch.cyberian13.workers.dev/ai';
+function renderProfileSummary(){
+  var roleLine=byId('profileRoleLine');
 
-      var PROFILE_SAVE_URL='https://life-arch.cyberian13.workers.dev/profile/save';
+  if(generatedProfileText){
+    var block=makeElement('div','summary-block');
+    block.appendChild(makeElement('h3','','AI Profile'));
+    block.appendChild(makeElement('p','',generatedProfileText));
+    setChildren(byId('profileSummary'),[block]);
 
-      var PROFILE_GET_URL='https://life-arch.cyberian13.workers.dev/profile/get';
+    if(roleLine)roleLine.textContent='AI profile generated';
+    return;
+  }
 
-async function saveProfileToWorker(){
-  try{
-    var tg=window.Telegram&&window.Telegram.WebApp;
-    var user=tg&&tg.initDataUnsafe&&tg.initDataUnsafe.user;
+  var missing=[];
+  if(!profileItems.career.length)missing.push('Career');
+  if(!profileItems.interests.length)missing.push('Interests');
+  if(!profileItems.hobby.length)missing.push('Hobby');
+  if(!profileItems.assets.length)missing.push('Assets');
 
-    await fetch(PROFILE_SAVE_URL,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        user_id:user&&user.id?String(user.id):'demo',
-        user:{
-          first_name:user&&user.first_name?user.first_name:'',
-          last_name:user&&user.last_name?user.last_name:'',
-          username:user&&user.username?user.username:'',
-          photo_url:user&&user.photo_url?user.photo_url:''
-        },
-        profile:profileItems
-      })
-    });
-  }catch(e){
-    console.log('profile save failed',e);
+  if(missing.length){
+    var emptyBlock=makeElement('div','summary-block');
+    emptyBlock.appendChild(makeElement('h3','','Fill your profile'));
+    emptyBlock.appendChild(makeElement('p','','To generate a useful personal description, please fill: '+missing.join(', ')+'.'));
+    emptyBlock.appendChild(makeElement('p','','After that AI will create your profile description here in Main.'));
+    setChildren(byId('profileSummary'),[emptyBlock]);
+
+    if(roleLine)roleLine.textContent='Profile not filled yet';
+    return;
+  }
+
+  setChildren(byId('profileSummary'),[
+    summaryBlock('Career','career',profileItems.career),
+    summaryBlock('Interests','interests',profileItems.interests),
+    summaryBlock('Hobby','hobby',profileItems.hobby),
+    summaryBlock('Assets','assets',profileItems.assets)
+  ]);
+
+  var lastCareer=profileItems.career[0];
+
+  if(roleLine&&lastCareer){
+    roleLine.textContent=[lastCareer.post,lastCareer.field].filter(Boolean).join(' - ')||'Profile filled';
   }
 }
 
@@ -2130,6 +2147,61 @@ async function loadProfileFromWorker(){
     console.log('profile loaded from D1',profileItems);
   }catch(e){
     console.log('profile load failed',e);
+  }
+}
+
+      async function generateProfileText(){
+  var btn=byId('generateProfileBtn');
+
+  try{
+    var tg=window.Telegram&&window.Telegram.WebApp;
+    var user=tg&&tg.initDataUnsafe&&tg.initDataUnsafe.user;
+
+    if(!user||!user.id){
+      alert('Telegram user not found');
+      return;
+    }
+
+    if(btn){
+      btn.disabled=true;
+      btn.textContent='Generating...';
+    }
+
+    haptic('selection');
+
+    await saveProfileToWorker();
+
+    var res=await fetch(PROFILE_GENERATE_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        user_id:String(user.id)
+      })
+    });
+
+    var data=await res.json();
+
+    if(!res.ok||!data.ok){
+      console.log('profile generate failed',data);
+      alert('Profile generation failed');
+      haptic('error');
+      return;
+    }
+
+    generatedProfileText=data.profile_text||'';
+
+    renderProfileSummary();
+
+    haptic('success');
+  }catch(e){
+    console.log('profile generate failed',e);
+    alert('Profile generation failed');
+    haptic('error');
+  }finally{
+    if(btn){
+      btn.disabled=false;
+      btn.textContent='Generate AI profile';
+    }
   }
 }
 
@@ -2266,7 +2338,10 @@ byId('saveHobbyBtn').addEventListener('click',function(){saveProfileItem('hobby'
 byId('cancelAssetsBtn').addEventListener('click',function(){closeProfileForm('assets')});
 byId('saveAssetsBtn').addEventListener('click',function(){saveProfileItem('assets')});
 
-
+var generateProfileBtn=byId('generateProfileBtn');
+if(generateProfileBtn){
+  generateProfileBtn.addEventListener('click',generateProfileText);
+}
 
       var aiSendBtn=byId('aiSendBtn');
 var aiInput=byId('aiInput');
