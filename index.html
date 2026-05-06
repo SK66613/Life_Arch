@@ -2309,9 +2309,9 @@ if(aiInput){
 
       renderProgress();
 
-     loadTelegramUser();
-loadProfileFromWorker();
-
+loadTelegramUser().then(function(){
+  loadProfileFromWorker();
+});
 
       syncDiaryActionButton(currentDiaryTab);
       syncProfileActionButton(currentProfileTab);
