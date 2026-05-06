@@ -2018,8 +2018,6 @@ async function saveProfileItem(type){
   if(profileEditing[type]===null)profileItems[type].unshift(data);
   else profileItems[type][profileEditing[type]]=data;
 
-  generatedProfileText='';
-
   renderProfileLists();
   closeProfileForm(type);
   syncProfileActionButton(currentProfileTab);
@@ -2243,9 +2241,10 @@ async function loadProfileFromWorker(){
       return;
     }
 
-    generatedProfileText=data.profile_text||'';
+generatedProfileText=data.profile_text||'';
 
-    renderProfileSummary();
+renderProfileSummary();
+await saveProfileToWorker();
 
     haptic('success');
   }catch(e){
