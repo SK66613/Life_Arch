@@ -674,7 +674,73 @@
   color:#64748b;
 }
     
-    @media(max-width:370px){.hero h1{font-size:23px}.tab{padding-inline:6px;font-size:12px}.entry p{font-size:13px}.map-node{width:118px}.map-node-title{font-size:11.5px}.map-shell{min-height:550px}}
+    .mini-list{
+  display:grid;
+  gap:8px;
+  margin-bottom:8px;
+}
+
+.mini-row{
+  display:grid;
+  grid-template-columns:1fr 42px;
+  gap:8px;
+  align-items:center;
+  padding:9px;
+  border-radius:15px;
+  background:rgba(255,255,255,.78);
+  border:1px solid rgba(111,139,173,.20);
+}
+
+.mini-row span{
+  font-size:14px;
+  line-height:1.3;
+  color:#25364d;
+  white-space:pre-wrap;
+}
+
+.mini-like{
+  width:38px;
+  height:34px;
+  border:0;
+  border-radius:13px;
+  background:#eef6ff;
+  color:#64748b;
+  font-size:17px;
+  font-weight:950;
+}
+
+.mini-like.active{
+  background:linear-gradient(135deg,#72d7a8,#31a376);
+  color:#fff;
+}
+
+.mini-add{
+  display:grid;
+  grid-template-columns:1fr 42px;
+  gap:8px;
+}
+
+.mini-add input{
+  width:100%;
+  padding:12px 13px;
+  border:1px solid rgba(111,139,173,.26);
+  border-radius:17px;
+  background:rgba(255,255,255,.86);
+  color:var(--ink);
+  outline:none;
+  font-size:16px;
+}
+
+.mini-add button{
+  border:0;
+  border-radius:15px;
+  background:linear-gradient(135deg,#66aceb,#2e74bb);
+  color:#fff;
+  font-size:22px;
+  font-weight:950;
+}
+
+@media(max-width:370px){.hero h1{font-size:23px}.tab{padding-inline:6px;font-size:12px}.entry p{font-size:13px}.map-node{width:118px}.map-node-title{font-size:11.5px}.map-shell{min-height:550px}}
 
 
 
@@ -755,12 +821,32 @@
       <div class="field"><label>Field of activity</label><input id="careerField" placeholder="Software development"></div>
       <div class="field"><label>Post</label><input id="careerPost" placeholder="Startup manager"></div>
 
-      <div class="field"><label>Working period from</label><input id="careerFrom" placeholder="feb 2026"></div>
-      <div class="field"><label>Working period to</label><input id="careerTo" placeholder="now"></div>
+<div class="field">
+  <label>Working period from</label>
+  <input id="careerFrom" type="month">
+</div>
 
-      <div class="field"><label>Main responsibility</label><textarea id="careerResponsibility"></textarea></div>
-      <div class="field"><label>Functions</label><textarea id="careerFunctions" placeholder="+ Development of technical specifications&#10;+ Search for specialists"></textarea></div>
-      <div class="field"><label>Progress</label><textarea id="careerProgress"></textarea></div>
+<div class="field">
+  <label>Working period to</label>
+  <input id="careerTo" type="month">
+  <div class="hint">Leave empty if you still work here.</div>
+</div>
+
+<div class="field"><label>Main responsibility</label><textarea id="careerResponsibility"></textarea></div>
+
+<div class="field">
+  <label>Functions</label>
+  <div id="careerFunctionsList" class="mini-list"></div>
+
+  <div class="mini-add">
+    <input id="careerFunctionInput" placeholder="Add one function">
+    <button id="addCareerFunctionBtn" type="button">+</button>
+  </div>
+
+  <div class="hint">Add functions one by one and mark whether you liked doing them.</div>
+</div>
+
+<div class="field"><label>Progress</label><textarea id="careerProgress"></textarea></div>
 
       <div class="form-actions">
         <button class="ghost-btn" id="cancelCareerBtn" type="button">Cancel</button>
@@ -1128,6 +1214,7 @@ var profileEditing={
   hobby:null,
   assets:null
 };
+var careerFunctionsDraft=[];
       var selectedRoadmapId='wish-0';
 
 var progressFilter='all';
@@ -1190,8 +1277,7 @@ var profileFields={
     from:byId('careerFrom'),
     to:byId('careerTo'),
     responsibility:byId('careerResponsibility'),
-    functions:byId('careerFunctions'),
-    progress:byId('careerProgress')
+        progress:byId('careerProgress')
   },
   interests:{
     direction:byId('interestDirection'),
@@ -1220,7 +1306,7 @@ var profileFields={
         tab.classList.add('active');
         document.querySelectorAll('.tab-panel').forEach(function(p){if(p.getAttribute('data-scope')===scope)p.classList.toggle('active',p.getAttribute('data-panel')===tabName)});
         if(scope==='diary'){currentDiaryTab=tabName;closeDiaryForm('wishes',false);closeDiaryForm('thoughts',false);closeDiaryForm('dreams',false);syncDiaryActionButton(tabName)}
-        if(scope==='profile'){currentProfileTab=tabName;closeProfileForm('career',false);closeProfileForm('interests',false);closeProfileForm('hobby',false);closeProfileForm('achievements',false);syncProfileActionButton(tabName)}
+        if(scope==='profile'){currentProfileTab=tabName;closeProfileForm('career',false);closeProfileForm('interests',false);closeProfileForm('hobby',false);closeProfileForm('assets',false);syncProfileActionButton(tabName)}
       }
       function switchDiaryTo(t){var g=document.querySelector('[data-tabs="diary"]');switchTab(g,g.querySelector('[data-tab="'+t+'"]'))}
       function formatWishDue(w){if(w.dueType==='week')return'Should come true in one week';if(w.dueType==='month')return'Should come true in one month';if(w.dueType==='year')return'Should come true in one year';if(w.dueType==='custom'&&w.customDate){var p=w.customDate.split('-');return'Should come true by '+p[2]+'.'+p[1]+'.'+p[0]}return'Custom date not set'}
@@ -1681,12 +1767,10 @@ function initProgressTabs(){
   });
 }
 
-function profileMeta(type,item){
-  if(type==='career')return (item.from||'')+' - '+(item.to||'now');
-  if(type==='interests')return item.direction||'Interest';
-  if(type==='hobby')return item.category||'Hobby';
-  return item.type||'Asset';
-}
+function formatMonth(value){if(!value)return '';var parts=value.split('-');if(parts.length!==2)return value;var months=['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];return months[Number(parts[1])-1]+' '+parts[0];}
+function renderCareerFunctionsDraft(){var box=byId('careerFunctionsList');if(!box)return;var nodes=[];careerFunctionsDraft.forEach(function(fn,index){var row=makeElement('div','mini-row');var text=makeElement('span','',fn.text);var like=makeElement('button','mini-like '+(fn.liked?'active':''),fn.liked?'✓':'♡');like.type='button';like.addEventListener('click',function(){careerFunctionsDraft[index].liked=!careerFunctionsDraft[index].liked;haptic('selection');renderCareerFunctionsDraft();});row.appendChild(text);row.appendChild(like);nodes.push(row);});setChildren(box,nodes);}
+function addCareerFunction(){var input=byId('careerFunctionInput');if(!input)return;var text=input.value.trim();if(!text)return;careerFunctionsDraft.push({text:text,liked:false});input.value='';haptic('success');renderCareerFunctionsDraft();}
+function profileMeta(type,item){if(type==='career'){return formatMonth(item.from)+' - '+(item.to?formatMonth(item.to):'now');}if(type==='interests')return item.direction||'Interest';if(type==='hobby')return item.category||'Hobby';return item.type||'Asset';}
 
 function profileText(type,item){
   if(type==='career'){
@@ -1696,7 +1780,7 @@ function profileText(type,item){
       item.location,
       item.post,
       item.responsibility,
-      item.functions,
+      (item.functions||[]).map(function(fn){return (fn.liked?'✓ ':'♡ ')+fn.text;}).join('\n'),
       item.progress
     ].filter(Boolean).join('\n');
   }
@@ -1783,16 +1867,17 @@ function openProfileForm(type,i){
   profileLists[type].form.classList.remove('hidden');
 
   if(type==='career'){
-    var c=item||{company:'',location:'',field:'',post:'',from:'',to:'',responsibility:'',functions:'',progress:''};
-    profileFields.career.company.value=c.company;
-    profileFields.career.location.value=c.location;
-    profileFields.career.field.value=c.field;
-    profileFields.career.post.value=c.post;
-    profileFields.career.from.value=c.from;
-    profileFields.career.to.value=c.to;
-    profileFields.career.responsibility.value=c.responsibility;
-    profileFields.career.functions.value=c.functions;
-    profileFields.career.progress.value=c.progress;
+    var c=item||{company:'',location:'',field:'',post:'',from:'',to:'',responsibility:'',functions:[],progress:''};
+    profileFields.career.company.value=c.company||'';
+    profileFields.career.location.value=c.location||'';
+    profileFields.career.field.value=c.field||'';
+    profileFields.career.post.value=c.post||'';
+    profileFields.career.from.value=c.from||'';
+    profileFields.career.to.value=c.to||'';
+    profileFields.career.responsibility.value=c.responsibility||'';
+    profileFields.career.progress.value=c.progress||'';
+    careerFunctionsDraft=(c.functions||[]).map(function(fn){if(typeof fn==='string'){return {text:fn,liked:false};}return {text:fn.text||'',liked:!!fn.liked};}).filter(function(fn){return fn.text;});
+    renderCareerFunctionsDraft();
   }
 
   if(type==='interests'){
@@ -1845,9 +1930,9 @@ function saveProfileItem(type){
       field:f.field.value.trim(),
       post:f.post.value.trim(),
       from:f.from.value.trim(),
-      to:f.to.value.trim()||'now',
+      to:f.to.value.trim(),
       responsibility:f.responsibility.value.trim(),
-      functions:f.functions.value.trim(),
+      functions:careerFunctionsDraft,
       progress:f.progress.value.trim()
     };
   }
@@ -1934,26 +2019,8 @@ function summaryBlock(title,type,items){
   return block;
 }
 
-function renderProfileSummary(){
-  setChildren(byId('profileSummary'),[
-    summaryBlock('Career','career',profileItems.career),
-    summaryBlock('Interests','interests',profileItems.interests),
-    summaryBlock('Hobby','hobby',profileItems.hobby),
-    summaryBlock('Assets','assets',profileItems.assets)
-  ]);
-
-  var lastCareer=profileItems.career[0];
-  var roleLine=byId('profileRoleLine');
-
-  if(roleLine&&lastCareer){
-    roleLine.textContent=[
-      lastCareer.post,
-      lastCareer.field
-    ].filter(Boolean).join(' - ')||'Profile filled';
-  }
-}
-      function renderProfileSummary(){setChildren(byId('profileSummary'),[summaryBlock('Career',profileItems.career),summaryBlock('Interests',profileItems.interests),summaryBlock('Hobby',profileItems.hobby),summaryBlock('Achievements',profileItems.achievements)])}
-
+function renderProfileSummary(){var missing=[];if(!profileItems.career.length)missing.push('Career');if(!profileItems.interests.length)missing.push('Interests');if(!profileItems.hobby.length)missing.push('Hobby');if(!profileItems.assets.length)missing.push('Assets');var roleLine=byId('profileRoleLine');if(missing.length){var block=makeElement('div','summary-block');block.appendChild(makeElement('h3','','Fill your profile'));block.appendChild(makeElement('p','','To generate a useful personal description, please fill: '+missing.join(', ')+'.'));block.appendChild(makeElement('p','','After that AI will create your profile description here in Main.'));setChildren(byId('profileSummary'),[block]);if(roleLine)roleLine.textContent='Profile not filled yet';return;}setChildren(byId('profileSummary'),[summaryBlock('Career','career',profileItems.career),summaryBlock('Interests','interests',profileItems.interests),summaryBlock('Hobby','hobby',profileItems.hobby),summaryBlock('Assets','assets',profileItems.assets)]);var lastCareer=profileItems.career[0];if(roleLine&&lastCareer){roleLine.textContent=[lastCareer.post,lastCareer.field].filter(Boolean).join(' - ')||'Profile filled';}}
+      
       var AI_WORKER_URL='https://life-arch.cyberian13.workers.dev/ai';
 
       var PROFILE_SAVE_URL='https://life-arch.cyberian13.workers.dev/profile/save';
@@ -2042,7 +2109,7 @@ async function sendAiMessage(){
           career:profileItems.career,
           interests:profileItems.interests,
           hobby:profileItems.hobby,
-          achievements:profileItems.achievements
+          assets:profileItems.assets
         }
       })
     });
@@ -2091,6 +2158,14 @@ async function sendAiMessage(){
       byId('cancelDreamBtn').addEventListener('click',function(){closeDiaryForm('dreams')});byId('saveDreamBtn').addEventListener('click',function(){saveDiaryItem('dreams')});
       byId('cancelCareerBtn').addEventListener('click',function(){closeProfileForm('career')});
 byId('saveCareerBtn').addEventListener('click',function(){saveProfileItem('career')});
+byId('addCareerFunctionBtn').addEventListener('click',addCareerFunction);
+
+byId('careerFunctionInput').addEventListener('keydown',function(e){
+  if(e.key==='Enter'){
+    e.preventDefault();
+    addCareerFunction();
+  }
+});
 
 byId('cancelInterestsBtn').addEventListener('click',function(){closeProfileForm('interests')});
 byId('saveInterestsBtn').addEventListener('click',function(){saveProfileItem('interests')});
