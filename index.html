@@ -1989,18 +1989,6 @@ async function saveProfileItem(type){
     };
   }
 
-
-
-  try{
-    await saveProfileToWorker();
-    console.log('profile saved to D1');
-  }catch(e){
-    console.log('profile save failed',e);
-    alert('Save failed: '+e.message);
-    haptic('error');
-  }
-}
-
   if(type==='interests'){
     data={
       direction:f.direction.value.trim(),
@@ -2030,10 +2018,21 @@ async function saveProfileItem(type){
   if(profileEditing[type]===null)profileItems[type].unshift(data);
   else profileItems[type][profileEditing[type]]=data;
 
-  saveProfileToWorker();
+  generatedProfileText='';
+
   renderProfileLists();
-  haptic('success');
   closeProfileForm(type);
+  syncProfileActionButton(currentProfileTab);
+  haptic('success');
+
+  try{
+    await saveProfileToWorker();
+    console.log('profile saved to D1');
+  }catch(e){
+    console.log('profile save failed',e);
+    alert('Save failed: '+e.message);
+    haptic('error');
+  }
 }
 
 function syncProfileActionButton(tab){
