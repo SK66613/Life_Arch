@@ -821,6 +821,39 @@
   margin: 5px 0;
 }
 
+    .profile-ai-text {
+  white-space: normal;
+}
+
+.profile-ai-text h1,
+.profile-ai-text h2,
+.profile-ai-text h3,
+.profile-ai-text h4 {
+  margin: 18px 0 8px;
+  font-size: 18px;
+  font-weight: 950;
+  color: var(--navy);
+}
+
+.profile-ai-text p {
+  margin: 0 0 14px;
+}
+
+.profile-ai-text ul,
+.profile-ai-text ol {
+  margin: 8px 0 16px 22px;
+  padding: 0;
+}
+
+.profile-ai-text li {
+  margin: 6px 0;
+}
+
+.profile-ai-text strong {
+  color: var(--navy);
+  font-weight: 950;
+}
+
 @media(max-width:370px){.hero h1{font-size:23px}.tab{padding-inline:6px;font-size:12px}.entry p{font-size:13px}.map-node{width:118px}.map-node-title{font-size:11.5px}.map-shell{min-height:550px}}
 
 
@@ -2099,18 +2132,9 @@ function summaryBlock(title,type,items){
   head.appendChild(makeElement('h3','',title));
   block.appendChild(head);
 
-  if(!items.length){
-    var textBox = makeElement('div', 'profile-ai-text');
-
-if(window.marked){
-  textBox.innerHTML = marked.parse(generatedProfileText);
-}else{
-  textBox.textContent = generatedProfileText;
-  textBox.style.whiteSpace = 'pre-line';
+if(!items.length){
+  block.appendChild(makeElement('p','','No data yet.'));
 }
-
-block.appendChild(textBox);
-  }
 
   items.slice(0,3).forEach(function(item){
     var p=makeElement('p');
@@ -2133,8 +2157,19 @@ function renderProfileSummary(){
 
   if(generatedProfileText && String(generatedProfileText).trim()){
     var block=makeElement('div','summary-block');
-    block.appendChild(makeElement('h3','','AI Profile'));
-    block.appendChild(makeElement('p','',String(generatedProfileText).trim()));
+
+    var textBox=makeElement('div','profile-ai-text');
+
+    var cleanText=String(generatedProfileText).trim();
+
+    if(window.marked){
+      textBox.innerHTML=marked.parse(cleanText);
+    }else{
+      textBox.textContent=cleanText;
+      textBox.style.whiteSpace='pre-line';
+    }
+
+    block.appendChild(textBox);
     setChildren(box,[block]);
 
     if(roleLine)roleLine.textContent='AI profile generated';
