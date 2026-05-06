@@ -847,11 +847,7 @@
     <div class="profile-card">
       <div class="section-title">Main</div>
       <div class="profile-text" id="profileSummary"></div>
-<div style="padding:0 16px 16px">
-  <button class="save-btn" id="generateProfileBtn" type="button" style="width:100%">
-    Generate AI profile
-  </button>
-</div>
+
     </div>
   </div>
 
@@ -2029,6 +2025,13 @@ function saveProfileItem(type){
 }
 
 function syncProfileActionButton(tab){
+  if(tab==='main'){
+    mainProfileAction.parentElement.classList.add('active');
+    mainProfileActionText.textContent='Generate Profile';
+    mainProfileAction.onclick=generateProfileText;
+    return;
+  }
+
   if(tab==='career'||tab==='interests'||tab==='hobby'||tab==='assets'){
     mainProfileAction.parentElement.classList.add('active');
 
@@ -2142,6 +2145,8 @@ async function loadProfileFromWorker(){
     profileItems.hobby=data.profile.hobby||[];
     profileItems.assets=data.profile.assets||[];
 
+    generatedProfileText=data.profile.profile_text||data.profile_text||'';
+
     renderProfileLists();
 
     console.log('profile loaded from D1',profileItems);
@@ -2151,7 +2156,7 @@ async function loadProfileFromWorker(){
 }
 
       async function generateProfileText(){
-  var btn=byId('generateProfileBtn');
+  var btn=mainProfileAction;
 
   try{
     var tg=window.Telegram&&window.Telegram.WebApp;
@@ -2200,10 +2205,17 @@ async function loadProfileFromWorker(){
   }finally{
     if(btn){
       btn.disabled=false;
-      btn.textContent='Generate AI profile';
+      mainProfileActionText.textContent='Generate Profile';
     }
   }
 }
+
+      var AI_WORKER_URL='https://life-arch.cyberian13.workers.dev/ai';
+var PROFILE_SAVE_URL='https://life-arch.cyberian13.workers.dev/profile/save';
+var PROFILE_GET_URL='https://life-arch.cyberian13.workers.dev/profile/get';
+var PROFILE_GENERATE_URL='https://life-arch.cyberian13.workers.dev/profile/generate';
+
+var generatedProfileText='';
 
 var aiMessages=[
   {
@@ -2338,10 +2350,7 @@ byId('saveHobbyBtn').addEventListener('click',function(){saveProfileItem('hobby'
 byId('cancelAssetsBtn').addEventListener('click',function(){closeProfileForm('assets')});
 byId('saveAssetsBtn').addEventListener('click',function(){saveProfileItem('assets')});
 
-var generateProfileBtn=byId('generateProfileBtn');
-if(generateProfileBtn){
-  generateProfileBtn.addEventListener('click',generateProfileText);
-}
+
 
       var aiSendBtn=byId('aiSendBtn');
 var aiInput=byId('aiInput');
