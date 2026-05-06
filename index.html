@@ -1989,41 +1989,7 @@ async function saveProfileItem(type){
     };
   }
 
-  if(type==='interests'){
-    data={
-      direction:f.direction.value.trim(),
-      sections:f.sections.value.trim(),
-      representatives:f.representatives.value.trim()
-    };
-  }
 
-  if(type==='hobby'){
-    data={
-      name:f.name.value.trim(),
-      category:f.category.value.trim(),
-      description:f.description.value.trim(),
-      meaning:f.meaning.value.trim()
-    };
-  }
-
-  if(type==='assets'){
-    data={
-      name:f.name.value.trim(),
-      type:f.type.value.trim(),
-      description:f.description.value.trim(),
-      value:f.value.value.trim()
-    };
-  }
-
-  if(profileEditing[type]===null)profileItems[type].unshift(data);
-  else profileItems[type][profileEditing[type]]=data;
-
-  generatedProfileText='';
-
-  renderProfileLists();
-  closeProfileForm(type);
-  syncProfileActionButton(currentProfileTab);
-  haptic('success');
 
   try{
     await saveProfileToWorker();
@@ -2285,7 +2251,7 @@ async function loadProfileFromWorker(){
     haptic('success');
   }catch(e){
     console.log('profile generate failed',e);
-    alert('Profile generation failed');
+   alert('Profile generation failed: '+e.message);
     haptic('error');
   }finally{
     if(btn){
