@@ -2089,46 +2089,24 @@ function summaryBlock(title,type,items){
 
 function renderProfileSummary(){
   var roleLine=byId('profileRoleLine');
+  var box=byId('profileSummary');
 
-  if(generatedProfileText){
+  if(generatedProfileText && String(generatedProfileText).trim()){
     var block=makeElement('div','summary-block');
     block.appendChild(makeElement('h3','','AI Profile'));
-    block.appendChild(makeElement('p','',generatedProfileText));
-    setChildren(byId('profileSummary'),[block]);
+    block.appendChild(makeElement('p','',String(generatedProfileText).trim()));
+    setChildren(box,[block]);
 
     if(roleLine)roleLine.textContent='AI profile generated';
     return;
   }
 
-  var missing=[];
-  if(!profileItems.career.length)missing.push('Career');
-  if(!profileItems.interests.length)missing.push('Interests');
-  if(!profileItems.hobby.length)missing.push('Hobby');
-  if(!profileItems.assets.length)missing.push('Assets');
+  var emptyBlock=makeElement('div','summary-block');
+  emptyBlock.appendChild(makeElement('h3','','Profile text not generated yet'));
+  emptyBlock.appendChild(makeElement('p','','Fill Career, Interests, Hobby and Assets, then tap Generate Profile.'));
+  setChildren(box,[emptyBlock]);
 
-  if(missing.length){
-    var emptyBlock=makeElement('div','summary-block');
-    emptyBlock.appendChild(makeElement('h3','','Fill your profile'));
-    emptyBlock.appendChild(makeElement('p','','To generate a useful personal description, please fill: '+missing.join(', ')+'.'));
-    emptyBlock.appendChild(makeElement('p','','After that AI will create your profile description here in Main.'));
-    setChildren(byId('profileSummary'),[emptyBlock]);
-
-    if(roleLine)roleLine.textContent='Profile not filled yet';
-    return;
-  }
-
-  setChildren(byId('profileSummary'),[
-    summaryBlock('Career','career',profileItems.career),
-    summaryBlock('Interests','interests',profileItems.interests),
-    summaryBlock('Hobby','hobby',profileItems.hobby),
-    summaryBlock('Assets','assets',profileItems.assets)
-  ]);
-
-  var lastCareer=profileItems.career[0];
-
-  if(roleLine&&lastCareer){
-    roleLine.textContent=[lastCareer.post,lastCareer.field].filter(Boolean).join(' - ')||'Profile filled';
-  }
+  if(roleLine)roleLine.textContent='Profile text not generated yet';
 }
 
       async function saveProfileToWorker(){
