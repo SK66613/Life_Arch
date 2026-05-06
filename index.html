@@ -702,15 +702,156 @@
       </div>
     </section>
 
-    <section id="profile" class="screen">
-      <div class="profile-head">   <div class="avatar">     <div class="avatar-inner" id="profileAvatarBox">       <img id="profileAvatarImg" alt="">       <span id="profileAvatarFallback">AF</span>     </div>   </div>   <div>     <div class="name">Anatolio Fabbri</div>     <div class="role">Startup manager - Product builder</div>   </div> </div>
-      <div class="tabs-wrap"><div class="tabs" data-tabs="profile"><button class="tab active" data-tab="main" type="button">Main</button><button class="tab" data-tab="career" type="button">Career</button><button class="tab" data-tab="interests" type="button">Interests</button><button class="tab" data-tab="hobby" type="button">Hobby</button><button class="tab" data-tab="achievements" type="button">Wins</button></div></div>
-      <div class="tab-panel active" data-scope="profile" data-panel="main"><div class="profile-card"><div class="section-title">Profile Summary</div><div class="profile-text" id="profileSummary"></div></div></div>
-      <div class="tab-panel" data-scope="profile" data-panel="career"><div id="careerListView" class="stack"><div class="card" id="careerList"></div><div class="empty-state hidden" id="careerEmpty"><div class="empty-emoji" data-icon="briefcase"></div><h3>No career cards yet</h3><p>Add roles, skills, projects or goals.</p></div></div><div class="form-card hidden" id="careerForm"><div class="form-top"><h2 class="form-title" id="careerFormTitle">New Career Card</h2><span class="pill">Growth</span></div><div class="field"><label>Title</label><input id="careerTitle" placeholder="Example: Startup manager"></div><div class="field"><label>Type</label><select id="careerType"><option>Role</option><option>Skill</option><option>Project</option><option>Goal</option></select></div><div class="field"><label>Description</label><textarea id="careerDescription"></textarea></div><div class="field"><label>Next step</label><textarea id="careerNext"></textarea></div><div class="form-actions"><button class="ghost-btn" id="cancelCareerBtn" type="button">Cancel</button><button class="save-btn" id="saveCareerBtn" type="button">Save Career</button></div></div></div>
-      <div class="tab-panel" data-scope="profile" data-panel="interests"><div id="interestsListView" class="stack"><div class="card" id="interestsList"></div><div class="empty-state hidden" id="interestsEmpty"><div class="empty-emoji" data-icon="heart"></div><h3>No interests yet</h3><p>Add topics, formats and things you want to explore.</p></div></div><div class="form-card hidden" id="interestsForm"><div class="form-top"><h2 class="form-title" id="interestsFormTitle">New Interest</h2><span class="pill">Taste</span></div><div class="field"><label>Interest</label><input id="interestTitle"></div><div class="field"><label>Format</label><select id="interestFormat"><option>Practice</option><option>Books</option><option>Courses</option><option>Podcasts</option></select></div><div class="field"><label>Why I like it</label><textarea id="interestReason"></textarea></div><div class="field"><label>Want to explore</label><textarea id="interestExplore"></textarea></div><div class="form-actions"><button class="ghost-btn" id="cancelInterestsBtn" type="button">Cancel</button><button class="save-btn" id="saveInterestsBtn" type="button">Save Interest</button></div></div></div>
-      <div class="tab-panel" data-scope="profile" data-panel="hobby"><div id="hobbyListView" class="stack"><div class="card" id="hobbyList"></div><div class="empty-state hidden" id="hobbyEmpty"><div class="empty-emoji" data-icon="energy"></div><h3>No hobbies yet</h3><p>Add activities that give you energy.</p></div></div><div class="form-card hidden" id="hobbyForm"><div class="form-top"><h2 class="form-title" id="hobbyFormTitle">New Hobby</h2><span class="pill">Energy</span></div><div class="field"><label>Hobby</label><input id="hobbyTitle"></div><div class="field"><label>How often?</label><select id="hobbyFrequency"><option>Every day</option><option>Few times a week</option><option>Sometimes</option></select></div><div class="field"><label>Why it gives energy</label><textarea id="hobbyReason"></textarea></div><div class="field"><label>How to do it more often</label><textarea id="hobbyPlan"></textarea></div><div class="form-actions"><button class="ghost-btn" id="cancelHobbyBtn" type="button">Cancel</button><button class="save-btn" id="saveHobbyBtn" type="button">Save Hobby</button></div></div></div>
-      <div class="tab-panel" data-scope="profile" data-panel="achievements"><div id="achievementsListView" class="stack"><div class="card" id="achievementsList"></div><div class="empty-state hidden" id="achievementsEmpty"><div class="empty-emoji" data-icon="trophy"></div><h3>No achievements yet</h3><p>Add wins, milestones and proof of progress.</p></div></div><div class="form-card hidden" id="achievementsForm"><div class="form-top"><h2 class="form-title" id="achievementsFormTitle">New Achievement</h2><span class="pill">Proof</span></div><div class="field"><label>Achievement</label><input id="achievementTitle"></div><div class="field"><label>Area</label><select id="achievementArea"><option>Business</option><option>Career</option><option>Personal</option><option>Education</option></select></div><div class="field"><label>What happened?</label><textarea id="achievementStory"></textarea></div><div class="field"><label>Why it matters</label><textarea id="achievementImpact"></textarea></div><div class="form-actions"><button class="ghost-btn" id="cancelAchievementsBtn" type="button">Cancel</button><button class="save-btn" id="saveAchievementsBtn" type="button">Save Win</button></div></div></div>
-    </section>
+<section id="profile" class="screen">
+  <div class="profile-head">
+    <div class="avatar">
+      <div class="avatar-inner" id="profileAvatarBox">
+        <img id="profileAvatarImg" alt="">
+        <span id="profileAvatarFallback">AF</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="name">Anatolio Fabbri</div>
+      <div class="role" id="profileRoleLine">Profile not filled yet</div>
+    </div>
+  </div>
+
+  <div class="tabs-wrap">
+    <div class="tabs" data-tabs="profile">
+      <button class="tab active" data-tab="main" type="button">Main</button>
+      <button class="tab" data-tab="career" type="button">Career</button>
+      <button class="tab" data-tab="interests" type="button">Interests</button>
+      <button class="tab" data-tab="hobby" type="button">Hobby</button>
+      <button class="tab" data-tab="assets" type="button">Assets</button>
+    </div>
+  </div>
+
+  <div class="tab-panel active" data-scope="profile" data-panel="main">
+    <div class="profile-card">
+      <div class="section-title">Main</div>
+      <div class="profile-text" id="profileSummary"></div>
+    </div>
+  </div>
+
+  <div class="tab-panel" data-scope="profile" data-panel="career">
+    <div id="careerListView" class="stack">
+      <div class="card" id="careerList"></div>
+      <div class="empty-state hidden" id="careerEmpty">
+        <div class="empty-emoji" data-icon="briefcase"></div>
+        <h3>No career yet</h3>
+        <p>Add your work experience.</p>
+      </div>
+    </div>
+
+    <div class="form-card hidden" id="careerForm">
+      <div class="form-top">
+        <h2 class="form-title" id="careerFormTitle">Career</h2>
+        <span class="pill">Edit</span>
+      </div>
+
+      <div class="field"><label>Company name</label><input id="careerCompany"></div>
+      <div class="field"><label>Location</label><input id="careerLocation" placeholder="Milano, Italy"></div>
+      <div class="field"><label>Field of activity</label><input id="careerField" placeholder="Software development"></div>
+      <div class="field"><label>Post</label><input id="careerPost" placeholder="Startup manager"></div>
+
+      <div class="field"><label>Working period from</label><input id="careerFrom" placeholder="feb 2026"></div>
+      <div class="field"><label>Working period to</label><input id="careerTo" placeholder="now"></div>
+
+      <div class="field"><label>Main responsibility</label><textarea id="careerResponsibility"></textarea></div>
+      <div class="field"><label>Functions</label><textarea id="careerFunctions" placeholder="+ Development of technical specifications&#10;+ Search for specialists"></textarea></div>
+      <div class="field"><label>Progress</label><textarea id="careerProgress"></textarea></div>
+
+      <div class="form-actions">
+        <button class="ghost-btn" id="cancelCareerBtn" type="button">Cancel</button>
+        <button class="save-btn" id="saveCareerBtn" type="button">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-panel" data-scope="profile" data-panel="interests">
+    <div id="interestsListView" class="stack">
+      <div class="card" id="interestsList"></div>
+      <div class="empty-state hidden" id="interestsEmpty">
+        <div class="empty-emoji" data-icon="heart"></div>
+        <h3>No interests yet</h3>
+        <p>Add music, science, cinema or other directions.</p>
+      </div>
+    </div>
+
+    <div class="form-card hidden" id="interestsForm">
+      <div class="form-top">
+        <h2 class="form-title" id="interestsFormTitle">Interest</h2>
+        <span class="pill">Edit</span>
+      </div>
+
+      <div class="field"><label>Direction</label><input id="interestDirection" placeholder="Science"></div>
+      <div class="field"><label>Sections</label><textarea id="interestSections" placeholder="+ Medicine&#10;+ Physics&#10;+ Cosmology"></textarea></div>
+      <div class="field"><label>Representatives</label><textarea id="interestRepresentatives" placeholder="Pavlov, Kurlatov, Saveliev"></textarea></div>
+
+      <div class="form-actions">
+        <button class="ghost-btn" id="cancelInterestsBtn" type="button">Cancel</button>
+        <button class="save-btn" id="saveInterestsBtn" type="button">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-panel" data-scope="profile" data-panel="hobby">
+    <div id="hobbyListView" class="stack">
+      <div class="card" id="hobbyList"></div>
+      <div class="empty-state hidden" id="hobbyEmpty">
+        <div class="empty-emoji" data-icon="energy"></div>
+        <h3>No hobbies yet</h3>
+        <p>Add activities that give energy.</p>
+      </div>
+    </div>
+
+    <div class="form-card hidden" id="hobbyForm">
+      <div class="form-top">
+        <h2 class="form-title" id="hobbyFormTitle">Hobby</h2>
+        <span class="pill">Edit</span>
+      </div>
+
+      <div class="field"><label>Hobby name</label><input id="hobbyName"></div>
+      <div class="field"><label>Category</label><input id="hobbyCategory" placeholder="Sport, music, travel"></div>
+      <div class="field"><label>Description</label><textarea id="hobbyDescription"></textarea></div>
+      <div class="field"><label>Why it matters</label><textarea id="hobbyMeaning"></textarea></div>
+
+      <div class="form-actions">
+        <button class="ghost-btn" id="cancelHobbyBtn" type="button">Cancel</button>
+        <button class="save-btn" id="saveHobbyBtn" type="button">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-panel" data-scope="profile" data-panel="assets">
+    <div id="assetsListView" class="stack">
+      <div class="card" id="assetsList"></div>
+      <div class="empty-state hidden" id="assetsEmpty">
+        <div class="empty-emoji" data-icon="trophy"></div>
+        <h3>No assets yet</h3>
+        <p>Add skills, resources, capital, network or useful experience.</p>
+      </div>
+    </div>
+
+    <div class="form-card hidden" id="assetsForm">
+      <div class="form-top">
+        <h2 class="form-title" id="assetsFormTitle">Asset</h2>
+        <span class="pill">Edit</span>
+      </div>
+
+      <div class="field"><label>Asset name</label><input id="assetName"></div>
+      <div class="field"><label>Type</label><input id="assetType" placeholder="Skill, money, network, property"></div>
+      <div class="field"><label>Description</label><textarea id="assetDescription"></textarea></div>
+      <div class="field"><label>How it helps me</label><textarea id="assetValue"></textarea></div>
+
+      <div class="form-actions">
+        <button class="ghost-btn" id="cancelAssetsBtn" type="button">Cancel</button>
+        <button class="save-btn" id="saveAssetsBtn" type="button">Save</button>
+      </div>
+    </div>
+  </div>
+</section>
 
     <section id="dashboard" class="screen">
       <div class="map-hero"><h1>Life Map</h1><p>Your goals become a visible path. Complete steps and move your marker forward.</p></div>
@@ -974,8 +1115,19 @@ var avatarUrl=workerAvatarUrl;
       var thoughts=[{title:'Open a business',category:'Business idea',text:'I saw myself leading a team and calmly explaining what to do next.',importance:'This could become a real direction for my next project.'}];
       var dreams=[{title:'Tree from childhood',mood:'Calm',story:'I saw a tree from my childhood and felt like I had always lived there.',symbols:'Tree, childhood, home, calm feeling.'}];
       var editing={wishes:null,thoughts:null,dreams:null};
-      var profileItems={career:[{title:'Startup manager',type:'Role',description:'Strategy, marketing, sales and product launches.',next:'Build my own product and systemize the methodology.'}],interests:[{title:'AI assistants',format:'Practice',reason:'I like products that help people understand themselves.',explore:'Personal roadmaps and product growth.'}],hobby:[{title:'Walking',frequency:'Few times a week',reason:'Long walks clear my head and give me energy.',plan:'Schedule two evening walks every week.'}],achievements:[{title:'Launched 10+ projects',area:'Business',story:'Brought more than 10 projects to the market.',impact:'This proves I can move ideas into real products.'}]};
-      var profileEditing={career:null,interests:null,hobby:null,achievements:null};
+      var profileItems={
+  career:[],
+  interests:[],
+  hobby:[],
+  assets:[]
+};
+
+var profileEditing={
+  career:null,
+  interests:null,
+  hobby:null,
+  assets:null
+};
       var selectedRoadmapId='wish-0';
 
 var progressFilter='all';
@@ -998,9 +1150,67 @@ var progressOpenGoals={};
       var thoughtFields={title:byId('thoughtTitle'),category:byId('thoughtCategory'),text:byId('thoughtText'),importance:byId('thoughtImportance')};
       var dreamFields={title:byId('dreamTitle'),mood:byId('dreamMood'),story:byId('dreamStory'),symbols:byId('dreamSymbols')};
       var wishCustomDateField=byId('wishCustomDateField');
-      var profileLists={career:{view:byId('careerListView'),form:byId('careerForm'),list:byId('careerList'),empty:byId('careerEmpty'),formTitle:byId('careerFormTitle')},interests:{view:byId('interestsListView'),form:byId('interestsForm'),list:byId('interestsList'),empty:byId('interestsEmpty'),formTitle:byId('interestsFormTitle')},hobby:{view:byId('hobbyListView'),form:byId('hobbyForm'),list:byId('hobbyList'),empty:byId('hobbyEmpty'),formTitle:byId('hobbyFormTitle')},achievements:{view:byId('achievementsListView'),form:byId('achievementsForm'),list:byId('achievementsList'),empty:byId('achievementsEmpty'),formTitle:byId('achievementsFormTitle')}};
-      var profileFields={career:{title:byId('careerTitle'),type:byId('careerType'),description:byId('careerDescription'),next:byId('careerNext')},interests:{title:byId('interestTitle'),format:byId('interestFormat'),reason:byId('interestReason'),explore:byId('interestExplore')},hobby:{title:byId('hobbyTitle'),frequency:byId('hobbyFrequency'),reason:byId('hobbyReason'),plan:byId('hobbyPlan')},achievements:{title:byId('achievementTitle'),area:byId('achievementArea'),story:byId('achievementStory'),impact:byId('achievementImpact')}};
+      var profileLists={
+  career:{
+    view:byId('careerListView'),
+    form:byId('careerForm'),
+    list:byId('careerList'),
+    empty:byId('careerEmpty'),
+    formTitle:byId('careerFormTitle')
+  },
+  interests:{
+    view:byId('interestsListView'),
+    form:byId('interestsForm'),
+    list:byId('interestsList'),
+    empty:byId('interestsEmpty'),
+    formTitle:byId('interestsFormTitle')
+  },
+  hobby:{
+    view:byId('hobbyListView'),
+    form:byId('hobbyForm'),
+    list:byId('hobbyList'),
+    empty:byId('hobbyEmpty'),
+    formTitle:byId('hobbyFormTitle')
+  },
+  assets:{
+    view:byId('assetsListView'),
+    form:byId('assetsForm'),
+    list:byId('assetsList'),
+    empty:byId('assetsEmpty'),
+    formTitle:byId('assetsFormTitle')
+  }
+};
 
+var profileFields={
+  career:{
+    company:byId('careerCompany'),
+    location:byId('careerLocation'),
+    field:byId('careerField'),
+    post:byId('careerPost'),
+    from:byId('careerFrom'),
+    to:byId('careerTo'),
+    responsibility:byId('careerResponsibility'),
+    functions:byId('careerFunctions'),
+    progress:byId('careerProgress')
+  },
+  interests:{
+    direction:byId('interestDirection'),
+    sections:byId('interestSections'),
+    representatives:byId('interestRepresentatives')
+  },
+  hobby:{
+    name:byId('hobbyName'),
+    category:byId('hobbyCategory'),
+    description:byId('hobbyDescription'),
+    meaning:byId('hobbyMeaning')
+  },
+  assets:{
+    name:byId('assetName'),
+    type:byId('assetType'),
+    description:byId('assetDescription'),
+    value:byId('assetValue')
+  }
+};
       function openScreen(id){haptic('light');screens.forEach(function(s){s.classList.toggle('active',s.id===id)});navItems.forEach(function(i){i.classList.toggle('active',i.getAttribute('data-screen')===id)});actionBars.forEach(function(b){b.classList.toggle('active',b.getAttribute('data-actionbar')===id)});if(id==='profile')syncProfileActionButton(currentProfileTab);if(id==='diary')syncDiaryActionButton(currentDiaryTab)}
       function switchTab(group,tab){
         haptic('selection');
@@ -1471,58 +1681,300 @@ function initProgressTabs(){
   });
 }
 
-      function profileMeta(type,item){if(type==='career')return item.type;if(type==='interests')return item.format;if(type==='hobby')return item.frequency;return item.area}
-      function profileText(type,item){if(type==='career')return item.description||'No description yet.';if(type==='interests')return item.reason||'No reason yet.';if(type==='hobby')return item.reason||'No reason yet.';return item.story||'No story yet.'}
-      function profileIcon(type){if(type==='career')return'briefcase';if(type==='interests')return'heart';if(type==='hobby')return'energy';return'trophy'}
-      function profileBadge(type){if(type==='career')return'';if(type==='interests')return'pink';if(type==='hobby')return'green';return'purple'}
-      function renderProfileList(type){
-        var arr=profileItems[type],nodes=[];
-        arr.forEach(function(item,i){nodes.push(editableEntry({icon:profileIcon(type),badgeClass:profileBadge(type),meta:profileMeta(type,item),title:item.title||'Untitled',text:profileText(type,item),onEdit:function(){openProfileForm(type,i)},onDelete:function(){profileItems[type].splice(i,1);renderProfileLists()}}))});
-        setChildren(profileLists[type].list,nodes);
-        profileLists[type].empty.classList.toggle('hidden',arr.length>0);
-        profileLists[type].list.classList.toggle('hidden',arr.length===0);
+function profileMeta(type,item){
+  if(type==='career')return (item.from||'')+' - '+(item.to||'now');
+  if(type==='interests')return item.direction||'Interest';
+  if(type==='hobby')return item.category||'Hobby';
+  return item.type||'Asset';
+}
+
+function profileText(type,item){
+  if(type==='career'){
+    return [
+      item.company,
+      item.field,
+      item.location,
+      item.post,
+      item.responsibility,
+      item.functions,
+      item.progress
+    ].filter(Boolean).join('\n');
+  }
+
+  if(type==='interests'){
+    return [
+      item.sections,
+      item.representatives ? 'Representatives: '+item.representatives : ''
+    ].filter(Boolean).join('\n');
+  }
+
+  if(type==='hobby'){
+    return [
+      item.description,
+      item.meaning ? 'Why it matters: '+item.meaning : ''
+    ].filter(Boolean).join('\n');
+  }
+
+  return [
+    item.description,
+    item.value ? 'Value: '+item.value : ''
+  ].filter(Boolean).join('\n');
+}
+
+function profileIcon(type){
+  if(type==='career')return 'briefcase';
+  if(type==='interests')return 'heart';
+  if(type==='hobby')return 'energy';
+  return 'trophy';
+}
+
+function profileBadge(type){
+  if(type==='career')return '';
+  if(type==='interests')return 'pink';
+  if(type==='hobby')return 'green';
+  return 'purple';
+}
+
+function renderProfileList(type){
+  var arr=profileItems[type];
+  var nodes=[];
+
+  arr.forEach(function(item,i){
+    nodes.push(editableEntry({
+      icon:profileIcon(type),
+      badgeClass:profileBadge(type),
+      meta:profileMeta(type,item),
+      title:
+        type==='career' ? item.post || item.company || 'Career' :
+        type==='interests' ? item.direction || 'Interest' :
+        type==='hobby' ? item.name || 'Hobby' :
+        item.name || 'Asset',
+      text:profileText(type,item),
+      onEdit:function(){openProfileForm(type,i)},
+      onDelete:function(){
+        profileItems[type].splice(i,1);
+        renderProfileLists();
       }
-      function renderProfileLists(){renderProfileList('career');renderProfileList('interests');renderProfileList('hobby');renderProfileList('achievements');renderProfileSummary()}
-      function openProfileForm(type,i){
-        haptic('medium');mainProfileAction.parentElement.classList.remove('active');
-        var isEdit=typeof i==='number',item=isEdit?profileItems[type][i]:null;profileEditing[type]=isEdit?i:null;
-        profileLists[type].view.classList.add('hidden');profileLists[type].form.classList.remove('hidden');
-        if(type==='career'){var c=item||{title:'',type:'Role',description:'',next:''};profileLists[type].formTitle.textContent=isEdit?'Edit Career Card':'New Career Card';profileFields.career.title.value=c.title;profileFields.career.type.value=c.type;profileFields.career.description.value=c.description;profileFields.career.next.value=c.next}
-        if(type==='interests'){var it=item||{title:'',format:'Practice',reason:'',explore:''};profileLists[type].formTitle.textContent=isEdit?'Edit Interest':'New Interest';profileFields.interests.title.value=it.title;profileFields.interests.format.value=it.format;profileFields.interests.reason.value=it.reason;profileFields.interests.explore.value=it.explore}
-        if(type==='hobby'){var h=item||{title:'',frequency:'Few times a week',reason:'',plan:''};profileLists[type].formTitle.textContent=isEdit?'Edit Hobby':'New Hobby';profileFields.hobby.title.value=h.title;profileFields.hobby.frequency.value=h.frequency;profileFields.hobby.reason.value=h.reason;profileFields.hobby.plan.value=h.plan}
-        if(type==='achievements'){var a=item||{title:'',area:'Business',story:'',impact:''};profileLists[type].formTitle.textContent=isEdit?'Edit Achievement':'New Achievement';profileFields.achievements.title.value=a.title;profileFields.achievements.area.value=a.area;profileFields.achievements.story.value=a.story;profileFields.achievements.impact.value=a.impact}
-        window.scrollTo({top:0,behavior:'smooth'});
-      }
-      function closeProfileForm(type,reset){if(!profileLists[type])return;if(typeof reset==='undefined')reset=true;if(reset)haptic('light');profileLists[type].form.classList.add('hidden');profileLists[type].view.classList.remove('hidden');if(reset)profileEditing[type]=null;if(reset&&currentProfileTab===type)syncProfileActionButton(currentProfileTab)}
-      function saveProfileItem(type){
-        var f=profileFields[type],data=null;
-        if(type==='career')data={title:f.title.value.trim()||'Untitled career card',type:f.type.value,description:f.description.value.trim(),next:f.next.value.trim()};
-        if(type==='interests')data={title:f.title.value.trim()||'Untitled interest',format:f.format.value,reason:f.reason.value.trim(),explore:f.explore.value.trim()};
-        if(type==='hobby')data={title:f.title.value.trim()||'Untitled hobby',frequency:f.frequency.value,reason:f.reason.value.trim(),plan:f.plan.value.trim()};
-        if(type==='achievements')data={title:f.title.value.trim()||'Untitled achievement',area:f.area.value,story:f.story.value.trim(),impact:f.impact.value.trim()};
-        if(profileEditing[type]===null)profileItems[type].unshift(data);else profileItems[type][profileEditing[type]]=data;
-        renderProfileLists();haptic('success');closeProfileForm(type);
-      }
-      function syncProfileActionButton(tab){
-        if(tab==='career'||tab==='interests'||tab==='hobby'||tab==='achievements'){
-          mainProfileAction.parentElement.classList.add('active');
-          mainProfileActionText.textContent=tab==='career'?'Add Career':tab==='interests'?'Add Interest':tab==='hobby'?'Add Hobby':'Add Win';
-          mainProfileAction.onclick=function(){openProfileForm(tab)};
-          return;
-        }
-        mainProfileAction.parentElement.classList.remove('active');mainProfileAction.onclick=null;
-      }
-      function summaryBlock(title,items){
-        var key=title.toLowerCase()==='achievements'?'achievements':title.toLowerCase();
-        var block=makeElement('div','summary-block'),head=makeElement('div','summary-head'),icon=makeElement('div','summary-icon '+profileBadge(key));
-        icon.appendChild(makeIcon(profileIcon(key)));head.appendChild(icon);head.appendChild(makeElement('h3','',title));block.appendChild(head);
-        if(!items.length)block.appendChild(makeElement('p','','No cards yet.'));
-        items.slice(0,3).forEach(function(item){var p=makeElement('p');p.appendChild(makeElement('strong','',item.title+': '));p.appendChild(document.createTextNode(profileText(key,item)));block.appendChild(p)});
-        return block;
-      }
+    }));
+  });
+
+  setChildren(profileLists[type].list,nodes);
+  profileLists[type].empty.classList.toggle('hidden',arr.length>0);
+  profileLists[type].list.classList.toggle('hidden',arr.length===0);
+}
+
+function renderProfileLists(){
+  renderProfileList('career');
+  renderProfileList('interests');
+  renderProfileList('hobby');
+  renderProfileList('assets');
+  renderProfileSummary();
+}
+
+function openProfileForm(type,i){
+  haptic('medium');
+  mainProfileAction.parentElement.classList.remove('active');
+
+  var isEdit=typeof i==='number';
+  var item=isEdit?profileItems[type][i]:null;
+
+  profileEditing[type]=isEdit?i:null;
+  profileLists[type].view.classList.add('hidden');
+  profileLists[type].form.classList.remove('hidden');
+
+  if(type==='career'){
+    var c=item||{company:'',location:'',field:'',post:'',from:'',to:'',responsibility:'',functions:'',progress:''};
+    profileFields.career.company.value=c.company;
+    profileFields.career.location.value=c.location;
+    profileFields.career.field.value=c.field;
+    profileFields.career.post.value=c.post;
+    profileFields.career.from.value=c.from;
+    profileFields.career.to.value=c.to;
+    profileFields.career.responsibility.value=c.responsibility;
+    profileFields.career.functions.value=c.functions;
+    profileFields.career.progress.value=c.progress;
+  }
+
+  if(type==='interests'){
+    var it=item||{direction:'',sections:'',representatives:''};
+    profileFields.interests.direction.value=it.direction;
+    profileFields.interests.sections.value=it.sections;
+    profileFields.interests.representatives.value=it.representatives;
+  }
+
+  if(type==='hobby'){
+    var h=item||{name:'',category:'',description:'',meaning:''};
+    profileFields.hobby.name.value=h.name;
+    profileFields.hobby.category.value=h.category;
+    profileFields.hobby.description.value=h.description;
+    profileFields.hobby.meaning.value=h.meaning;
+  }
+
+  if(type==='assets'){
+    var a=item||{name:'',type:'',description:'',value:''};
+    profileFields.assets.name.value=a.name;
+    profileFields.assets.type.value=a.type;
+    profileFields.assets.description.value=a.description;
+    profileFields.assets.value.value=a.value;
+  }
+
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function closeProfileForm(type,reset){
+  if(!profileLists[type])return;
+  if(typeof reset==='undefined')reset=true;
+
+  if(reset)haptic('light');
+
+  profileLists[type].form.classList.add('hidden');
+  profileLists[type].view.classList.remove('hidden');
+
+  if(reset)profileEditing[type]=null;
+  if(reset&&currentProfileTab===type)syncProfileActionButton(currentProfileTab);
+}
+
+function saveProfileItem(type){
+  var f=profileFields[type];
+  var data=null;
+
+  if(type==='career'){
+    data={
+      company:f.company.value.trim(),
+      location:f.location.value.trim(),
+      field:f.field.value.trim(),
+      post:f.post.value.trim(),
+      from:f.from.value.trim(),
+      to:f.to.value.trim()||'now',
+      responsibility:f.responsibility.value.trim(),
+      functions:f.functions.value.trim(),
+      progress:f.progress.value.trim()
+    };
+  }
+
+  if(type==='interests'){
+    data={
+      direction:f.direction.value.trim(),
+      sections:f.sections.value.trim(),
+      representatives:f.representatives.value.trim()
+    };
+  }
+
+  if(type==='hobby'){
+    data={
+      name:f.name.value.trim(),
+      category:f.category.value.trim(),
+      description:f.description.value.trim(),
+      meaning:f.meaning.value.trim()
+    };
+  }
+
+  if(type==='assets'){
+    data={
+      name:f.name.value.trim(),
+      type:f.type.value.trim(),
+      description:f.description.value.trim(),
+      value:f.value.value.trim()
+    };
+  }
+
+  if(profileEditing[type]===null)profileItems[type].unshift(data);
+  else profileItems[type][profileEditing[type]]=data;
+
+  saveProfileToWorker();
+  renderProfileLists();
+  haptic('success');
+  closeProfileForm(type);
+}
+
+function syncProfileActionButton(tab){
+  if(tab==='career'||tab==='interests'||tab==='hobby'||tab==='assets'){
+    mainProfileAction.parentElement.classList.add('active');
+
+    mainProfileActionText.textContent=
+      tab==='career'?'Add Career':
+      tab==='interests'?'Add Interest':
+      tab==='hobby'?'Add Hobby':
+      'Add Asset';
+
+    mainProfileAction.onclick=function(){openProfileForm(tab)};
+    return;
+  }
+
+  mainProfileAction.parentElement.classList.remove('active');
+  mainProfileAction.onclick=null;
+}
+
+function summaryBlock(title,type,items){
+  var block=makeElement('div','summary-block');
+  var head=makeElement('div','summary-head');
+  var icon=makeElement('div','summary-icon '+profileBadge(type));
+
+  icon.appendChild(makeIcon(profileIcon(type)));
+  head.appendChild(icon);
+  head.appendChild(makeElement('h3','',title));
+  block.appendChild(head);
+
+  if(!items.length){
+    block.appendChild(makeElement('p','','No data yet.'));
+  }
+
+  items.slice(0,3).forEach(function(item){
+    var p=makeElement('p');
+    p.appendChild(makeElement('strong','',
+      type==='career' ? (item.post||item.company||'Career')+': ' :
+      type==='interests' ? (item.direction||'Interest')+': ' :
+      type==='hobby' ? (item.name||'Hobby')+': ' :
+      (item.name||'Asset')+': '
+    ));
+    p.appendChild(document.createTextNode(profileText(type,item)));
+    block.appendChild(p);
+  });
+
+  return block;
+}
+
+function renderProfileSummary(){
+  setChildren(byId('profileSummary'),[
+    summaryBlock('Career','career',profileItems.career),
+    summaryBlock('Interests','interests',profileItems.interests),
+    summaryBlock('Hobby','hobby',profileItems.hobby),
+    summaryBlock('Assets','assets',profileItems.assets)
+  ]);
+
+  var lastCareer=profileItems.career[0];
+  var roleLine=byId('profileRoleLine');
+
+  if(roleLine&&lastCareer){
+    roleLine.textContent=[
+      lastCareer.post,
+      lastCareer.field
+    ].filter(Boolean).join(' - ')||'Profile filled';
+  }
+}
       function renderProfileSummary(){setChildren(byId('profileSummary'),[summaryBlock('Career',profileItems.career),summaryBlock('Interests',profileItems.interests),summaryBlock('Hobby',profileItems.hobby),summaryBlock('Achievements',profileItems.achievements)])}
 
       var AI_WORKER_URL='https://life-arch.cyberian13.workers.dev/ai';
+
+      var PROFILE_SAVE_URL='https://life-arch.cyberian13.workers.dev/profile/save';
+
+async function saveProfileToWorker(){
+  try{
+    var tg=window.Telegram&&window.Telegram.WebApp;
+    var user=tg&&tg.initDataUnsafe&&tg.initDataUnsafe.user;
+
+    await fetch(PROFILE_SAVE_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        user_id:user&&user.id?String(user.id):'demo',
+        profile:profileItems
+      })
+    });
+  }catch(e){
+    console.log('profile save failed',e);
+  }
+}
 
 var aiMessages=[
   {
@@ -1637,11 +2089,17 @@ async function sendAiMessage(){
       byId('cancelWishBtn').addEventListener('click',function(){closeDiaryForm('wishes')});byId('saveWishBtn').addEventListener('click',function(){saveDiaryItem('wishes')});
       byId('cancelThoughtBtn').addEventListener('click',function(){closeDiaryForm('thoughts')});byId('saveThoughtBtn').addEventListener('click',function(){saveDiaryItem('thoughts')});
       byId('cancelDreamBtn').addEventListener('click',function(){closeDiaryForm('dreams')});byId('saveDreamBtn').addEventListener('click',function(){saveDiaryItem('dreams')});
-      byId('cancelCareerBtn').addEventListener('click',function(){closeProfileForm('career')});byId('saveCareerBtn').addEventListener('click',function(){saveProfileItem('career')});
-      byId('cancelInterestsBtn').addEventListener('click',function(){closeProfileForm('interests')});byId('saveInterestsBtn').addEventListener('click',function(){saveProfileItem('interests')});
-      byId('cancelHobbyBtn').addEventListener('click',function(){closeProfileForm('hobby')});byId('saveHobbyBtn').addEventListener('click',function(){saveProfileItem('hobby')});
-      byId('cancelAchievementsBtn').addEventListener('click',function(){closeProfileForm('achievements')});byId('saveAchievementsBtn').addEventListener('click',function(){saveProfileItem('achievements')});
+      byId('cancelCareerBtn').addEventListener('click',function(){closeProfileForm('career')});
+byId('saveCareerBtn').addEventListener('click',function(){saveProfileItem('career')});
 
+byId('cancelInterestsBtn').addEventListener('click',function(){closeProfileForm('interests')});
+byId('saveInterestsBtn').addEventListener('click',function(){saveProfileItem('interests')});
+
+byId('cancelHobbyBtn').addEventListener('click',function(){closeProfileForm('hobby')});
+byId('saveHobbyBtn').addEventListener('click',function(){saveProfileItem('hobby')});
+
+byId('cancelAssetsBtn').addEventListener('click',function(){closeProfileForm('assets')});
+byId('saveAssetsBtn').addEventListener('click',function(){saveProfileItem('assets')});
 
 
 
