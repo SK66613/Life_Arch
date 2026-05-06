@@ -936,6 +936,19 @@
       <div class="field"><label>Field of activity</label><input id="careerField" placeholder="Software development"></div>
       <div class="field"><label>Post</label><input id="careerPost" placeholder="Startup manager"></div>
 
+      <div class="field">
+  <label>Salary</label>
+  <div style="display:grid;grid-template-columns:1fr 110px;gap:8px;">
+    <input id="careerSalary" placeholder="1000">
+    <select id="careerCurrency">
+      <option value="USD">$ USD</option>
+      <option value="EUR">€ EUR</option>
+      <option value="RUB">₽ RUB</option>
+      <option value="AED">AED</option>
+    </select>
+  </div>
+</div>
+
 <div class="field">
   <label>Working period from</label>
   <input id="careerFrom" type="month">
@@ -1389,7 +1402,9 @@ var profileFields={
     location:byId('careerLocation'),
     field:byId('careerField'),
     post:byId('careerPost'),
-    from:byId('careerFrom'),
+salary:byId('careerSalary'),
+currency:byId('careerCurrency'),
+from:byId('careerFrom'),
     to:byId('careerTo'),
     responsibility:byId('careerResponsibility'),
         progress:byId('careerProgress')
@@ -1888,13 +1903,14 @@ function addCareerFunction(){var input=byId('careerFunctionInput');if(!input)ret
 function profileMeta(type,item){if(type==='career'){return formatMonth(item.from)+' - '+(item.to?formatMonth(item.to):'now');}if(type==='interests')return item.direction||'Interest';if(type==='hobby')return item.category||'Hobby';return item.type||'Asset';}
 
 function profileText(type,item){
-  if(type==='career'){
-    return [
-      item.company,
-      item.field,
-      item.location,
-      item.post,
-      item.responsibility,
+if(type==='career'){
+  return [
+    item.company,
+    item.field,
+    item.location,
+    item.post,
+    item.salary ? 'Salary: '+item.salary+' '+(item.currency||'USD') : '',
+    item.responsibility,
       (item.functions||[]).map(function(fn){return (fn.liked?'♥ ':'♡ ')+fn.text;}).join('\n'),
       item.progress
     ].filter(Boolean).join('\n');
@@ -1983,12 +1999,14 @@ function openProfileForm(type,i){
   profileLists[type].form.classList.remove('hidden');
 
   if(type==='career'){
-    var c=item||{company:'',location:'',field:'',post:'',from:'',to:'',responsibility:'',functions:[],progress:''};
+    var c=item||{company:'',location:'',field:'',post:'',salary:'',currency:'USD',from:'',to:'',responsibility:'',functions:[],progress:''};
     profileFields.career.company.value=c.company||'';
     profileFields.career.location.value=c.location||'';
     profileFields.career.field.value=c.field||'';
     profileFields.career.post.value=c.post||'';
-    profileFields.career.from.value=c.from||'';
+profileFields.career.salary.value=c.salary||'';
+profileFields.career.currency.value=c.currency||'USD';
+profileFields.career.from.value=c.from||'';
     profileFields.career.to.value=c.to||'';
     profileFields.career.responsibility.value=c.responsibility||'';
     profileFields.career.progress.value=c.progress||'';
@@ -2045,7 +2063,9 @@ async function saveProfileItem(type){
       location:f.location.value.trim(),
       field:f.field.value.trim(),
       post:f.post.value.trim(),
-      from:f.from.value.trim(),
+salary:f.salary.value.trim(),
+currency:f.currency.value,
+from:f.from.value.trim(),
       to:f.to.value.trim(),
       responsibility:f.responsibility.value.trim(),
       functions:careerFunctionsDraft.slice(),
