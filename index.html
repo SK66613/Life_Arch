@@ -88,6 +88,50 @@
     .field input,.field textarea,.field select{width:100%;padding:12px 13px;border:1px solid rgba(111,139,173,.26);border-radius:17px;background:rgba(255,255,255,.86);color:var(--ink);outline:none;font-size:16px}
     .field input:focus,.field textarea:focus,.field select:focus{border-color:rgba(77,142,216,.65);box-shadow:0 0 0 4px rgba(77,142,216,.13)}
     .field textarea{min-height:96px;resize:vertical}
+    .field input[type="month"]{
+      appearance:none;
+      -webkit-appearance:none;
+      position:relative;
+      min-height:54px;
+      padding:14px 48px 14px 16px;
+      border-radius:20px;
+      background:
+        linear-gradient(135deg,rgba(255,255,255,.96),rgba(246,249,255,.94));
+      border:1px solid rgba(111,139,173,.22);
+      box-shadow:0 8px 18px rgba(49,85,130,.08);
+      color:#142033;
+      font-size:16px;
+      font-weight:750;
+    }
+
+    .field input[type="month"]:focus{
+      border-color:rgba(77,142,216,.70);
+      box-shadow:0 0 0 4px rgba(77,142,216,.13),0 8px 18px rgba(49,85,130,.08);
+    }
+
+    .field input[type="month"]::-webkit-calendar-picker-indicator{
+      width:22px;
+      height:22px;
+      padding:8px;
+      border-radius:14px;
+      background-color:#eef6ff;
+      cursor:pointer;
+      opacity:1;
+    }
+
+    .field input[type="month"]::-webkit-datetime-edit{
+      color:#142033;
+    }
+
+    .field input[type="month"]::-webkit-datetime-edit-fields-wrapper{
+      padding:0;
+    }
+
+    .field input[type="month"]::-webkit-datetime-edit-month-field,
+    .field input[type="month"]::-webkit-datetime-edit-year-field{
+      padding:2px 4px;
+      border-radius:8px;
+    }
     .hint{margin-top:5px;color:var(--muted);font-size:12px}
     .form-actions{display:grid;grid-template-columns:.78fr 1.15fr;gap:10px}
     .ghost-btn,.save-btn{height:44px;border-radius:17px;font-size:16px;font-weight:900}
@@ -704,14 +748,20 @@
   border:0;
   border-radius:13px;
   background:#eef6ff;
-  color:#64748b;
-  font-size:17px;
+  color:#94a3b8;
+  font-size:20px;
   font-weight:950;
+  line-height:1;
+  display:grid;
+  place-items:center;
+  transition:.16s ease;
 }
 
 .mini-like.active{
-  background:linear-gradient(135deg,#72d7a8,#31a376);
-  color:#fff;
+  background:#fee2e2;
+  color:#dc2626;
+  box-shadow:0 0 0 3px rgba(220,38,38,.10);
+  transform:scale(1.04);
 }
 
 .mini-add{
@@ -1768,7 +1818,7 @@ function initProgressTabs(){
 }
 
 function formatMonth(value){if(!value)return '';var parts=value.split('-');if(parts.length!==2)return value;var months=['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];return months[Number(parts[1])-1]+' '+parts[0];}
-function renderCareerFunctionsDraft(){var box=byId('careerFunctionsList');if(!box)return;var nodes=[];careerFunctionsDraft.forEach(function(fn,index){var row=makeElement('div','mini-row');var text=makeElement('span','',fn.text);var like=makeElement('button','mini-like '+(fn.liked?'active':''),fn.liked?'✓':'♡');like.type='button';like.addEventListener('click',function(){careerFunctionsDraft[index].liked=!careerFunctionsDraft[index].liked;haptic('selection');renderCareerFunctionsDraft();});row.appendChild(text);row.appendChild(like);nodes.push(row);});setChildren(box,nodes);}
+function renderCareerFunctionsDraft(){var box=byId('careerFunctionsList');if(!box)return;var nodes=[];careerFunctionsDraft.forEach(function(fn,index){var row=makeElement('div','mini-row');var text=makeElement('span','',fn.text);var like=makeElement('button','mini-like '+(fn.liked?'active':''),'♥');like.type='button';like.addEventListener('click',function(){careerFunctionsDraft[index].liked=!careerFunctionsDraft[index].liked;haptic('selection');renderCareerFunctionsDraft();});row.appendChild(text);row.appendChild(like);nodes.push(row);});setChildren(box,nodes);}
 function addCareerFunction(){var input=byId('careerFunctionInput');if(!input)return;var text=input.value.trim();if(!text)return;careerFunctionsDraft.push({text:text,liked:false});input.value='';haptic('success');renderCareerFunctionsDraft();}
 function profileMeta(type,item){if(type==='career'){return formatMonth(item.from)+' - '+(item.to?formatMonth(item.to):'now');}if(type==='interests')return item.direction||'Interest';if(type==='hobby')return item.category||'Hobby';return item.type||'Asset';}
 
@@ -1780,7 +1830,7 @@ function profileText(type,item){
       item.location,
       item.post,
       item.responsibility,
-      (item.functions||[]).map(function(fn){return (fn.liked?'✓ ':'♡ ')+fn.text;}).join('\n'),
+      (item.functions||[]).map(function(fn){return (fn.liked?'♥ ':'♡ ')+fn.text;}).join('\n'),
       item.progress
     ].filter(Boolean).join('\n');
   }
